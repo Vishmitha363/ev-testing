@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BNC Motors - EV Testing and Validation</title>
+
+<!-- The ?v= query is a cache buster. Bump it whenever style.css or
+     script.js changes, otherwise the browser keeps serving the old file
+     from disk and you see stale generated text. -->
+<link rel="stylesheet" href="style.css?v=405">
+
+<!-- Vendored locally so the report works with no internet connection. -->
+<script src="vendor/html2pdf.bundle.min.js"></script>
+
+</head>
+
+<body>
+
+<div id="app">
+
+<aside id="sidebar">
+
+    <div class="side-brand"><span class="ico">⚡</span> EV Testing and Validation</div>
+
+    <nav class="side-nav">
+        <button class="side-link active" data-view="home">Home</button>
+        <button class="side-link" data-view="cases">Product &amp; Test Cases</button>
+        <button class="side-link" data-view="pvt">Product Validation Test Report</button>
+        <button class="side-link" data-view="rca">RCA Report</button>
+        <button class="side-link" data-view="supplier8d">Document Summary &amp; 8D</button>
+    </nav>
+
+</aside>
+
+<main id="main">
+
+<!-- ===================== HOME / FRONT PAGE ===================== -->
+<section class="view" id="view-home">
+
+    <div class="home-hero">
+        <h1>EV Testing and Validation</h1>
+        <p class="home-sub">Vehicle &amp; component testing workspace &mdash; choose a tool to begin.</p>
+    </div>
+
+    <div class="home-cards">
+        <button class="home-card" data-view="cases">
+            <span class="home-ico">🧪</span>
+            <b>Product &amp; Test Cases</b>
+            <small>Browse products and their test cases</small>
+        </button>
+        <button class="home-card" data-view="pvt">
+            <span class="home-ico">📋</span>
+            <b>Product Validation Test Report</b>
+            <small>Create and export the PVT report</small>
+        </button>
+        <button class="home-card" data-view="rca">
+            <span class="home-ico">🔍</span>
+            <b>RCA Report</b>
+            <small>Root cause analysis report</small>
+        </button>
+        <button class="home-card" data-view="supplier8d">
+            <span class="home-ico">📎</span>
+            <b>Document Summary &amp; 8D</b>
+            <small>Summarise any file or evaluate a supplier 8D</small>
+        </button>
+    </div>
+
+</section>
+
+<section class="view" id="view-cases" hidden>
+    <div class="cases-page">
+
+        <h1>🧪 Product &amp; Test Cases</h1>
+        <p class="cases-intro">Enter a product to list its test cases, pick one to get the standard procedure online, download it, and keep the report's Test Procedure in sync.</p>
+        <p class="cases-tip">💡 Type a product, or use <b>From image</b> to identify it from a photo. Every test case comes with its standard procedure and the governing standard.</p>
+
+        <div class="cases-form">
+            <input id="tcProduct" placeholder="Product — e.g. Motor with gear box unit">
+            <button id="tcList" type="button">🔎 List test cases</button>
+            <button id="tcImgBtn" type="button" title="Upload a product photo — the AI identifies it, then you click List test cases">📷 From image</button>
+            <input id="tcImgFile" type="file" accept="image/*" hidden>
+        </div>
+
+        <!-- Candidate products the photo could be — click one to use it. -->
+        <div id="tcGuessRow" class="tc-guess-row" hidden>
+            <span class="tc-guess-label">Not right? Pick another:</span>
+            <span id="tcGuesses" class="tc-guesses"></span>
+        </div>
+
+        <div id="tcCaseList" class="cases-caselist" hidden></div>
+
+        <!-- Shown until a product is listed, so the page is never just blank. -->
+        <p id="tcEmpty" class="empty-state">No test cases yet. Type a product above (for example <b>BLDC hub motor</b>) and press <b>List test cases</b> — every test comes with its standard, procedure and PASS/FAIL criteria.</p>
+
+        <div id="tcAllRow" class="cases-allrow" hidden>
+            <button id="tcAllBtn" type="button">📄 Show ALL test cases with their standard procedures</button>
+        </div>
+
+        <div class="cases-form">
+            <input id="tcTest" placeholder="Test case — pick one above, or type e.g. IPX7">
+            <button id="tcFetch" type="button">Get standard procedure</button>
+        </div>
+
+        <div id="tcStatus" class="cases-status"></div>
+
+        <div id="tcResultWrap" class="cases-result-wrap" hidden>
+
+            <div class="cases-result-head">
+                <b id="tcTitle">Standard procedure</b>
+                <div class="cases-actions">
+                    <button id="tcRefresh" type="button" title="Check online again">↻ Refresh online</button>
+                    <button id="tcDownload" type="button">⬇ Download (Word)</button>
+                    <label class="tc-sync"><input type="checkbox" id="tcSync"> Auto-update the report</label>
+                </div>
+            </div>
+
+            <div id="tcProcedure" class="cases-procedure" contenteditable="true"></div>
+
+            <div class="cases-note">Standard reference: <span id="tcStandard">—</span></div>
+
+        </div>
+
+        <div id="tcAll" class="cases-all" hidden></div>
+
+    </div>
+</section>
+
+<section class="view" id="view-rca" hidden>
+  <div class="rca-page">
+
+    <h1>🔍 RCA Report</h1>
+    <p class="cases-intro">Describe the failure, then generate a full Root Cause Analysis online (8D / 5-Why / Fishbone). Every section stays editable, and you can download the report as Word.</p>
+    <p class="cases-tip">💡 Fill in the details below and click <b>Generate RCA</b> — the AI drafts every section, and you can edit any of them before downloading.</p>
+
+    <div class="rca-layout">
+    <!-- Actions: one per line in a rail on the left that stays in view while scrolling. -->
+    <div class="rca-actions" role="toolbar" aria-orientation="vertical" aria-label="RCA actions">
+      <span class="tb-label">Create</span>
+      <button id="rcaGenerate" type="button">✨ Generate RCA (online)</button>
+      <button id="rcaSample" type="button" class="rca-sample">🧪 Load sample</button>
+      <button id="rcaMethod" type="button">📋 Show RCA procedure</button>
+      <!-- Same stored logo the PVT report uses, settable from here too. -->
+      <input type="file" id="rcaLogoFile" accept="image/*" hidden>
+      <button id="rcaLogoBtn" type="button" title="Upload the logo for THIS report (separate from the test report's logo). Right-click to remove it.">🏢 RCA logo</button>
+
+      <span class="tb-label">Export</span>
+      <button id="rcaPreview" type="button" title="Preview the PDF or the Word file exactly as it will download, then save it">👁 Preview</button>
+      <button id="rcaView" type="button">👁 View / Print</button>
+      <button id="rcaPdf" type="button">📄 Export PDF</button>
+      <button id="rcaDownload" type="button">⬇ Download (Word)</button>
+      <button id="rcaPng" type="button">🖼 Diagram (PNG)</button>
+
+      <span class="tb-label">Manage</span>
+      <button id="rcaSave" type="button">💾 Save RCA</button>
+      <button id="rcaLibrary" type="button">📁 My RCAs</button>
+      <button id="rcaClear" type="button" class="rca-clear">✕ Clear</button>
+    </div>
+    <div class="rca-main">
+
+    <!-- ---------- document control ---------- -->
+    <div class="rca-grid">
+      <label>RCA / 8D No.<input id="rcaNo" placeholder="e.g. RCA-2026-014"></label>
+      <label>Revision<input id="rcaRev" placeholder="e.g. 00"></label>
+      <label>Issue date<input id="rcaIssue" placeholder="DD/MM/YYYY"></label>
+      <label>Status<select id="rcaStatus2">
+        <option>Open</option><option>Under investigation</option>
+        <option>Actions implemented</option><option>Closed</option>
+      </select></label>
+    </div>
+
+    <!-- ---------- inputs ---------- -->
+    <div class="rca-grid">
+      <label>Product / Part<input id="rcaProduct" placeholder="e.g. BLDC hub motor"></label>
+      <label>Part / Drawing No.<input id="rcaPartNo" placeholder="e.g. BM-4512"></label>
+      <label>Model<input id="rcaModel" placeholder="e.g. HM-48-1000"></label>
+      <label>Flash Report No.<input id="rcaFlash" placeholder="e.g. FR-2026-051"></label>
+      <label>Date of occurrence<input id="rcaDate" placeholder="DD/MM/YYYY"></label>
+      <label>Qty affected / Lot<input id="rcaQty" placeholder="e.g. 12 of 500 (Lot A23)"></label>
+      <label>Detected at<input id="rcaWhere" placeholder="e.g. End-of-line test / Customer"></label>
+      <label>Prepared by<input id="rcaBy" placeholder="Name"></label>
+      <label>Approved by<input id="rcaApprover" placeholder="Name (sign-off)"></label>
+      <label>Verified by (BNC)<input id="rcaVerifier" placeholder="Name (BNC verification)"></label>
+      <label>Customer / Line<input id="rcaCust" placeholder="e.g. Line 2 / Customer X"></label>
+      <label>Team members (D1)<input id="rcaTeam" placeholder="Name (role), Name (role)…"></label>
+    </div>
+
+    <label class="rca-problem-lbl">Problem / failure description
+      <textarea id="rcaProblem" rows="3" placeholder="e.g. Motor stops after 10 minutes of running; burnt smell from the stator winding. Found on 12 units in lot A23 at end-of-line test."></textarea>
+    </label>
+
+    <!-- ---------- evidence photos ---------- -->
+    <div class="rca-photos-row">
+      <button id="rcaAddPhoto" type="button" class="rca-photo-btn">📷 Add evidence photo</button>
+      <input type="file" id="rcaPhotoFile" accept="image/*" multiple hidden>
+      <span class="rca-photo-hint">Photos appear in section 2 (Problem Description), and with <b>Gemini / OpenAI</b> the AI analyses them as visual evidence.</span>
+    </div>
+    <div id="rcaPhotos" class="rca-photos"></div>
+
+    <!-- Saved RCA library -->
+    <div id="rcaModal" class="reports-modal" hidden>
+      <div class="reports-box">
+        <div class="reports-head"><span>📁 My RCAs</span>
+          <button type="button" class="reports-x" onclick="document.getElementById('rcaModal').hidden=true">✕</button>
+        </div>
+        <button type="button" class="reports-save" id="rcaSaveInModal">💾 Save the RCA on screen</button>
+        <div id="rcaList" class="reports-list"></div>
+      </div>
+    </div>
+
+    <div id="rcaStatus" class="cases-status"></div>
+
+    <!-- ---------- the standard RCA method (always available, offline) ---------- -->
+    <div id="rcaMethodBox" class="rca-method" hidden></div>
+
+    <!-- Zoom for the RCA report on screen - the same control the test report
+         has, so both documents behave the same way. Never in the PDF / Word. -->
+    <div class="report-tools" id="rcaTools" hidden>
+      <span class="rt-lbl">Zoom</span>
+      <button type="button" id="rcaZoomOut" class="rt-btn" title="Zoom out">&minus;</button>
+      <span id="rcaZoomPct" class="rt-pct">100%</span>
+      <button type="button" id="rcaZoomIn" class="rt-btn" title="Zoom in">+</button>
+      <button type="button" id="rcaZoomReset" class="rt-btn rt-reset">Reset</button>
+    </div>
+
+    <!-- ---------- the generated report ---------- -->
+    <div id="rcaReport" class="rca-report" hidden></div>
+
+    </div><!-- /.rca-main -->
+    </div><!-- /.rca-layout -->
+
+  </div>
+</section>
+
+<!-- ===================== DOCUMENT SUMMARY & SUPPLIER 8D EVALUATION ===================== -->
+<section class="view" id="view-supplier8d" hidden>
+  <div class="rca-page sum-page">
+
+    <header class="sum-head">
+      <h1>Document Summary &amp; 8D Evaluation</h1>
+      <p class="cases-intro">Add any document or text &mdash; from any field &mdash; and get its key points in simple words. Supplier 8D reports can also be evaluated against the 8D method.</p>
+    </header>
+
+    <div id="sup8dCard" class="sup8d-card">
+
+      <!-- ---------- Step 1: content ---------- -->
+      <div class="sum-step">
+        <div class="sum-step-head"><span class="sum-step-no">1</span><div><b>Add content</b><small>Files, pictures or pasted text &mdash; you can combine them.</small></div></div>
+
+        <div id="sup8dDrop" class="sum-drop">
+          <span class="sum-drop-ico" aria-hidden="true">⤒</span>
+          <div class="sum-drop-text">
+            <b>Drag and drop files here</b>
+            <small>PDF &middot; Word &middot; Excel &middot; PowerPoint &middot; Images &middot; Text / CSV &middot; HTML &middot; RTF</small>
+          </div>
+          <button id="sup8dUpload" type="button" class="sum-btn">Browse files</button>
+          <input type="file" id="sup8dFile" accept="image/*,.pdf,.doc,.docx,.docm,.dot,.dotx,.xls,.xlsx,.xlsm,.ppt,.pptx,.odt,.ods,.odp,.rtf,.mht,.mhtml,.htm,.html,.xml,.json,.txt,.csv,.tsv,.md,.log,.eml,.yaml,.yml,.ini,.srt,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/*" multiple hidden>
+        </div>
+
+        <div id="sup8dThumbs" class="sup8d-thumbs"></div>
+
+        <label class="sum-label" for="sup8dText">Or paste text</label>
+        <textarea id="sup8dText" class="sup8d-text" rows="5" placeholder="Paste an email, report, specification, contract, meeting notes, an 8D report…"></textarea>
+      </div>
+
+      <!-- ---------- Step 2: output ---------- -->
+      <div class="sum-step">
+        <div class="sum-step-head"><span class="sum-step-no">2</span><div><b>Choose the result</b><small>Smart summary works for everything and evaluates 8D reports automatically.</small></div></div>
+
+        <div class="sum-modes" role="radiogroup" aria-label="Result type">
+          <label class="sum-mode"><input type="radio" name="sup8dMode" value="auto" checked><span><b>Smart summary</b><small>Key points of any content; 8D reports are evaluated</small></span></label>
+          <label class="sum-mode"><input type="radio" name="sup8dMode" value="summary"><span><b>Summary only</b><small>Plain key points, never an 8D judgement</small></span></label>
+          <label class="sum-mode"><input type="radio" name="sup8dMode" value="eval"><span><b>Supplier 8D evaluation</b><small>Check D1&ndash;D8, gaps, decision and questions</small></span></label>
+        </div>
+
+        <div class="sup8d-actions">
+          <button id="sup8dAnalyze" type="button" class="sum-primary">Analyse &amp; summarise</button>
+          <button id="sup8dClear" type="button" class="sum-btn sum-clear" hidden>Clear all</button>
+        </div>
+        <div id="sup8dStatus" class="cases-status"></div>
+      </div>
+
+      <!-- ---------- Result ---------- -->
+      <div class="sum-out">
+        <div class="sum-out-head">
+          <b>Result</b>
+          <span id="sup8dKind" class="sum-kind" hidden></span>
+          <button id="sup8dCopy" type="button" class="sum-btn" hidden>Copy points</button>
+        </div>
+        <p id="sup8dEmpty" class="empty-state">Your summary will appear here. Add a file or paste text, then press <b>Analyse &amp; summarise</b>.</p>
+        <div id="sup8dResult" class="sup8d-result" hidden></div>
+      </div>
+
+      <p class="sum-privacy"><b>Privacy:</b> the content you add is sent to an online AI service to be read (on the default free setting, a shared no-account service). Everything else in this app stays on this computer.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== PRODUCT VALIDATION TEST REPORT ===================== -->
+<section class="view" id="view-pvt" hidden>
+
+<!-- Actions grouped by what they do: Create | Export | Manage. -->
+<div class="toolbar">
+
+<div class="tb-group" role="group" aria-label="Create">
+<span class="tb-label">Create</span>
+<button id="newReport">
+New Report
+</button>
+<button id="addPage" type="button" title="Add an extra A4 page (a page is also added automatically when a page is full)">
+Add Page
+</button>
+</div>
+
+<div class="tb-group" role="group" aria-label="Export">
+<span class="tb-label">Export</span>
+<button id="previewPDF" type="button" title="Preview the PDF exactly as it will download, then save it">
+Preview
+</button>
+<button id="downloadPDF">
+Export PDF
+</button>
+</div>
+
+<div class="tb-group" role="group" aria-label="Manage">
+<span class="tb-label">Manage</span>
+<button id="saveDraft">
+Save Draft
+</button>
+<button id="loadDraft">
+Load Draft
+</button>
+<button id="myReports">
+My Reports
+</button>
+</div>
+
+</div>
+
+<!-- Report tools: watermark + zoom (screen only, never in the PDF). -->
+<div class="report-tools">
+ <span class="rt-lbl">Watermark</span>
+ <select id="wmSelect">
+ <option value="">None</option>
+ <option value="DRAFT">DRAFT</option>
+ <option value="CONFIDENTIAL">CONFIDENTIAL</option>
+ <option value="FOR REVIEW">FOR REVIEW</option>
+ <option value="APPROVED">APPROVED</option>
+ <option value="CONTROLLED COPY">CONTROLLED COPY</option>
+ </select>
+ <span class="rt-sep"></span>
+ <span class="rt-lbl">Zoom</span>
+ <button type="button" id="zoomOut" class="rt-btn">−</button>
+ <span id="zoomPct" class="rt-pct">100%</span>
+ <button type="button" id="zoomIn" class="rt-btn">+</button>
+ <button type="button" id="zoomReset" class="rt-btn rt-reset">Reset</button>
+</div>
+
+<!-- Saved reports (each is a full snapshot you can reopen later). -->
+<div id="reportsModal" class="reports-modal" hidden>
+ <div class="reports-box">
+ <div class="reports-head">
+ <span>My Reports</span>
+ <button type="button" class="reports-x" onclick="closeReports()">✕</button>
+ </div>
+ <button type="button" class="reports-save" onclick="saveCurrentReport()">Save the report on screen</button>
+ <div id="reportsList" class="reports-list"></div>
+ </div>
+</div>
+
+<!-- On narrow windows the A4 pages scroll sideways inside this box, not the whole app. -->
+<div class="report-scroll">
+
+<div id="report">
+
+<!-- ================================================================
+ PAGE 1
+================================================================= -->
+
+<div class="page">
+
+<!-- ========================= HEADER ========================= -->
+
+<div class="header-card">
+
+<div class="logo-box">
+
+<img id="companyLogo" src="assets/placeholder.png" alt="">
+
+<input type="file"
+id="logoUpload"
+accept="image/*"
+hidden>
+
+<button
+class="uploadLogoBtn"
+onclick="document.getElementById('logoUpload').click()">
+
+Upload Logo
+
+</button>
+
+<button class="logoAdjustBtn" onclick="logoCropToggle(this)" title="Drag to move, scroll to zoom, double-click to reset">Adjust</button>
+</div>
+
+<div class="title-box">
+
+<h1>PRODUCT VALIDATION TEST REPORT</h1>
+
+</div>
+
+<div class="report-info">
+
+<div>
+
+<label>Doc.Rev.No :</label>
+
+<span
+contenteditable="true"
+id="revision"></span>
+
+</div>
+
+<div>
+
+<label>Report No. :</label>
+
+<span
+contenteditable="true"
+id="reportNo"></span>
+
+</div>
+
+<div>
+
+<label>Report Date :</label>
+
+<span
+contenteditable="true"
+class="date-field"
+data-placeholder="DD/MM/YYYY"
+id="reportDate"></span>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ========================= PRODUCT DETAILS ========================= -->
+
+<div class="section-card">
+
+<div class="section-title">
+
+<span>Product Details</span>
+
+</div>
+
+<div class="grid2">
+
+<div>
+
+<label>Product</label>
+
+<div contenteditable="true"
+id="product"
+class="field"></div>
+
+</div>
+
+<div>
+
+<label>Application</label>
+
+<div contenteditable="true"
+id="application"
+class="field"></div>
+
+</div>
+
+<div>
+
+<label>Supplier</label>
+
+<div contenteditable="true"
+id="supplier"
+class="field"></div>
+
+</div>
+
+<div>
+
+<label>Sample Type</label>
+
+<div contenteditable="true"
+id="sampleType"
+class="field"></div>
+
+</div>
+
+<div>
+
+<label>Drawing / Part No.</label>
+
+<div contenteditable="true"
+id="drawing"
+class="field"></div>
+
+</div>
+
+<div>
+
+<label>No. of Samples</label>
+
+<div contenteditable="true"
+id="samples"
+class="field"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ========================= TEST DETAILS ========================= -->
+
+<div class="section-card">
+
+<div class="section-title">
+
+<span>Test Details</span>
+
+</div>
+
+<div class="grid2">
+
+<div>
+
+<label>Test Name</label>
+
+<div contenteditable="true"
+id="testName"
+class="field"></div>
+
+</div>
+
+<div>
+
+<label>Standard</label>
+
+<div contenteditable="true"
+id="standard"
+class="field"></div>
+
+</div>
+
+<div>
+
+<label>Start Date</label>
+
+<div contenteditable="true"
+id="startDate"
+data-placeholder="DD/MM/YYYY"
+class="field date-field"></div>
+
+</div>
+
+<div>
+
+<label>End Date</label>
+
+<div contenteditable="true"
+id="endDate"
+data-placeholder="DD/MM/YYYY"
+class="field date-field"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ========================= TEST OBJECTIVE ========================= -->
+
+<div class="section-card">
+
+<div class="section-title">
+
+<span>Test Objective</span>
+
+<button
+class="auto-btn"
+onclick="autoGenerateField('objective')">
+
+Auto
+
+</button>
+
+</div>
+
+<div
+id="objective"
+contenteditable="true"
+class="editor"></div>
+
+</div>
+
+<!-- ========================= EQUIPMENT ========================= -->
+
+<div class="section-card">
+
+<div class="section-title">
+
+<span>Test Equipment &amp; Setup</span>
+
+</div>
+
+<div
+id="equipment"
+contenteditable="true"
+class="editor equipment-box"></div>
+
+</div>
+
+<!-- ========================= PROCEDURE ========================= -->
+
+<div class="section-card">
+
+<div class="section-title">
+
+<span>Test Procedure</span>
+
+<button
+class="auto-btn"
+onclick="autoGenerateField('procedure')">
+
+Auto
+
+</button>
+
+</div>
+
+<div
+id="procedure"
+contenteditable="true"
+class="editor procedure-box"></div>
+
+</div>
+
+<!-- ========================= TEST PHOTOGRAPHS ========================= -->
+
+<div class="section-card photo-section">
+
+ <div class="section-title">
+
+ <span>Test Photographs</span>
+
+ <button class="auto-btn" onclick="addPhoto()">+ Add Photo</button>
+
+ </div>
+
+ <div class="photo-grid">
+
+ <div class="photo-box">
+
+ <h4>Before Test</h4>
+
+ <div class="photo-stage">
+
+ <div
+ class="photo-caption caption-top"
+ id="beforeCaptionTop"
+ contenteditable="true"
+ data-placeholder="Add a topic for this photograph"></div>
+
+ <div class="upload-area" id="beforeArea">
+
+ <img id="beforePreview" alt="">
+
+ <span id="beforePlaceholder"
+ onclick="photoUploadClick('before')">
+
+ Click to upload or drop an image
+
+ </span>
+
+ <input
+ type="file"
+ id="beforePhoto"
+ accept="image/*"
+ hidden>
+
+ </div>
+
+ <div class="photo-caption caption-bottom">
+ <span class="fig-no">Fig 1</span>
+ <span
+ class="fig-text"
+ id="beforeCaptionBottom"
+ contenteditable="true"
+ data-placeholder="describe this photograph"></span>
+ </div>
+
+ <canvas id="beforeAnnot" class="photo-annot"
+ width="800" height="300"></canvas>
+
+ <div class="label-layer" id="beforeLabels"></div>
+
+ </div>
+
+ <div class="photo-toolbar">
+ <span class="pt-row">
+ <span class="tb-label">Picture</span>
+ <button type="button" onclick="photoUploadClick('before')">Photo</button>
+ <button type="button" onclick="photoCropToggle('before',this)" title="Drag to move the photo, scroll to zoom">Pan</button>
+ <button type="button" onclick="photoRectToggle('before',this)" title="Drag a rectangle over the part you want">Crop</button>
+ <button type="button" onclick="rotatePhoto('before')" title="Turn the photo 90°">Rotate</button>
+ <button type="button" onclick="photoFit('before')" title="Show the whole photo">Fit</button>
+ <button type="button" onclick="photoFill('before')" title="Fill the box">Fill</button>
+ <button type="button" onclick="photoActualSize('before')" title="Actual size (one photo pixel per screen pixel)">100%</button>
+ <button type="button" onclick="matchOtherPhoto('before')" title="Use the same framing as the other photo">Match</button>
+ <span class="zoom-pct" title="Zoom (100% = actual size)">Zoom <b id="beforeZoom">—</b></span>
+ <label class="straighten">Straighten<input type="range" id="beforeStraighten" min="-15" max="15" step="0.5" value="0" oninput="straightenPhoto('before',this.value)"></label>
+ <label class="keep-inside" title="Print this photo in black and white (the colour picture is kept)"><input type="checkbox" id="beforeGray" onchange="setPhotoGray('before',this.checked)"> Grey</label>
+ </span>
+ <span class="pt-row">
+ <span class="tb-label">Marks</span>
+ <button type="button" onclick="photoTool('before','select',this)" title="Click a mark to select it, then drag it, drag a corner to resize, or press Delete">Select</button>
+ <button type="button" onclick="photoTool('before','circle',this)">Circle</button>
+ <button type="button" onclick="photoTool('before','arrow',this)">Arrow</button>
+ <button type="button" onclick="photoTool('before','inset',this)" title="Drag a box over a detail - an enlarged copy is shown in the corner">Zoom box</button>
+ <button type="button" onclick="addPhotoLabel('before')">A Label</button>
+ <button type="button" onclick="photoUndo('before')">Undo</button>
+ <button type="button" onclick="photoClear('before')">Clear</button>
+ <label class="keep-inside" title="Stop marks being dragged off the photo into the white space"><input type="checkbox" id="beforeInside" checked onchange="setMarksInside('before',this.checked)"> Keep inside</label>
+ </span>
+ </div>
+
+ </div>
+
+ <div class="photo-box">
+
+ <h4>After Test</h4>
+
+ <div class="photo-stage">
+
+ <div
+ class="photo-caption caption-top"
+ id="afterCaptionTop"
+ contenteditable="true"
+ data-placeholder="Add a topic for this photograph"></div>
+
+ <div class="upload-area" id="afterArea">
+
+ <img id="afterPreview" alt="">
+
+ <span id="afterPlaceholder"
+ onclick="photoUploadClick('after')">
+
+ Click to upload or drop an image
+
+ </span>
+
+ <input
+ type="file"
+ id="afterPhoto"
+ accept="image/*"
+ hidden>
+
+ </div>
+
+ <div class="photo-caption caption-bottom">
+ <span class="fig-no">Fig 2</span>
+ <span
+ class="fig-text"
+ id="afterCaptionBottom"
+ contenteditable="true"
+ data-placeholder="describe this photograph"></span>
+ </div>
+
+ <canvas id="afterAnnot" class="photo-annot"
+ width="800" height="300"></canvas>
+
+ <div class="label-layer" id="afterLabels"></div>
+
+ </div>
+
+ <div class="photo-toolbar">
+ <span class="pt-row">
+ <span class="tb-label">Picture</span>
+ <button type="button" onclick="photoUploadClick('after')">Photo</button>
+ <button type="button" onclick="photoCropToggle('after',this)" title="Drag to move the photo, scroll to zoom">Pan</button>
+ <button type="button" onclick="photoRectToggle('after',this)" title="Drag a rectangle over the part you want">Crop</button>
+ <button type="button" onclick="rotatePhoto('after')" title="Turn the photo 90°">Rotate</button>
+ <button type="button" onclick="photoFit('after')" title="Show the whole photo">Fit</button>
+ <button type="button" onclick="photoFill('after')" title="Fill the box">Fill</button>
+ <button type="button" onclick="photoActualSize('after')" title="Actual size (one photo pixel per screen pixel)">100%</button>
+ <button type="button" onclick="matchOtherPhoto('after')" title="Use the same framing as the other photo">Match</button>
+ <span class="zoom-pct" title="Zoom (100% = actual size)">Zoom <b id="afterZoom">—</b></span>
+ <label class="straighten">Straighten<input type="range" id="afterStraighten" min="-15" max="15" step="0.5" value="0" oninput="straightenPhoto('after',this.value)"></label>
+ <label class="keep-inside" title="Print this photo in black and white (the colour picture is kept)"><input type="checkbox" id="afterGray" onchange="setPhotoGray('after',this.checked)"> Grey</label>
+ </span>
+ <span class="pt-row">
+ <span class="tb-label">Marks</span>
+ <button type="button" onclick="photoTool('after','select',this)" title="Click a mark to select it, then drag it, drag a corner to resize, or press Delete">Select</button>
+ <button type="button" onclick="photoTool('after','circle',this)">Circle</button>
+ <button type="button" onclick="photoTool('after','arrow',this)">Arrow</button>
+ <button type="button" onclick="photoTool('after','inset',this)" title="Drag a box over a detail - an enlarged copy is shown in the corner">Zoom box</button>
+ <button type="button" onclick="addPhotoLabel('after')">A Label</button>
+ <button type="button" onclick="photoUndo('after')">Undo</button>
+ <button type="button" onclick="photoClear('after')">Clear</button>
+ <label class="keep-inside" title="Stop marks being dragged off the photo into the white space"><input type="checkbox" id="afterInside" checked onchange="setMarksInside('after',this.checked)"> Keep inside</label>
+ </span>
+ </div>
+
+ </div>
+
+ </div>
+
+</div>
+
+
+</div>
+
+<!-- ================================================================
+ PAGE 2
+================================================================= -->
+
+<div class="page">
+
+<!-- ============ REPEATED HEADER (mirrors page 1, read only) ============ -->
+
+<div class="header-card">
+
+<div class="logo-box">
+
+<img id="companyLogo2" src="assets/placeholder.png" alt="">
+
+</div>
+
+<div class="title-box">
+
+<h1>PRODUCT VALIDATION TEST REPORT</h1>
+
+</div>
+
+<div class="report-info">
+
+<div>
+
+<label>Doc.Rev.No :</label>
+
+<span id="revision2"></span>
+
+</div>
+
+<div>
+
+<label>Report No. :</label>
+
+<span id="reportNo2"></span>
+
+</div>
+
+<div>
+
+<label>Report Date :</label>
+
+<span id="reportDate2"></span>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ====== TEST PHOTOGRAPHS (continued) - added photos land here ====== -->
+
+<div class="section-card photo-section" id="extraPhotoCard" style="display:none">
+
+ <div class="section-title">
+
+ <span>Test Photographs</span>
+
+ <button class="auto-btn" onclick="addPhoto()">+ Add Photo</button>
+
+ </div>
+
+ <div id="extraPhotos" class="photo-grid"></div>
+
+</div>
+
+<!-- ========================= OBSERVATION ========================= -->
+
+<div class="section-card" id="observationCard">
+
+ <div class="section-title">
+
+ <span>Observation</span>
+
+ <button
+ class="auto-btn"
+ onclick="correctObservation(this)"
+ title="Rewrites your observation - English, Tanglish or rough notes - into correct English points (uses the online AI)">
+
+ Correct English
+
+ </button>
+
+ <button
+ class="auto-btn approval-remove"
+ onclick="removeObservation()">
+
+ Remove
+
+ </button>
+
+ </div>
+
+ <div
+ id="observation"
+ class="editor observation-box"
+ data-placeholder="Type what you saw - in English, Tanglish or rough notes - then press Correct English."
+ contenteditable="true">
+
+ </div>
+
+</div>
+
+<!-- Shown only after Observation is removed, to bring it back. -->
+<div class="table-add-row" id="observationRestore" style="display:none">
+
+ <button type="button" class="table-add-btn" onclick="addObservation()">+ Add Observation section</button>
+
+</div>
+
+<!-- ========================= TEST RESULT ========================= -->
+
+<div class="section-card">
+
+ <div class="section-title">
+
+ <span>Test Result</span>
+
+ </div>
+
+ <!-- Written result in a normal sentence -->
+ <div
+ id="resultText"
+ class="editor resulttext-box"
+ contenteditable="true"
+ data-placeholder="Write the test result in a sentence, e.g. After the IPX7 test, no water ingress was observed and the motor functioned normally."></div>
+
+ <!-- Editable data tables (rows/columns you type into, like Excel).
+ Add as many tables as you need with "Add another table". -->
+ <div class="result-table-wrap">
+
+ <div id="resultTables">
+
+ <div class="result-table-block">
+
+ <div
+ class="table-heading"
+ contenteditable="true"
+ data-placeholder="Table heading (optional)"></div>
+
+ <div class="table-tools">
+
+ <button type="button" onclick="tblAddRow(this)">+ Row</button>
+ <button type="button" onclick="tblAddColumn(this)">+ Column</button>
+ <button type="button" onclick="tblDeleteRow(this)">&minus; Row</button>
+ <button type="button" onclick="tblDeleteColumn(this)">&minus; Column</button>
+ <button type="button" onclick="tblMergeRight(this)">Merge &rarr;</button>
+ <button type="button" onclick="tblMergeDown(this)">Merge &darr;</button>
+ <button type="button" onclick="tblUnmerge(this)">Split</button>
+ <button type="button" class="tbl-remove" onclick="tblRemove(this)">&times; Remove table</button>
+
+ </div>
+
+ <table class="data-table">
+
+ <tr>
+ <th contenteditable="true">S.No</th>
+ <th contenteditable="true">Parameter</th>
+ <th contenteditable="true">Specification</th>
+ <th contenteditable="true">Measured Value</th>
+ <th contenteditable="true">Result</th>
+ </tr>
+
+ <tr>
+ <td contenteditable="true">1</td>
+ <td contenteditable="true"></td>
+ <td contenteditable="true"></td>
+ <td contenteditable="true"></td>
+ <td contenteditable="true"></td>
+ </tr>
+
+ <tr>
+ <td contenteditable="true">2</td>
+ <td contenteditable="true"></td>
+ <td contenteditable="true"></td>
+ <td contenteditable="true"></td>
+ <td contenteditable="true"></td>
+ </tr>
+
+ </table>
+
+ </div>
+
+ </div>
+
+ <div class="table-add-row">
+
+ <button type="button" class="table-add-btn" onclick="addResultNote()">+ Add text</button>
+ <button type="button" class="table-add-btn" onclick="addResultTable()">+ Add another table</button>
+
+ </div>
+
+ </div>
+
+</div>
+
+<!-- ========================= CONCLUSION ========================= -->
+<!-- Order (asked for): Test Result -> Conclusion -> Recommendation -> signatures. -->
+
+<div class="section-card" id="conclusionCard">
+
+ <div class="section-title">
+
+ <span>Conclusion</span>
+
+ <button
+ class="auto-btn auto-pass"
+ onclick="autoConclusion('PASS')">
+
+ Pass
+
+ </button>
+
+ <button
+ class="auto-btn auto-fail"
+ onclick="autoConclusion('FAIL')">
+
+ Fail
+
+ </button>
+
+ </div>
+
+ <div
+ id="conclusion"
+ class="editor conclusion-box"
+ data-placeholder="Press Pass or Fail to auto-write, or type your own. You can edit this text."
+ contenteditable="true">
+
+ </div>
+
+</div>
+
+<!-- ========================= RECOMMENDATION ========================= -->
+
+<div class="section-card" id="recommendationCard">
+
+ <div class="section-title">
+
+ <span>Recommendation (if any)</span>
+
+ </div>
+
+ <div
+ id="recommendation"
+ class="editor recommendation-box"
+ contenteditable="true">
+
+ </div>
+
+</div>
+
+<!-- ============ SIGNATURES (no heading - the table speaks for itself) ============ -->
+
+<div class="section-card" id="approvalCard">
+
+ <table class="approval-table">
+
+ <tr>
+
+ <th>Prepared By</th>
+
+ <th>Reviewed By</th>
+
+ <th>Issued By</th>
+
+ </tr>
+
+ <tr>
+
+ <td contenteditable="true"></td>
+
+ <td contenteditable="true"></td>
+
+ <td contenteditable="true"></td>
+
+ </tr>
+
+ </table>
+
+ <!-- The signatures are optional. This row is screen-only (.table-add-row),
+      so it never appears in the PDF. -->
+ <div class="table-add-row">
+
+ <button type="button" class="table-add-btn" onclick="removeApproval()">&times; Remove signature table</button>
+
+ </div>
+
+</div>
+
+<!-- Shown only after the signature table is removed, to bring it back. -->
+<div class="table-add-row" id="approvalRestore" style="display:none">
+
+ <button type="button" class="table-add-btn" onclick="addApproval()">+ Add signature table</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div><!-- /.report-scroll -->
+
+</section>
+<!-- end #view-pvt -->
+
+</main>
+</div>
+<!-- end #app -->
+
+<!-- ================================================================
+     AI ASSISTANT  (online only; sits outside #report, so it is never
+     part of the exported PDF)
+================================================================= -->
+
+<button id="aiToggle" class="ai-toggle" title="Ask AI about the report">
+    <span class="ico">💬</span> Ask AI
+</button>
+
+<div id="aiPanel" class="ai-panel" aria-hidden="true">
+
+    <div class="ai-header">
+
+        <span class="ai-title"><span class="ico">💬</span> AI Assistant</span>
+
+        <button id="aiDownload" class="ai-icon-btn" title="Download chat">⬇️</button>
+
+        <button id="aiClear" class="ai-icon-btn" title="Clear chat">🗑️</button>
+
+        <button id="aiSettingsBtn" class="ai-icon-btn" title="Settings">⚙️</button>
+
+        <button id="aiClose" class="ai-icon-btn" title="Close">✕</button>
+
+    </div>
+
+    <!-- Advanced settings: choose the AI provider. -->
+    <div id="aiSettings" class="ai-settings" hidden>
+
+        <p class="ai-note">
+            The chat is <b>free</b> and needs no login. For stronger answers you
+            can use your own AI account:
+        </p>
+
+        <p class="ai-note ai-privacy">
+            <b>What leaves this computer:</b> the rest of the app works entirely
+            offline, but anything you send to the AI — your message, an attached
+            file, a photo, a supplier's 8D report — is sent to an online AI
+            service to be answered. On the free setting that is a shared,
+            no-account service. Do not paste anything you would not send outside
+            the company.
+        </p>
+
+        <div class="ai-group">Your keys</div>
+
+        <!-- Both free services can hold a key at the same time. Whichever are
+             filled in are used automatically: images go to Gemini (the only one
+             that reads photos well), text goes to OpenRouter (faster). -->
+        <div class="ai-keybox">
+            <label for="aiGeminiKey">🔑 Google Gemini key <span class="ai-free-tag">free</span></label>
+            <input id="aiGeminiKey" type="password" placeholder="AIza… (leave blank to use the built-in key)" autocomplete="off">
+            <p class="ai-note">
+                Best for <b>photos and scanned PDFs</b>. Free, no payment, never expires —
+                get one at <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>.
+            </p>
+            <label for="aiGeminiModel">Model (optional)</label>
+            <input id="aiGeminiModel" type="text" placeholder="gemini-2.5-flash" autocomplete="off">
+            <p class="ai-note ai-keystate" id="aiGeminiState"></p>
+        </div>
+
+        <div class="ai-keybox">
+            <label for="aiOpenRouterKey">🔑 OpenRouter key <span class="ai-free-tag">free</span></label>
+            <input id="aiOpenRouterKey" type="password" placeholder="sk-or-v1-… (leave blank to use the built-in key)" autocomplete="off">
+            <p class="ai-note">
+                Best for <b>chat and text</b> — faster replies. Free tier, never expires —
+                get one at <a href="https://openrouter.ai/keys" target="_blank" rel="noopener">openrouter.ai/keys</a>.
+            </p>
+            <label for="aiOpenRouterModel">Model (optional)</label>
+            <input id="aiOpenRouterModel" type="text" placeholder="nvidia/nemotron-3-super-120b-a12b:free" autocomplete="off">
+            <p class="ai-note ai-keystate" id="aiOpenRouterState"></p>
+        </div>
+
+        <div class="ai-group">Which service to use</div>
+
+        <label for="aiProvider">Preferred service</label>
+        <select id="aiProvider">
+            <option value="free">Automatic — best one for each job (recommended)</option>
+            <option value="gemini">Prefer Google Gemini (falls back if busy)</option>
+            <option value="openrouter">Prefer OpenRouter (falls back if busy)</option>
+            <option value="openai">OpenAI ChatGPT — paid key</option>
+        </select>
+
+        <div id="aiKeyRow" hidden>
+
+            <label for="aiKey">OpenAI API key</label>
+            <input id="aiKey" type="password" placeholder="sk-…" autocomplete="off">
+
+            <p class="ai-note" id="aiKeyHelp"></p>
+
+            <label for="aiModel">Model (optional)</label>
+            <input id="aiModel" type="text" placeholder="gpt-4o-mini" autocomplete="off">
+
+        </div>
+
+        <div class="ai-savebar">
+            <button id="aiSaveKey" class="ai-save">Save</button>
+            <button id="aiTestKeys" type="button" class="ai-save">Test keys</button>
+        </div>
+
+        <!-- Free AI account (Puter): sign in once with an email for reliable free
+             answers; change to a different email here any time. -->
+        <div id="puterRow" class="puter-row">
+            <div class="ai-group">Free AI account</div>
+            <label>Sign in with an email only — no payment</label>
+            <p class="ai-note" id="puterStatus">Checking…</p>
+            <div class="puter-btns">
+                <button type="button" id="puterSignIn" class="ai-save">Sign in</button>
+                <button type="button" id="puterChange" class="ai-save" hidden>Change email</button>
+                <button type="button" id="puterSignOut" class="ai-save puter-out" hidden>Sign out</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Inline chat: free keyless backend by default, OpenAI if a key exists. -->
+    <div id="aiInline">
+
+        <div id="aiMessages" class="ai-messages"></div>
+
+        <!-- Shows the photo/file you attached before sending. -->
+        <div id="aiAttachBar" class="ai-attach-bar" hidden></div>
+
+        <div class="ai-input-row">
+
+            <input type="file" id="aiFile" hidden
+                accept="image/*,.txt,.csv,.tsv,.md,.json,.log,.xml,.yml,.yaml,.ini">
+
+            <button id="aiAttachBtn" class="ai-attach-btn" title="Attach a photo or file">&#128206;</button>
+
+            <textarea id="aiInput" rows="1"
+                placeholder="Type your doubt (English or Tanglish) and press Enter..."></textarea>
+
+            <button id="aiSend" class="ai-send" title="Send">&#10148;</button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Puter.js: a third-tier free AI fallback (Gemini and OpenRouter are tried
+     first). It REFUSES to run on file:/// and takes over the whole page with an
+     "Unsupported Protocol" modal, so only load it when the page is actually
+     served over http/https. Opened straight from disk, the app simply skips it
+     and still works: Gemini -> OpenRouter -> Pollinations -> offline. -->
+<script>
+    if (location.protocol === "http:" || location.protocol === "https:") {
+        var puterTag = document.createElement("script");
+        puterTag.src = "https://js.puter.com/v2/";
+        document.head.appendChild(puterTag);
+    }
+</script>
+<script src="script.js?v=405"></script>
+
+</body>
+
+</html>

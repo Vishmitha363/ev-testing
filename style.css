@@ -1,0 +1,5913 @@
+/* ==========================================================
+   BNC MOTORS - PRODUCT VALIDATION REPORT
+   VERSION 3 - TWO PAGE A4 LAYOUT, FULLY OFFLINE
+========================================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+
+    --primary:#0F4C81;
+    --primary-dark:#08365a;
+    --secondary:#2563EB;
+
+    --success:#16A34A;
+    --danger:#DC2626;
+    --warning:#F59E0B;
+
+    --bg:#eef3f8;
+    --card:#ffffff;
+
+    --border:#d9e2ec;
+    --line:#111;          /* document rule colour */
+
+    --text:#2d3748;
+
+    --shadow:0 8px 24px rgba(0,0,0,.08);
+
+}
+
+/* Browsers give form controls their own system font instead of inheriting, so
+   without this the buttons, inputs and dropdowns would stay sans-serif while
+   everything around them is Times New Roman. */
+button, input, select, textarea, optgroup, option{
+    font-family:'Times New Roman',Times,serif;
+}
+
+body{
+
+    background:var(--bg);
+
+    font-family:'Times New Roman',Times,serif;
+
+    color:var(--text);
+
+    padding:0;
+
+    margin:0;
+
+}
+
+/* ============ APP SHELL: left sidebar + main view area ============ */
+#app{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    min-height:100vh;
+
+}
+
+#sidebar{
+
+    width:238px;
+
+    flex-shrink:0;
+
+    background:#0F2A4A;
+
+    color:#fff;
+
+    padding:18px 12px;
+
+    position:sticky;
+
+    top:0;
+
+    height:100vh;
+
+    overflow-y:auto;
+
+    font-family:'Times New Roman',Times,serif;
+
+}
+
+.side-brand{
+
+    font-size:17px;
+
+    font-weight:800;
+
+    padding:6px 8px 0;
+
+    margin-bottom:18px;
+
+    line-height:1.3;
+
+}
+
+.side-nav{ display:flex; flex-direction:column; gap:4px; }
+
+.side-link{
+
+    text-align:left;
+
+    background:transparent;
+
+    border:none;
+
+    color:#cbd5e1;
+
+    padding:11px 12px;
+
+    border-radius:8px;
+
+    font-size:13.5px;
+
+    cursor:pointer;
+
+    font-family:'Times New Roman',Times,serif;
+
+}
+
+.side-link:hover{ background:rgba(255,255,255,.09); color:#fff; }
+
+.side-link.active{ background:#2563EB; color:#fff; font-weight:600; }
+
+#main{ flex:1; min-width:0; padding:20px; }
+
+/* Home / front page */
+.home-hero{ text-align:center; padding:50px 20px 10px; font-family:'Times New Roman',Times,serif; }
+
+.home-hero h1{ font-size:36px; color:#0F4C81; margin:0; }
+
+.home-sub{ color:#64748b; font-size:15px; margin-top:8px; }
+
+.home-cards{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+
+    gap:16px;
+
+    max-width:860px;
+
+    margin:26px auto;
+
+    padding:0 10px 40px;
+
+    font-family:'Times New Roman',Times,serif;
+
+}
+
+.home-card{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:6px;
+
+    align-items:flex-start;
+
+    text-align:left;
+
+    background:#fff;
+
+    border:1px solid #dbe2ea;
+
+    border-radius:14px;
+
+    padding:22px;
+
+    cursor:pointer;
+
+    transition:box-shadow .15s, border-color .15s, transform .15s;
+
+}
+
+.home-card:hover{ box-shadow:0 10px 30px rgba(15,76,129,.14); border-color:#2563EB; transform:translateY(-2px); }
+
+.home-ico{ font-size:30px; }
+
+.home-card b{ color:#0F4C81; font-size:16px; }
+
+.home-card small{ color:#64748b; font-size:12.5px; }
+
+.view-placeholder{ text-align:center; padding:70px 20px; color:#334155; font-family:'Times New Roman',Times,serif; }
+
+.view-placeholder h1{ color:#0F4C81; }
+
+/* Product & Test Cases page */
+.cases-page{ max-width:1000px; margin:0 auto; padding:16px 10px 60px; font-family:'Times New Roman',Times,serif; }
+
+.cases-page h1{ color:#0F4C81; margin:0; }
+
+.cases-intro{ color:#64748b; font-size:14px; margin:6px 0 0; line-height:1.5; }
+
+.cases-tip{ color:#334155; background:#fff7ed; border:1px solid #fed7aa; border-radius:8px; padding:8px 12px; font-size:12.5px; margin:10px 0 0; line-height:1.5; }
+
+.cases-form{ display:flex; flex-wrap:wrap; gap:10px; margin:18px 0 6px; }
+
+.cases-form input{
+
+    flex:1;
+
+    min-width:200px;
+
+    padding:10px 12px;
+
+    border:1px solid #cbd5e1;
+
+    border-radius:8px;
+
+    font-size:14px;
+
+    font-family:'Times New Roman',Times,serif;
+
+}
+
+#tcFetch{
+
+    background:#2563EB;
+
+    color:#fff;
+
+    border:none;
+
+    border-radius:8px;
+
+    padding:10px 16px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+}
+
+#tcFetch:hover{ background:#1d4ed8; }
+
+#tcFetch:disabled{ opacity:.6; cursor:default; }
+
+#tcImgBtn{
+    background:#fff; color:#1f2937; border:1px solid #c3ccd8; border-radius:8px;
+    padding:10px 16px; font-size:14px; font-weight:600; cursor:pointer;
+    font-family:'Times New Roman',Times,serif;
+}
+#tcImgBtn:hover{ background:#f1f5f9; border-color:#94a3b8; }
+#tcImgBtn:disabled{ opacity:.6; cursor:default; }
+
+.cases-caselist{ display:flex; flex-wrap:wrap; gap:8px; margin:2px 0 10px; }
+.cases-caselist[hidden]{ display:none; }
+
+.tc-case{
+
+    border:1px solid #cbd5e1;
+
+    background:#fff;
+
+    color:#0F4C81;
+
+    border-radius:20px;
+
+    padding:6px 14px;
+
+    font-size:13px;
+
+    cursor:pointer;
+
+    font-family:'Times New Roman',Times,serif;
+
+}
+
+.tc-case:hover{ background:#eef2ff; border-color:#2563EB; }
+
+.tc-case.active{ background:#2563EB; color:#fff; border-color:#2563EB; }
+
+.cases-allrow{ margin:2px 0 12px; }
+
+#tcAllBtn{
+
+    border:1px solid #2563EB;
+
+    background:#eef2ff;
+
+    color:#0F4C81;
+
+    border-radius:8px;
+
+    padding:9px 14px;
+
+    font-size:13.5px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+}
+
+#tcAllBtn:hover{ background:#e0e7ff; }
+
+.cases-all{ margin-top:16px; }
+
+.tc-all-bar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+    background:#0F2A4A;
+
+    color:#fff;
+
+    padding:10px 14px;
+
+    border-radius:10px 10px 0 0;
+
+    font-size:14px;
+
+}
+
+.tc-all-bar button{
+
+    border:1px solid #c3ccd8;
+
+    background:#fff;
+
+    color:#1f2937;
+
+    border-radius:6px;
+
+    padding:6px 12px;
+
+    font-size:12.5px;
+
+    cursor:pointer;
+
+}
+
+.tc-all-bar button:hover{ background:#f1f5f9; border-color:#94a3b8; }
+
+.tc-all-item{
+
+    border:1px solid #e2e8f0;
+
+    border-top:none;
+
+    padding:12px 16px;
+
+    background:#fff;
+
+}
+
+.tc-all-item:last-child{ border-radius:0 0 10px 10px; }
+
+.tc-all-head{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:baseline;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+    margin-bottom:6px;
+
+}
+
+.tc-all-head b{ color:#0F4C81; font-size:14px; }
+
+.tc-all-std{ color:#64748b; font-size:12px; }
+
+.tc-all-item ol{ padding-left:22px; margin:0; }
+
+.tc-all-item li{ margin-bottom:4px; font-size:13px; line-height:1.55; }
+
+.tc-all-accept{
+    margin-top:8px;
+    padding:8px 10px;
+    font-size:12.5px;
+    line-height:1.5;
+    color:#065f46;
+    background:#ecfdf5;
+    border:1px solid #a7f3d0;
+    border-left:3px solid #10b981;
+    border-radius:8px;
+}
+.tc-all-accept b{ color:#047857; }
+:root[data-theme="dark"] .tc-all-accept{
+    color:#a7f3d0;
+    background:rgba(16,185,129,.10);
+    border-color:rgba(16,185,129,.35);
+}
+:root[data-theme="dark"] .tc-all-accept b{ color:#6ee7b7; }
+
+/* All-test-cases shown as a proper table. */
+.tc-all-tablewrap{ overflow-x:auto; border-radius:0 0 12px 12px; }
+.tc-all-table{
+    width:100%; border-collapse:collapse; background:#fff;
+    font-size:12px; min-width:720px;
+}
+.tc-all-table th,
+.tc-all-table td{
+    border:1px solid #cdd7e5; padding:7px 9px;
+    vertical-align:middle; text-align:left; line-height:1.5;
+}
+/* Short columns centred; the step/criteria lists stay left-aligned. */
+.tc-all-table th.c-no, .tc-all-table td.c-no,
+.tc-all-table th.c-test, .tc-all-table td.c-test,
+.tc-all-table th.c-std, .tc-all-table td.c-std{ text-align:center; }
+.tc-all-table thead th{
+    background:linear-gradient(90deg,#0b2140,#123a63);
+    color:#fff; font-weight:700; position:sticky; top:0; z-index:1;
+}
+/* The column classes below (.c-no grey, .c-std slate) are meant for the BODY
+   cells, but ".tc-all-table .c-std" (0,2,0) outranks ".tc-all-table thead th"
+   (0,1,2), so the "#" and "Standard" headings came out grey on the navy bar -
+   measured 2.83:1 and 1.78:1, "Standard" barely visible. */
+.tc-all-table thead th.c-no,
+.tc-all-table thead th.c-std{ color:#fff; }
+.tc-all-table .c-no{ width:30px; text-align:center; color:#64748b; }
+.tc-all-table td.c-test{ width:13%; font-weight:600; color:#0F4C81; }
+.tc-all-table .c-std{ width:15%; color:#475569; font-size:11.5px; }
+.tc-all-table .c-proc{ width:34%; }
+.tc-all-table td.c-acc{ width:34%; color:#065f46; background:#f4fef9; }
+.tc-all-table .c-proc ol{ margin:0; padding-left:18px; }
+.tc-all-table .c-proc li{ margin-bottom:4px; }
+/* Acceptance-criteria block inside the cell */
+.tc-all-table .acc-points{ margin:0 0 6px; padding-left:16px; }
+.tc-all-table .acc-points li{ margin-bottom:3px; }
+.tc-all-table .acc-pf{ font-size:11.5px; margin-top:3px; padding:3px 6px; border-radius:5px; }
+.tc-all-table .acc-pf.pass{ background:#dcfce7; color:#166534; }
+.tc-all-table .acc-pf.fail{ background:#fee2e2; color:#991b1b; }
+:root[data-theme="dark"] .tc-all-table .acc-pf.pass{ background:rgba(22,163,74,.18); color:#86efac; }
+:root[data-theme="dark"] .tc-all-table .acc-pf.fail{ background:rgba(220,38,38,.18); color:#fca5a5; }
+.tc-all-table tbody tr:nth-child(even) td{ background:#f7fbff; }
+.tc-all-table tbody tr:nth-child(even) td.c-acc{ background:#ecfdf4; }
+
+/* Dark-glass version of the table. */
+:root[data-theme="dark"] .tc-all-table{ background:rgba(15,22,40,.6); color:#e5e9f2; }
+:root[data-theme="dark"] .tc-all-table th,
+:root[data-theme="dark"] .tc-all-table td{ border-color:rgba(255,255,255,.14); }
+:root[data-theme="dark"] .tc-all-table td.c-test{ color:#c7d2fe; }
+:root[data-theme="dark"] .tc-all-table .c-std{ color:#9aa6bd; }
+:root[data-theme="dark"] .tc-all-table td.c-acc{ color:#a7f3d0; background:rgba(16,185,129,.10); }
+:root[data-theme="dark"] .tc-all-table tbody tr:nth-child(even) td{ background:rgba(255,255,255,.03); }
+:root[data-theme="dark"] .tc-all-table tbody tr:nth-child(even) td.c-acc{ background:rgba(16,185,129,.14); }
+
+.cases-status{ font-size:13px; color:#475569; min-height:18px; margin:4px 0; }
+/* Two key boxes in Ask AI settings - Gemini and OpenRouter, each independent. */
+.ai-keybox{
+    border:1px solid #dbe3ee; border-radius:10px; padding:10px 12px; margin:10px 0;
+    background:#f8fafc;
+}
+.ai-free-tag{
+    display:inline-block; margin-left:6px; padding:1px 7px; border-radius:999px;
+    background:#dcfce7; color:#166534; font-size:11px; font-weight:700;
+}
+.ai-keystate{ margin-top:6px; font-weight:600; color:#334155; }
+.ai-savebar{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+:root[data-theme="dark"] .ai-keybox{ background:rgba(148,163,184,.10); border-color:rgba(148,163,184,.28); }
+:root[data-theme="dark"] .ai-free-tag{ background:rgba(34,197,94,.20); color:#86efac; }
+:root[data-theme="dark"] .ai-keystate{ color:#cbd5e1; }
+
+/* Runner-up products the photo might be - one click swaps the name. */
+.tc-guess-row{ display:flex; align-items:center; flex-wrap:wrap; gap:8px; margin:8px 0 2px; }
+/* A class with display:flex beats the [hidden] attribute, so the empty row stayed
+   visible ("Not right? Pick another:" with no chips). Force it back. */
+.tc-guess-row[hidden]{ display:none !important; }
+.tc-guess-label{ font-size:12.5px; color:#64748b; }
+.tc-guesses{ display:flex; flex-wrap:wrap; gap:6px; }
+.tc-guess{
+    padding:5px 12px; border:1px solid #c7d2fe; border-radius:999px; cursor:pointer;
+    background:#eef2ff; color:#3730a3; font-size:12.5px; font-weight:600; font-family:inherit;
+}
+.tc-guess:hover{ background:#e0e7ff; }
+:root[data-theme="dark"] .tc-guess{ background:rgba(79,70,229,.18); border-color:rgba(129,140,248,.35); color:#c7d2fe; }
+:root[data-theme="dark"] .tc-guess-label{ color:#9aa6b8; }
+
+/*==================================================
+RCA Report page
+===================================================*/
+.rca-page{ max-width:1000px; margin:0 auto; padding:16px 10px 60px; font-family:'Times New Roman',Times,serif; }
+/* Manual "save the file" link shown next to the export status. Clicking it is a real
+   user gesture, so it works even when the automatic download was blocked. */
+.rca-savelink{
+    display:inline-block; margin-left:6px; padding:5px 12px; border-radius:7px;
+    background:#16a34a; color:#fff !important; font-weight:700; font-size:12.5px;
+    text-decoration:none;
+}
+.rca-savelink:hover{ filter:brightness(1.08); }
+.rca-openlink{ background:#2563eb; }
+/* ---------- Supplier 8D evaluation — AI analysis ---------- */
+.sup8d-card{ margin-top:26px; padding:16px 18px 20px; border:1px solid #e5eaf1; border-radius:12px; background:#fbfdff; box-shadow:0 2px 10px rgba(30,58,95,.06); }
+.sup8d-title{ margin:0 0 4px; font-size:16px; color:#1f2937; }
+.sup8d-intro{ margin:0 0 12px; font-size:13px; color:#5b6472; line-height:1.5; }
+.sup8d-actions{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.sup8d-actions button{ padding:8px 14px; border:1px solid #c3ccd8; border-radius:8px; cursor:pointer; font-weight:600; font-size:13px; font-family:inherit; background:#fff; color:#1f2937; }
+.sup8d-actions button:hover{ background:#f1f5f9; border-color:#94a3b8; }
+#sup8dAnalyze{ background:var(--primary); border-color:var(--primary); color:#fff; }
+#sup8dAnalyze:hover{ background:#0c3f6c; border-color:#0c3f6c; }
+.sup8d-actions .rca-photo-btn{ background:#fff; color:#1f2937; }
+.sup8d-actions .rca-clear{ background:#fff; color:#b91c1c; }
+.sup8d-actions button:disabled{ opacity:.55; cursor:not-allowed; }
+.sup8d-text{ width:100%; margin-top:10px; padding:9px 11px; border:1px solid #cbd5e1; border-radius:8px; font-family:inherit; font-size:13px; resize:vertical; box-sizing:border-box; }
+.sup8d-thumbs{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+.sup8d-thumbs .sup8d-thumb{ position:relative; width:86px; height:86px; border:1px solid #cbd5e1; border-radius:8px; overflow:hidden; background:#fff; }
+.sup8d-thumbs .sup8d-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+.sup8d-thumbs .sup8d-thumb button{ position:absolute; top:2px; right:2px; width:20px; height:20px; border:none; border-radius:50%; background:rgba(15,23,42,.72); color:#fff; cursor:pointer; font-size:12px; line-height:20px; padding:0; }
+.sup8d-thumbs .sup8d-doc{ width:auto; min-width:120px; max-width:190px; height:auto; padding:8px 26px 8px 10px; display:flex; align-items:center; gap:7px; }
+.sup8d-thumbs .sup8d-doc .sup8d-doc-ic{ font-size:20px; }
+.sup8d-thumbs .sup8d-doc .sup8d-doc-nm{ font-size:12px; color:#334155; word-break:break-all; line-height:1.3; }
+:root[data-theme="dark"] .sup8d-thumbs .sup8d-doc .sup8d-doc-nm{ color:#c7d2fe; }
+.sup8d-result{ margin-top:14px; padding:14px 16px; border:1px solid #e5eaf1; border-radius:10px; background:#fff; font-size:13.5px; line-height:1.6; color:#1f2937; }
+.sup8d-result h1,.sup8d-result h2,.sup8d-result h3{ font-size:14.5px; margin:12px 0 6px; color:#1e3a5f; }
+.sup8d-result h4{ font-size:13px; margin:10px 0 4px; color:#1e3a5f; }
+.sup8d-result h3:first-child{ margin-top:0; }
+:root[data-theme="dark"] .sup8d-result h1,:root[data-theme="dark"] .sup8d-result h2,
+:root[data-theme="dark"] .sup8d-result h3,:root[data-theme="dark"] .sup8d-result h4{ color:#c7d2fe; }
+.sup8d-result ul,.sup8d-result ol{ margin:6px 0; padding-left:20px; }
+.sup8d-result li{ margin:3px 0; }
+.sup8d-result table{ border-collapse:collapse; width:100%; margin:8px 0; }
+.sup8d-result th,.sup8d-result td{ border:1px solid #d7dee8; padding:6px 8px; text-align:left; font-size:12.5px; }
+.sup8d-result th{ background:#eef2f8; }
+:root[data-theme="dark"] .sup8d-card{ background:#161b26; border-color:#2a3444; }
+:root[data-theme="dark"] .sup8d-title{ color:#e5e9f2; }
+:root[data-theme="dark"] .sup8d-intro{ color:#9aa6b8; }
+:root[data-theme="dark"] .sup8d-result{ background:#0f141d; border-color:#2a3444; color:#e5e9f2; }
+:root[data-theme="dark"] .sup8d-text{ background:#0f141d; border-color:#2a3444; color:#e5e9f2; }
+.rca-page h1{
+    background:linear-gradient(90deg,#4f46e5,#2563eb);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:transparent;
+    font-weight:800; font-size:30px; margin:0;
+}
+.rca-grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:10px; margin:18px 0 10px;
+}
+.rca-grid label, .rca-problem-lbl{
+    display:flex; flex-direction:column; gap:5px;
+    font-size:12.5px; font-weight:600; color:#334155;
+}
+.rca-problem-lbl{ margin-top:6px; }
+.rca-grid select,
+.rca-grid input, .rca-problem-lbl textarea{
+    font-family:'Times New Roman',Times,serif; font-size:13.5px;
+    padding:10px 12px; border-radius:10px;
+    border:1px solid rgba(255,255,255,.7);
+    background:rgba(255,255,255,.6);
+    -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+    box-shadow:inset 0 1px 2px rgba(255,255,255,.7), 0 4px 14px rgba(31,45,80,.08);
+    resize:vertical;
+}
+.rca-grid input:focus, .rca-problem-lbl textarea:focus{
+    outline:none; border-color:rgba(99,102,241,.75);
+    box-shadow:0 0 0 4px rgba(99,102,241,.18);
+}
+/* RCA page: the actions sit in a rail on the LEFT, one button per line, and stay
+   in view while the form / report scrolls. The page is widened by the rail so the
+   form keeps its previous width. */
+.rca-page{ max-width:1240px; }
+.rca-layout{ display:grid; grid-template-columns:208px minmax(0,1fr); gap:20px; align-items:start; margin-top:14px; }
+.rca-main{ min-width:0; }
+.rca-main .rca-grid{ grid-template-columns:repeat(auto-fit,minmax(185px,1fr)); }
+.rca-main > .rca-grid:first-child{ margin-top:4px; }
+.rca-actions{ display:flex; flex-direction:column; gap:9px; margin:0; position:sticky; top:12px; }
+.rca-actions button{ width:100%; text-align:left; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; box-sizing:border-box; }
+/* Below this the rail would squeeze the report (its Rec.No box crossed its border
+   at 900px), so the buttons wrap in rows above the form instead. */
+@media (max-width:1080px){
+    .rca-layout{ grid-template-columns:minmax(0,1fr); gap:10px; }
+    .rca-actions{ position:static; flex-direction:row; flex-wrap:wrap; }
+    .rca-actions button{ width:auto; }
+}
+/* Outlined by default; only "Generate RCA" is filled (the primary action here). */
+.rca-actions button{
+    border:1px solid #c3ccd8; border-radius:8px; padding:10px 14px; cursor:pointer;
+    font-family:'Times New Roman',Times,serif; font-size:13.5px; font-weight:700;
+    color:#1f2937; background:#fff;
+    transition:background .15s, border-color .15s;
+}
+.rca-actions button:hover{ background:#f1f5f9; border-color:#94a3b8; }
+#rcaGenerate{ background:var(--primary); border-color:var(--primary); color:#fff; }
+#rcaGenerate:hover{ background:#0c3f6c; border-color:#0c3f6c; }
+.rca-actions .rca-clear{ color:#8a1414; }
+.rca-actions button:disabled{ opacity:.75; cursor:progress; }
+
+.rca-method, .rca-report{
+    margin-top:16px; border-radius:14px; overflow:hidden;
+    background:rgba(255,255,255,.6);
+    -webkit-backdrop-filter:blur(16px); backdrop-filter:blur(16px);
+    border:1px solid rgba(255,255,255,.6);
+    box-shadow:0 10px 30px rgba(31,45,80,.14);
+}
+.rca-sec-head{
+    display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;
+    background:linear-gradient(90deg,#0b2140,#123a63); color:#fff;
+    padding:11px 15px; font-size:14px;
+}
+.rca-sec-head span{ font-size:12px; opacity:.8; font-weight:400; }
+.rca-method-list{ margin:0; padding:12px 14px 14px 32px; }
+.rca-method-list li{ margin-bottom:10px; font-size:13px; line-height:1.55; color:#0F4C81; }
+.rca-method-list li div{ color:#334155; font-weight:400; margin-top:2px; }
+
+/* The report itself is a formal white document (not glass) so it looks professional. */
+.rca-report{ background:#fff !important; border:1px solid #cbd5e1 !important; -webkit-backdrop-filter:none !important; backdrop-filter:none !important; }
+
+/* Screen zoom for the RCA report (the −/+ row above it). Origin top LEFT, not
+   centre: the actions rail is sticky on the left, and a report growing both
+   ways would paint over those buttons. */
+#rcaReport{ transform-origin:top left; transition:transform .15s ease; }
+
+/* The zoom is a preview only - it must never reach the exported file. The PDF
+   build adds this class for the whole render (see buildRcaPdf): its page breaks
+   are measured with getBoundingClientRect(), which a scale falsifies. */
+#rcaReport.exporting{ transform:none !important; }
+.rca-doc{ font-family:'Times New Roman',Times,serif; color:#111; padding:0 0 8px; }
+.rca-doc-head{ text-align:center; padding:16px 14px 10px; border-bottom:2px solid #0F4C81; position:relative; }
+.rca-doc-logo{ position:absolute; left:14px; top:12px; height:46px; max-width:150px; object-fit:contain; }
+.rca-doc-company{ font-size:15px; font-weight:700; letter-spacing:2px; color:#0b3a63; text-transform:uppercase; }
+.rca-doc-title{ font-size:21px; font-weight:700; letter-spacing:1px; color:#0F4C81; margin-top:2px; }
+.rca-doc-sub{ font-size:12px; color:#64748b; margin-top:3px; font-family:'Times New Roman',Times,serif; }
+
+/* ===== RCA / 8D Report — clean modern look on screen (page margin via padding) ===== */
+.rca-doc-8d{ font-family:'Times New Roman',Times,serif; color:#000; max-width:1000px; margin:0 auto; padding:14px 16px 28px; font-size:11px; }
+.rca-8d-head{ display:flex; align-items:center; gap:14px; border:1px solid var(--line); padding:10px 14px; margin-bottom:14px; background:#fff; }
+.rca-8d-logo{ flex:0 0 auto; min-width:120px; }
+/* The logo sits in a fixed box that CLIPS it, so zooming / dragging it with
+   "⤢ Adjust" crops the picture instead of spilling over the 8D Report title. */
+.rca-logo-box{ display:inline-block; width:150px; height:44px; overflow:hidden; vertical-align:middle; }
+.rca-doc-logo8d{ height:44px; width:150px; object-fit:contain; display:block; }
+/* "⤢ Adjust": screen only - never in the PDF, the print window or Word. */
+.rca-logo-adjust{
+    position:absolute; bottom:-10px; right:-6px;
+    font-size:10px; padding:2px 6px; border-radius:6px; cursor:pointer;
+    border:1px solid #cbd5e1; background:#fff; color:#334155; white-space:nowrap;
+    box-shadow:0 1px 4px rgba(15,23,42,.2);
+}
+.rca-logo-adjust:hover{ background:#eef2ff; border-color:#6366f1; color:#1e3a8a; }
+.rca-logo-adjust.tool-active{ background:#16A34A; border-color:#16A34A; color:#fff; }
+.rca-pdf .rca-logo-adjust{ display:none !important; }
+@media print{ .rca-logo-adjust{ display:none !important; } }
+.rca-pdf .rca-logo-box{ width:120px !important; height:38px !important; }
+.rca-pdf .rca-doc-logo8d{ width:120px !important; height:38px !important; }
+/* The logo slot is a button: click to choose the image, right-click to remove it. */
+.rca-8d-logo{ cursor:pointer; border-radius:6px; }
+.rca-8d-logo:hover{ outline:1px dashed #94a3b8; outline-offset:3px; }
+.rca-logo-ph{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:120px; height:44px; box-sizing:border-box;
+    border:1px dashed #94a3b8; border-radius:6px; background:#f8fafc;
+    font-size:12px; color:#475569; white-space:nowrap;
+}
+.rca-8d-logo:hover .rca-logo-ph{ background:#eef2ff; color:#1e3a8a; border-color:#6366f1; }
+/* ✕ on the logo: removes it from the RCA report */
+.rca-8d-logo{ position:relative; }
+.rca-logo-x{
+    position:absolute; top:-8px; right:-8px;
+    width:22px; height:22px; padding:0; border-radius:50%;
+    border:1px solid #cbd5e1; background:#fff; color:#b91c1c;
+    font-size:12px; line-height:20px; font-weight:700; cursor:pointer;
+    box-shadow:0 1px 4px rgba(15,23,42,.2);
+}
+.rca-logo-x:hover{ background:#fee2e2; border-color:#b91c1c; }
+.rca-logo-x:focus-visible{ outline:2px solid #1d4ed8; outline-offset:1px; }
+.rca-pdf .rca-logo-x{ display:none !important; }
+@media print{ .rca-logo-x{ display:none !important; } }
+.rca-pdf .rca-logo-ph{ display:none !important; }
+.rca-pdf .rca-8d-logo{ cursor:auto !important; outline:0 !important; }
+@media print{ .rca-logo-ph{ display:none !important; } }
+.rca-8d-title{ flex:1; text-align:center; font-size:20px; font-weight:700; letter-spacing:1px; color:#000; }
+.rca-8d-topbox{ flex:0 0 auto; border-collapse:collapse; font-size:10.5px; border:1px solid var(--line); }
+.rca-8d-topbox th, .rca-8d-topbox td{ border:1px solid var(--line); padding:3px 8px; text-align:left; white-space:nowrap; color:#000; }
+.rca-8d-topbox th{ background:#F2F2F2; font-weight:700; color:#000; }
+.rca-8d-topbox td{ min-width:90px; outline:none; }
+/* Same heading as the test report's .section-title: black on white, one rule. */
+.rca-doc-8d .rca-8d-h{ background:#fff; color:#000; border:none; border-bottom:1px solid var(--line); margin:14px 0 6px; padding:6px 12px 5px; font-size:12.5px; font-weight:700; }
+.rca-8d-tbl{ width:100%; border-collapse:collapse; font-size:10.5px; table-layout:fixed; background:#fff; }
+.rca-8d-tbl th, .rca-8d-tbl td{ border:1px solid var(--line); padding:7px 9px; text-align:center; vertical-align:middle; outline:none; overflow-wrap:break-word; word-break:break-word; color:#000; }
+.rca-8d-tbl th{ background:#F2F2F2; font-weight:700; color:#000; }
+.rca-8d-lbl{ width:26%; background:#F2F2F2; font-weight:700; color:#000; }
+.rca-8d-cell, .rca-8d-area{ outline:none; }
+.rca-8d-area{ border:1px solid var(--line); min-height:70px; padding:8px 10px; font-size:11px; background:#fff; color:#000; }
+.rca-8d-subh{ background:#fff; border:0; border-bottom:1px solid var(--line); color:#000; margin:10px 0 6px; padding:4px 0 3px; font-weight:700; font-size:11px; }
+/* Neat, readable content boxes: left-aligned clean text with proper spacing/lists. */
+.rca-8d-cell, .rca-8d-area, .rca-doc-8d .rca-body{ text-align:left; line-height:1.6; }
+.rca-8d-cell{ padding:8px 12px; }
+.rca-8d-cell p, .rca-8d-area p, .rca-doc-8d .rca-body p{ margin:5px 0; }
+.rca-8d-cell p:first-child, .rca-8d-area p:first-child, .rca-doc-8d .rca-body p:first-child{ margin-top:0; }
+.rca-8d-cell p:last-child, .rca-8d-area p:last-child, .rca-doc-8d .rca-body p:last-child{ margin-bottom:0; }
+.rca-8d-cell ul, .rca-8d-area ul, .rca-doc-8d .rca-body ul{ margin:5px 0; padding-left:20px; }
+.rca-8d-cell li, .rca-8d-area li, .rca-doc-8d .rca-body li{ margin:3px 0; }
+/* Long-text table columns read left-aligned like the screenshot; labels left too. */
+.rca-8d-tbl .rca-8d-lbl, .rca-why-tbl .rca-why-lbl{ text-align:left; }
+.rca-pa-tbl td:nth-child(2), .rca-why-tbl td:nth-child(2), .rca-rc-tbl td:nth-child(n+2):nth-child(-n+5), .rca-std-tbl td:nth-child(-n+2){ text-align:left; line-height:1.55; }
+/* dark theme */
+:root[data-theme="dark"] .rca-doc-8d{ color:#e5e9f2; }
+:root[data-theme="dark"] .rca-8d-head, :root[data-theme="dark"] .rca-8d-tbl, :root[data-theme="dark"] .rca-8d-area{ background:rgba(20,28,48,.5); box-shadow:none; }
+:root[data-theme="dark"] .rca-8d-head, :root[data-theme="dark"] .rca-8d-topbox th, :root[data-theme="dark"] .rca-8d-topbox td,
+:root[data-theme="dark"] .rca-8d-tbl th, :root[data-theme="dark"] .rca-8d-tbl td, :root[data-theme="dark"] .rca-8d-area{ border-color:rgba(255,255,255,.12); }
+:root[data-theme="dark"] .rca-8d-title{ color:#f1f5f9; }
+:root[data-theme="dark"] .rca-8d-tbl th, :root[data-theme="dark"] .rca-8d-topbox th, :root[data-theme="dark"] .rca-8d-lbl{ background:rgba(255,255,255,.06); color:#e5e9f2; }
+:root[data-theme="dark"] .rca-8d-subh{ background:rgba(79,70,229,.18); border-color:rgba(129,140,248,.3); color:#c7d2fe; }
+/* Formal override applied ONLY during PDF export (black borders, TNR, no rounded). */
+.rca-pdf{ font-family:'Times New Roman',Times,serif !important; padding:0 !important; }
+/* NOTE: page-break CSS (break-after/break-inside) and a border-collapse:separate
+   rewrite were tried here and are intentionally NOT re-added - those alter the
+   layout/pagination engine and need verifying against a real exported PDF first.
+   The font/padding density below is safe: it only makes the text smaller, which is
+   the point (match the Word file's 10.5pt density and fit more per page). */
+.rca-pdf.rca-doc-8d{ font-size:12px !important; }
+.rca-pdf .rca-8d-h{ font-size:12.5px !important; padding:6px 11px !important; margin:9px 0 5px !important; }
+.rca-pdf .rca-8d-tbl{ font-size:10.5px !important; }
+.rca-pdf .rca-8d-tbl th, .rca-pdf .rca-8d-tbl td{ padding:4px 6px !important; line-height:1.35 !important; }
+.rca-pdf .rca-8d-subh{ font-size:10.5px !important; padding:3px 8px !important; margin:7px 0 4px !important; }
+.rca-pdf .rca-8d-cell, .rca-pdf .rca-8d-area, .rca-pdf .rca-body{ font-size:11px !important; line-height:1.4 !important; }
+.rca-pdf .rca-8d-area{ min-height:0 !important; padding:5px 8px !important; }
+.rca-pdf .rca-fish{ padding:4px 8px 2px !important; }
+.rca-pdf .rca-fish-cap{ font-size:9.5px !important; }
+.rca-pdf .rca-8d-team{ font-size:10.5px !important; margin-top:5px !important; }
+.rca-pdf .rca-8d-head, .rca-pdf .rca-8d-tbl, .rca-pdf .rca-8d-area, .rca-pdf .rca-8d-topbox, .rca-pdf .rca-8d-h, .rca-pdf .rca-8d-subh{ border-radius:0 !important; box-shadow:none !important; }
+.rca-pdf .rca-8d-head{ border:1px solid #000 !important; }
+.rca-pdf .rca-8d-h{ background:#fff !important; color:#000 !important; border:1px solid #000 !important; }
+.rca-pdf .rca-8d-title{ text-decoration:underline; }
+.rca-pdf .rca-8d-tbl th, .rca-pdf .rca-8d-tbl td, .rca-pdf .rca-8d-topbox th, .rca-pdf .rca-8d-topbox td, .rca-pdf .rca-8d-area{ border-color:#000 !important; }
+.rca-pdf .rca-8d-tbl th, .rca-pdf .rca-8d-lbl, .rca-pdf .rca-8d-topbox th{ background:#eef2f8 !important; color:#111 !important; }
+.rca-pdf .rca-8d-subh{ background:#f1f5f9 !important; border:1px solid #000 !important; color:#111 !important; }
+/* Smaller evidence photos in the PDF: they are supporting evidence, not the subject,
+   and the height they save lets the fishbone below them fit on the same page instead
+   of being pushed to the next one (which left a large gap at the bottom of page 1). */
+.rca-pdf .rca-evi figure{ width:140px !important; }
+.rca-pdf .rca-evi img{ height:95px !important; }
+.rca-rc-tbl .rc-sl, .rca-eff-tbl .rc-sl{ text-align:center; }
+/* Uniform FIRST-column width in every table so all data starts at the same gap. */
+.rca-8d-tbl tr > :first-child{ width:22%; }
+.rca-8d-lbl{ width:22%; }
+.rca-why-tbl .rca-why-lbl{ width:22%; background:#eef2f8; font-weight:700; }
+.rca-8d-team{ margin-top:8px; font-size:12.5px; }
+.rca-fe{ margin:6px 0 4px; }
+.rca-fe-tbl td[data-m]{ outline:none; }
+.rca-redraw-fish{
+    margin-top:6px; padding:6px 14px; cursor:pointer; font-size:12.5px; font-weight:700;
+    color:#fff; border:none; border-radius:8px; background:linear-gradient(135deg,#0d9488,#0f766e);
+    font-family:'Times New Roman',Times,serif;
+}
+.rca-redraw-fish:hover{ filter:brightness(1.08); }
+.rca-redraw-fish:active{ transform:translateY(1px); }
+/* add-row buttons + per-row remove on the 8D list tables (screen only) */
+.rca-8d-tbl .rca-x{ width:30px; text-align:center; padding:2px !important; border:none !important; }
+.rca-addrow{
+    margin:4px 0 6px; padding:5px 12px; cursor:pointer; font-size:12px; font-weight:700;
+    color:#0F4C81; background:#eef2ff; border:1px solid #c7d2fe; border-radius:8px;
+    font-family:'Times New Roman',Times,serif;
+}
+.rca-addrow:hover{ background:#e0e7ff; }
+:root[data-theme="dark"] .rca-addrow{ background:rgba(99,102,241,.18); color:#c7d2fe; border-color:rgba(199,210,254,.3); }
+:root[data-theme="dark"] .rca-8d-head, :root[data-theme="dark"] .rca-8d-h,
+:root[data-theme="dark"] .rca-8d-tbl th, :root[data-theme="dark"] .rca-8d-tbl td,
+:root[data-theme="dark"] .rca-8d-topbox th, :root[data-theme="dark"] .rca-8d-topbox td,
+:root[data-theme="dark"] .rca-8d-subh, :root[data-theme="dark"] .rca-8d-area{ border-color:#4b5563; }
+:root[data-theme="dark"] .rca-8d-h, :root[data-theme="dark"] .rca-8d-subh,
+:root[data-theme="dark"] .rca-8d-lbl, :root[data-theme="dark"] .rca-8d-tbl th,
+:root[data-theme="dark"] .rca-8d-topbox th, :root[data-theme="dark"] .rca-why-lbl{ background:rgba(255,255,255,.06); color:#e5e9f2; }
+:root[data-theme="dark"] .rca-doc-8d{ color:#e5e9f2; }
+
+/* Executive summary box */
+.rca-summary{ width:100%; border-collapse:collapse; font-size:12.5px; }
+.rca-summary th, .rca-summary td{ border:1px solid #94a3b8; padding:7px 10px; text-align:left; vertical-align:top; }
+.rca-summary th{ width:22%; background:#eef2f8; color:#0F4C81; font-weight:700; }
+.rca-summary td{ outline:none; }
+/* Revision history table */
+.rca-rev{ width:100%; border-collapse:collapse; font-size:12.5px; }
+.rca-rev th, .rca-rev td{ border:1px solid #94a3b8; padding:6px 9px; text-align:left; vertical-align:top; outline:none; }
+.rca-rev th{ background:#eef2f8; color:#0F4C81; font-weight:700; }
+.rca-rev th:first-child, .rca-rev td:first-child{ width:56px; text-align:center; }
+:root[data-theme="dark"] .rca-rev th{ background:rgba(255,255,255,.06); color:#c7d2fe; }
+:root[data-theme="dark"] .rca-rev th, :root[data-theme="dark"] .rca-rev td{ border-color:rgba(255,255,255,.14); }
+
+/* Per-row remove "×" on the revision table (screen only; stripped from exports) */
+.rca-rev-x{ width:30px; text-align:center; padding:2px !important; }
+.rca-delrow{
+    border:none; background:transparent; color:#dc2626; cursor:pointer;
+    font-size:16px; line-height:1; font-weight:700; padding:2px 6px; border-radius:6px;
+}
+.rca-delrow:hover{ background:#fee2e2; }
+:root[data-theme="dark"] .rca-delrow:hover{ background:rgba(220,38,38,.25); }
+
+/* Distribution / CC line under the sign-off */
+.rca-distrib{ margin-top:10px; font-size:12.5px; }
+.rca-distrib-lbl{ font-weight:700; color:#0F4C81; margin-right:6px; }
+.rca-distrib-val{ outline:none; border-bottom:1px dotted #94a3b8; padding:1px 2px; }
+:root[data-theme="dark"] .rca-distrib-lbl{ color:#c7d2fe; }
+
+/* 8D methodology reference table */
+.rca-8d-table{ width:100%; border-collapse:collapse; font-size:12px; }
+.rca-8d-table th, .rca-8d-table td{ border:1px solid #94a3b8; padding:6px 9px; text-align:left; vertical-align:top; }
+.rca-8d-table th{ background:#eef2f8; color:#0F4C81; font-weight:700; }
+.rca-8d-table .rca-8d-c{ width:52px; font-weight:700; color:#0F4C81; text-align:center; }
+.rca-8d-note{ margin-top:6px; font-size:11.5px; font-style:italic; color:#475569; }
+:root[data-theme="dark"] .rca-8d-table th{ background:rgba(255,255,255,.06); color:#c7d2fe; }
+:root[data-theme="dark"] .rca-8d-table th,
+:root[data-theme="dark"] .rca-8d-table td{ border-color:rgba(255,255,255,.14); }
+:root[data-theme="dark"] .rca-8d-table .rca-8d-c{ color:#c7d2fe; }
+:root[data-theme="dark"] .rca-8d-note{ color:#94a3b8; }
+
+/* Controlled-document footer */
+.rca-doc-foot{ margin-top:14px; padding-top:8px; border-top:1px solid var(--line);
+    text-align:center; font-size:10.5px; color:#000; font-family:'Times New Roman',Times,serif; }
+:root[data-theme="dark"] .rca-doc-company{ color:#c7d2fe; }
+:root[data-theme="dark"] .rca-summary th{ background:rgba(255,255,255,.06); color:#c7d2fe; }
+:root[data-theme="dark"] .rca-summary th,
+:root[data-theme="dark"] .rca-summary td{ border-color:rgba(255,255,255,.14); }
+
+.rca-head-table{ width:100%; border-collapse:collapse; font-size:12.5px; }
+.rca-head-table th, .rca-head-table td{ border:1px solid #94a3b8; padding:6px 10px; text-align:left; }
+.rca-head-table th{ width:15%; background:#eef2f8; color:#0F4C81; font-weight:700; }
+.rca-sec{ border-top:1px solid var(--line); }   /* same rule above every 8D heading */
+.rca-sec h3{
+    margin:0; padding:6px 12px; font-size:12.5px; font-weight:700; color:#000;
+    background:#fff; border-bottom:1px solid var(--line);
+    font-family:'Times New Roman',Times,serif;
+}
+.rca-body{
+    padding:8px 14px 12px; font-size:13px; line-height:1.6; color:#111;
+    outline:none; min-height:28px;
+}
+.rca-body:focus{ background:#f5f7ff; }
+
+/* Fishbone diagram */
+.rca-fish{ padding:10px 12px 4px; background:#fbfdff; border-bottom:1px dashed #cbd5e1; page-break-inside:avoid; break-inside:avoid; }
+.fish-svg{ width:100%; height:auto; display:block; }
+.rca-fish-cap{
+    text-align:center; font-size:11.5px; color:#64748b; padding:4px 0 6px;
+    font-family:'Times New Roman',Times,serif;
+}
+/* 8D discipline chip on each section heading */
+.rca-d8{
+    display:inline-block; background:rgba(255,255,255,.22); color:#fff;
+    border-radius:4px; padding:1px 6px; margin-right:8px;
+    font-size:10px; font-weight:800; letter-spacing:.4px;
+}
+/* status badge in the header */
+.rca-badge{ display:inline-block; padding:2px 9px; border-radius:999px; font-size:11px; font-weight:700; }
+/* Inside the document the status is plain text, not a coloured pill. */
+.rca-doc .rca-badge, .rca-doc-8d .rca-badge{
+    background:none !important; color:#000 !important; border:0 !important;
+    border-radius:0 !important; padding:0 !important; font-size:inherit !important;
+}
+.rca-badge.st-open{ background:#fef3c7; color:#92400e; }
+.rca-badge.st-done{ background:#dbeafe; color:#1e40af; }
+.rca-badge.st-closed{ background:#dcfce7; color:#166534; }
+
+/* action tracker + RPN tables */
+.rca-extra{ padding:0 14px 12px; }
+.rca-extra-lbl{ font-size:11.5px; font-weight:700; color:#0F4C81; margin:6px 0 4px; font-family:'Times New Roman',Times,serif; }
+.rca-act, .rca-rpn{ width:100%; border-collapse:collapse; font-size:12px; }
+.rca-act th, .rca-act td, .rca-rpn th, .rca-rpn td{ border:1px solid #94a3b8; padding:5px 8px; text-align:left; }
+.rca-act th, .rca-rpn th{ background:#eef2f8; color:#0F4C81; font-weight:700; }
+.rca-act td, .rca-rpn td{ outline:none; min-height:20px; }
+.rca-act td:focus, .rca-rpn td:focus{ background:#f5f7ff; }
+.rca-addrow{
+    margin-top:6px; border:1px dashed #2563eb; background:#eef2ff; color:#1e40af;
+    border-radius:8px; padding:5px 10px; font-size:11.5px; font-weight:700; cursor:pointer;
+    font-family:'Times New Roman',Times,serif;
+}
+.rca-addrow:hover{ background:#e0e7ff; }
+
+/* evidence photos */
+.rca-photos-row{ display:flex; align-items:center; gap:10px; margin:10px 0 0; flex-wrap:wrap; }
+.rca-photo-btn{
+    border:1px solid #c3ccd8; border-radius:8px; padding:9px 14px; cursor:pointer; color:#1f2937;
+    font-family:'Times New Roman',Times,serif; font-size:12.5px; font-weight:700;
+    background:#fff;
+}
+.rca-photo-btn:hover{ background:#f1f5f9; border-color:#94a3b8; }
+.rca-photo-hint{ font-size:12px; color:#64748b; }
+.rca-photos{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+.rca-thumb{ position:relative; width:84px; height:64px; border-radius:8px; overflow:hidden; border:1px solid #cbd5e1; }
+.rca-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+.rca-thumb button{
+    position:absolute; top:2px; right:2px; width:18px; height:18px; line-height:1;
+    border:none; border-radius:50%; background:rgba(220,38,38,.9); color:#fff; cursor:pointer; font-size:12px;
+}
+.rca-evi{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+.rca-evi figure{ margin:0; width:210px; }
+.rca-evi img{ width:100%; height:150px; object-fit:cover; border:1px solid var(--line); display:block; }
+.rca-evi figcaption{ text-align:center; font-size:11px; color:#64748b; margin-top:3px; }
+
+/* every generated diagram (5-Why, Pareto) */
+.rca-diagram{ width:100%; height:auto; display:block; }
+/* IS / IS-NOT matrix */
+.rca-isnot{ width:100%; border-collapse:collapse; font-size:12.5px; margin:2px 0; }
+.rca-isnot th, .rca-isnot td{ border:1px solid #94a3b8; padding:5px 9px; text-align:left; vertical-align:top; }
+.rca-isnot tr:first-child th{ background:#0F4C81; color:#fff; }
+.rca-isnot th{ width:110px; background:#eef2f8; color:#0F4C81; }
+/* 6M cause table */
+.rca-6m-table{ width:100%; border-collapse:collapse; font-size:12.5px; margin:2px 0; }
+.rca-6m-table th, .rca-6m-table td{ border:1px solid #94a3b8; padding:5px 9px; text-align:left; vertical-align:top; }
+.rca-6m-table tr:first-child th{ background:#0F4C81; color:#fff; }
+.rca-6m-table th{ width:130px; background:#eef2f8; color:#0F4C81; }
+/* Approval block */
+.rca-sign{ width:100%; border-collapse:collapse; font-size:12.5px; margin:8px 0 4px; }
+.rca-sign th, .rca-sign td{ border:1px solid #94a3b8; padding:7px 9px; text-align:left; }
+.rca-sign th{ background:#eef2f8; color:#0F4C81; }
+.rca-sign td{ height:54px; vertical-align:top; outline:none; }
+
+:root[data-theme="dark"] .rca-report{ background:#f8fafc !important; }
+.rca-body ul, .rca-body ol{ margin:4px 0; padding-left:20px; }
+.rca-body li{ margin-bottom:3px; }
+.rca-body p{ margin:4px 0; }
+
+:root[data-theme="dark"] .rca-method,
+:root[data-theme="dark"] .rca-report{
+    background:rgba(20,28,48,.55); border-color:rgba(255,255,255,.12);
+}
+:root[data-theme="dark"] .rca-grid label,
+:root[data-theme="dark"] .rca-problem-lbl{ color:#c7d2fe; }
+:root[data-theme="dark"] .rca-grid input,
+:root[data-theme="dark"] .rca-problem-lbl textarea{
+    background:rgba(15,22,40,.6); border-color:rgba(255,255,255,.14); color:#e5e9f2;
+}
+:root[data-theme="dark"] .rca-body{ color:#e5e9f2; }
+:root[data-theme="dark"] .rca-sec h3{ color:#c7d2fe; }
+:root[data-theme="dark"] .rca-method-list li{ color:#c7d2fe; }
+:root[data-theme="dark"] .rca-method-list li div{ color:#9aa6bd; }
+:root[data-theme="dark"] .rca-head-table th{ background:rgba(255,255,255,.06); color:#c7d2fe; }
+:root[data-theme="dark"] .rca-head-table th,
+:root[data-theme="dark"] .rca-head-table td{ border-color:rgba(255,255,255,.14); }
+
+/* ---- Loading spinner (buttons + results panel) ---- */
+.btn-spin{
+    display:inline-block; width:14px; height:14px; vertical-align:-2px;
+    border:2px solid rgba(255,255,255,.45); border-top-color:#fff;
+    border-radius:50%; animation:btnspin .6s linear infinite;
+}
+button.is-loading{ opacity:.9; cursor:progress; }
+@keyframes btnspin{ to{ transform:rotate(360deg); } }
+
+.cases-loading{
+    display:flex; align-items:center; gap:12px;
+    margin-top:14px; padding:22px 18px;
+    border-radius:14px;
+    background:rgba(255,255,255,.55);
+    -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+    border:1px solid rgba(255,255,255,.55);
+    box-shadow:0 10px 30px rgba(31,45,80,.12);
+    color:#334155; font-size:14px; font-weight:600;
+}
+.cases-loading .spin{
+    width:26px; height:26px; flex-shrink:0;
+    border:3px solid rgba(79,70,229,.25); border-top-color:#4f46e5;
+    border-radius:50%; animation:btnspin .7s linear infinite;
+}
+:root[data-theme="dark"] .cases-loading{
+    background:rgba(20,28,48,.55); border-color:rgba(255,255,255,.12); color:#c7d2fe;
+}
+@media (prefers-reduced-motion: reduce){
+    .btn-spin, .cases-loading .spin{ animation-duration:1.4s; }
+}
+
+.cases-status.err{ color:#b91c1c; }
+
+.cases-status.ok{ color:#15803d; }
+
+.cases-result-wrap{ margin-top:10px; border:1px solid #dbe2ea; border-radius:12px; background:#fff; overflow:hidden; }
+
+.cases-result-head{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+    background:#f1f5f9;
+
+    padding:10px 14px;
+
+    border-bottom:1px solid #e2e8f0;
+
+}
+
+.cases-result-head b{ color:#0F4C81; }
+
+.cases-actions{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+
+.cases-actions button{
+
+    border:1px solid #cbd5e1;
+
+    background:#fff;
+
+    border-radius:6px;
+
+    padding:6px 10px;
+
+    font-size:12.5px;
+
+    cursor:pointer;
+
+    color:#0F4C81;
+
+}
+
+.cases-actions button:hover{ background:#eef2ff; }
+
+.tc-sync{ font-size:12.5px; color:#334155; display:flex; align-items:center; gap:5px; cursor:pointer; }
+
+.cases-procedure{ padding:14px 18px; font-size:14px; line-height:1.6; outline:none; min-height:80px; color:#1f2937; }
+
+.cases-procedure ol{ padding-left:22px; margin:0; }
+
+.cases-procedure li{ margin-bottom:5px; }
+
+.cases-note{ padding:8px 14px 12px; font-size:12.5px; color:#64748b; border-top:1px solid #f1f5f9; }
+
+/* The toolbar is application chrome, not part of the report. */
+.toolbar button{
+
+    font-family:'Times New Roman',Times,serif;
+
+}
+
+.ico{
+
+    font-style:normal;
+
+    margin-right:6px;
+
+}
+
+/*==================================================
+
+Toolbar
+
+===================================================*/
+
+/* Grouped actions: Create | Export | Manage, each with a quiet label. */
+.tb-group{ display:flex; align-items:center; gap:8px; padding:0 14px; border-right:1px solid #d9e2ec; }
+.tb-group:last-child{ border-right:0; }
+.tb-label{
+    font-size:10.5px; font-weight:700; letter-spacing:.8px; text-transform:uppercase;
+    color:#64748b; font-family:'Times New Roman',Times,serif;
+}
+.rca-actions .tb-label{ margin:6px 0 2px; }
+.rca-actions .tb-label:first-child{ margin-top:0; }
+
+.toolbar{
+
+    position:sticky;
+
+    top:10px;
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:6px;
+
+    margin-bottom:20px;
+
+    z-index:999;
+
+}
+
+/* One button system: the primary action of a screen is filled with the company
+   blue, everything else is outlined grey, destructive actions are outlined with
+   red text. (Every bar used to mix five strong colours, all competing.) */
+.toolbar button{
+
+    border:1px solid #c3ccd8;
+
+    border-radius:8px;
+
+    padding:11px 22px;
+
+    cursor:pointer;
+
+    background:#fff;
+
+    color:#1f2937;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    transition:.25s;
+
+    box-shadow:var(--shadow);
+
+}
+
+/* Export PDF is the primary action of the test report; the rest are outlined. */
+#downloadPDF{
+
+    background:var(--primary);
+
+    border-color:var(--primary);
+
+    color:#fff;
+
+}
+
+.toolbar button:hover:not(#downloadPDF){
+
+    background:#f1f5f9;
+
+    border-color:#94a3b8;
+
+}
+
+#newReport{
+
+    color:#8a1414;   /* readable red on white (a lighter red failed contrast) */
+
+}
+
+.toolbar button:hover{
+
+    transform:translateY(-2px);
+
+}
+
+.toolbar button:disabled{
+
+    opacity:.6;
+
+    cursor:wait;
+
+    transform:none;
+
+}
+
+/*==================================================
+
+A4 - exactly two fixed-height pages
+
+===================================================*/
+
+#report{
+
+    width:210mm;
+
+    margin:auto;
+
+    transform-origin:top center;
+    transition:transform .15s ease;
+
+}
+/* zoom must never affect the exported PDF */
+#report.exporting{ transform:none !important; }
+
+/* A4 pages are 210 mm wide. In a narrow window (next to the sidebar) they used
+   to push the WHOLE app sideways; now only the report area scrolls sideways,
+   and the toolbar, sidebar and other pages stay put. */
+@media (max-width:1100px){
+    .report-scroll{ overflow-x:auto; max-width:100%; padding-bottom:6px; }
+}
+/* The page's drop shadow is screen furniture and must not print. For the PDF
+   this is already handled by .page.print-layout (a class ON the page, which
+   survives html2canvas's clone - an "#report ..." ancestor rule would not).
+   This covers plain browser printing, which never sets that class. */
+@media print{ .page{ box-shadow:none !important; } }
+
+/* ---- report tools row (watermark + zoom) - screen only ---- */
+.report-tools{
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    width:fit-content; margin:0 auto 14px; padding:8px 14px;
+    border-radius:14px; font-family:'Times New Roman',Times,serif; font-size:13px;
+    background:rgba(255,255,255,.72); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+    border:1px solid rgba(226,232,240,.8); box-shadow:var(--ui-shadow,0 8px 22px rgba(31,45,80,.14));
+}
+.report-tools .rt-lbl{ font-weight:700; color:#0F4C81; }
+.report-tools .rt-sep{ width:1px; height:20px; background:#cbd5e1; }
+.report-tools select{
+    font-family:'Times New Roman',Times,serif; font-size:13px; padding:6px 10px;
+    border:1px solid #cbd5e1; border-radius:9px; background:#fff; color:#1f2937;
+}
+.report-tools .rt-btn{
+    border:1px solid #c3ccd8; border-radius:8px; width:32px; height:30px; cursor:pointer; font-size:16px; font-weight:700;
+    color:#1f2937; background:#fff;
+}
+.report-tools .rt-btn.rt-reset{ width:auto; padding:0 12px; font-size:12px; background:#fff; }
+.report-tools .rt-btn:hover{ background:#f1f5f9; border-color:#94a3b8; }
+.report-tools .rt-btn:active{ transform:translateY(2px); }
+.report-tools .rt-pct{ min-width:44px; text-align:center; font-weight:700; color:#334155; }
+:root[data-theme="dark"] .report-tools{ background:rgba(20,28,48,.6); border-color:rgba(255,255,255,.12); }
+:root[data-theme="dark"] .report-tools .rt-lbl{ color:#c7d2fe; }
+:root[data-theme="dark"] .report-tools select{ background:rgba(15,22,40,.6); color:#e5e9f2; border-color:rgba(255,255,255,.14); }
+
+/* =====================================================================
+   AI ASSISTANT - brought into the same house style as the rest of the app:
+   ONE accent (the company blue, not the OpenAI green), no gradients, ONE
+   filled button per area with everything else outlined, quiet greys, and
+   the settings GROUPED instead of one long stack of inputs.
+   Written here, after the original panel rules, so it overrides them
+   without rewriting them; every colour has a dark-mode counterpart so the
+   contrast checks keep passing.
+   ===================================================================== */
+/* EVERY selector here is anchored on an id (#aiPanel, #aiToggle, #aiSettings,
+   #aiMessages). The original panel rules live LATER in this file (≈2825-3110),
+   so class-level overrides written here lost to them - "Test keys" stayed the
+   old green and the user bubble kept a second blue, while dark mode looked
+   right only because those rules carry [data-theme] specificity. An id always
+   wins, whatever the order. */
+#aiToggle{
+    background:var(--primary);          /* was #10a37f, a second accent */
+    border-radius:10px;
+    padding:10px 16px;
+    font-weight:700;
+    box-shadow:0 4px 14px rgba(15,23,42,.18);
+}
+#aiToggle:hover{ background:#0c3f6c; }
+
+#aiPanel .ai-header{
+    background:var(--primary);          /* was a blue gradient */
+    padding:11px 14px;
+    border-bottom:1px solid rgba(255,255,255,.14);
+}
+#aiPanel .ai-title{ font-size:14.5px; letter-spacing:.2px; }
+/* Quiet, evenly spaced header controls instead of pale boxes. */
+#aiPanel .ai-icon-btn{
+    background:transparent; border:1px solid rgba(255,255,255,.28);
+    width:26px; height:26px; border-radius:6px; font-size:12px; line-height:1;
+}
+#aiPanel .ai-icon-btn:hover{ background:rgba(255,255,255,.18); }
+
+/* ---- settings: grouped, aligned, quiet ---- */
+#aiSettings{ background:#fff; padding:14px; border-bottom:1px solid var(--line); }
+.ai-group{
+    margin:16px 0 8px; font-size:11px; font-weight:700; letter-spacing:.8px;
+    text-transform:uppercase; color:#5b6878;
+}
+#aiSettings > .ai-group:first-of-type{ margin-top:6px; }
+#aiSettings label{ display:block; font-size:12px; font-weight:600; color:#334155; margin:8px 0 4px; }
+#aiSettings input,
+#aiSettings select{
+    width:100%; box-sizing:border-box; padding:8px 10px;
+    border:1px solid #c3ccd8; border-radius:8px; background:#fff; color:#1f2937;
+    font-family:inherit; font-size:13px;
+}
+#aiSettings input:focus,
+#aiSettings select:focus{
+    outline:none; border-color:var(--primary); box-shadow:0 0 0 2px rgba(15,76,129,.15);
+}
+#aiSettings .ai-keybox{ background:#fff; border:1px solid var(--line); border-radius:10px; padding:12px; margin:8px 0 12px; }
+#aiSettings .ai-free-tag{ background:#eef2f7; color:#475569; font-weight:600; }
+#aiSettings .ai-keystate{ font-size:11.5px; font-weight:600; color:#475569; }
+
+/* ONE filled button (Save); every other control outlined - the same rule the
+   report toolbars follow. */
+#aiPanel .ai-save{
+    margin-top:0; border:1px solid #c3ccd8; background:#fff; color:#1f2937;
+    padding:8px 14px; border-radius:8px; font-weight:700; font-size:12.5px;
+}
+#aiPanel .ai-save:hover{ background:#f1f5f9; border-color:#94a3b8; }
+#aiPanel #aiSaveKey{ background:var(--primary); border-color:var(--primary); color:#fff; }
+#aiPanel #aiSaveKey:hover{ background:#0c3f6c; border-color:#0c3f6c; }
+#aiSettings .ai-savebar{ margin-top:12px; }
+#puterRow .puter-out{ background:#fff; color:#8a1414; border-color:#e0c8c8; }
+#puterRow .puter-out:hover{ background:#fbf1f1; border-color:#cc9999; }
+#puterRow label{ color:#334155; font-weight:600; }
+
+/* ---- the conversation ---- */
+#aiMessages{ background:#f7f8fa; gap:12px; }
+#aiMessages .ai-msg{ border-radius:8px; }
+#aiMessages .ai-msg.user{ background:var(--primary); border-bottom-right-radius:3px; }  /* was a third blue */
+#aiMessages .ai-msg.bot{ border-color:var(--line); }
+
+/* ---- dark mode ---- */
+:root[data-theme="dark"] .ai-group{ color:#aab6c8; }
+:root[data-theme="dark"] #aiSettings{ background:rgba(20,28,48,.55); border-bottom-color:rgba(255,255,255,.12); }
+:root[data-theme="dark"] #aiSettings label,
+:root[data-theme="dark"] #puterRow label{ color:#e5e9f2; }
+:root[data-theme="dark"] #aiSettings input,
+:root[data-theme="dark"] #aiSettings select{
+    background:rgba(15,22,40,.6); border-color:rgba(255,255,255,.14); color:#e5e9f2;
+}
+:root[data-theme="dark"] #aiSettings .ai-keybox{ background:rgba(148,163,184,.10); border-color:rgba(148,163,184,.28); }
+:root[data-theme="dark"] #aiSettings .ai-free-tag{ background:rgba(148,163,184,.22); color:#e8edf5; }
+:root[data-theme="dark"] #aiSettings .ai-keystate{ color:#cbd5e1; }
+:root[data-theme="dark"] #aiPanel .ai-save{ background:rgba(15,22,40,.6); color:#e5e9f2; border-color:rgba(255,255,255,.18); }
+:root[data-theme="dark"] #aiPanel .ai-save:hover{ background:rgba(148,163,184,.18); }
+:root[data-theme="dark"] #aiPanel #aiSaveKey{ background:var(--primary); border-color:var(--primary); color:#fff; }
+:root[data-theme="dark"] #puterRow .puter-out{ background:rgba(15,22,40,.6); color:#fca5a5; border-color:rgba(252,165,165,.35); }
+:root[data-theme="dark"] #aiMessages{ background:rgba(10,16,30,.35); }
+/* The "get a key at …" links were dark blue on a dark panel - unreadable. */
+:root[data-theme="dark"] #aiSettings .ai-note a{ color:#9ec5ff; }
+/* ...and the helper notes themselves were the light-mode grey (#666) on dark. */
+:root[data-theme="dark"] #aiSettings .ai-note,
+:root[data-theme="dark"] #aiSettings .ai-privacy{ color:#aeb9c9; }
+
+/* The "what leaves this computer" notes in the AI settings and on the Supplier
+   8D card. Deliberately plain - this is information the user needs before
+   pasting a customer's or supplier's document, not a warning banner. */
+.ai-privacy{
+    border-left:3px solid #9aa7b8;
+    padding-left:10px;
+    margin-top:10px;
+}
+:root[data-theme="dark"] .ai-privacy{ border-left-color:#5b6b85; }
+
+/* ---- floating rich-text toolbar ---- */
+.rte-bar{
+    position:fixed; z-index:1300; display:flex; align-items:center; gap:2px;
+    padding:4px 6px; border-radius:10px; font-family:'Times New Roman',Times,serif;
+    background:#0f2a4a; box-shadow:0 8px 22px rgba(2,12,27,.28);
+}
+.rte-bar button{
+    border:none; background:transparent; color:#e5e9f2; cursor:pointer;
+    font-size:12.5px; padding:5px 9px; border-radius:7px; min-width:30px;
+}
+.rte-bar button:hover{ background:rgba(255,255,255,.14); }
+.rte-bar .rte-sep{ width:1px; height:18px; background:rgba(255,255,255,.25); margin:0 3px; }
+/* The option in force where the cursor is (bold, centred, list...) stays lit. */
+.rte-bar button.on{ background:#2563eb; color:#fff; }
+.rte-bar button.rte-ico{ display:inline-flex; align-items:center; justify-content:center; padding:5px 7px; }
+.rte-bar button.rte-ico svg{ display:block; }
+
+/* ---- report watermark (prints & exports) ---- */
+.page-wm{
+    position:absolute; top:0; left:0; right:0; bottom:0;
+    display:flex; align-items:center; justify-content:center;
+    pointer-events:none; overflow:hidden; z-index:6;
+    font-family:'Times New Roman',Times,serif; font-weight:700; letter-spacing:6px;
+    font-size:74px; color:rgba(15,76,129,.10);
+    transform:rotate(-32deg); white-space:nowrap;
+}
+
+.page{
+
+    position:relative;
+
+    width:210mm;
+
+    height:297mm;          /* fixed, not min-height, so page 2 starts exactly here */
+
+    background:#fff;
+
+    /* The page margin: paper edge to the frame, 20mm (A4 standard). The frame
+       sits ON the margin and the content is attached to the frame - there is no
+       second white gap inside it (.page-inner has no padding). The content area
+       is the same 170 x 257mm as before, so nothing reflows. */
+    padding:20mm;
+
+    border-radius:0;
+
+    box-shadow:var(--shadow);
+
+    overflow:hidden;       /* overflow is reported by the fit check below */
+
+}
+
+/* The visible frame around the whole page. It sits inside the outer margin,
+   and its own padding is the INSIDE margin (frame to content). A real border
+   on an element renders reliably in the exported PDF (outline / ::before do
+   not). It is a flex column so content flows from the top. */
+.page-inner{
+
+    height:100%;
+
+    /* The page frame is deliberately heavier than the rules inside it, so the
+       printed report has a clear outline (user asked for a thicker frame). */
+    border:2.5px solid var(--line);
+
+    /* Content is attached to the frame: the header, section bars and tables
+       meet the border line directly. Text itself stays clear of the line
+       because every card and bar has its own inner padding. */
+    padding:0;
+
+    background:#fff;
+
+    overflow:hidden;   /* clip if content is ever taller than the frame */
+
+    display:block;
+
+}
+
+/* Holds the actual content; checkPageFit may scale this (not the frame) so the
+   page always fits. */
+.page-fit{
+
+    width:100%;
+
+    transform-origin:top left;
+
+}
+
+/* The LAST page of the report (marked by markTailPage()): Conclusion and
+   Approval close the document, so they sit ON the bottom margin and the empty
+   space opens above them instead of below. A column with min-height 100% and
+   `margin-top:auto` on the Conclusion does it without any measuring, and the
+   class survives html2canvas's clone so the PDF is pinned the same way.
+   The measuring code strips this class first (see clearTailPageMark) - a flex
+   page reports a full height however little is on it. */
+.page-fit.tail-page{
+
+    display:flex;
+
+    flex-direction:column;
+
+    min-height:100%;
+
+}
+
+/* Nothing may be squashed to make room: a page that is too full overflows and
+   is re-flowed onto a continuation page, exactly as before. */
+.page-fit.tail-page > *{
+
+    flex:0 0 auto;
+
+}
+
+/* The closing sections follow the content DIRECTLY - no blank gap pushed in
+   above them (the user asked for Conclusion right after Test Result). Any
+   leftover space stays at the foot of the page. */
+.page-fit.tail-page > #conclusionCard{
+
+    margin-top:0;
+
+}
+
+/* ---- pages added to the report (automatic continuation / ➕ Add Page) ---- */
+.manual-box{ min-height:180px; }
+.manual-title{ display:inline-block; min-width:140px; outline:none; }
+.manual-title:empty:before{ content:attr(data-placeholder); opacity:.75; }
+
+/* ---- My Reports modal ---- */
+.reports-modal{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(15,23,42,.45);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    z-index:1000;
+
+    padding:20px;
+
+}
+
+.reports-modal[hidden]{ display:none; }
+
+.reports-box{
+
+    background:#fff;
+
+    width:100%;
+
+    max-width:460px;
+
+    max-height:80vh;
+
+    border-radius:12px;
+
+    overflow:hidden;
+
+    display:flex;
+
+    flex-direction:column;
+
+    box-shadow:0 20px 60px rgba(0,0,0,.3);
+
+    font-family:'Times New Roman',Times,serif;
+
+}
+
+.reports-head{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:linear-gradient(90deg,#0F4C81,#2563EB);
+
+    color:#fff;
+
+    padding:12px 16px;
+
+    font-weight:700;
+
+}
+
+.reports-x{ border:none; background:transparent; color:#fff; font-size:18px; cursor:pointer; }
+
+.reports-save{
+
+    margin:14px 16px 6px;
+
+    padding:10px;
+
+    border:1px solid var(--primary);
+
+    background:var(--primary);
+
+    color:#fff;
+
+    border-radius:8px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+}
+
+.reports-save:hover{ background:#0c3f6c; border-color:#0c3f6c; }
+
+.reports-list{ overflow-y:auto; padding:6px 16px 16px; }
+
+.reports-empty{ color:#64748b; font-size:13px; padding:10px 2px; line-height:1.5; }
+
+/* Drag & drop: the zone under the pointer while a file is being dragged.
+   Outline (not border) so nothing moves, and it is never part of a document
+   capture - the class is removed as soon as the file is dropped. */
+.drop-hot{
+    outline:2px dashed var(--primary) !important;
+    outline-offset:-3px;
+    background:#eff6ff !important;
+}
+:root[data-theme="dark"] .drop-hot{ background:rgba(37,99,235,.18) !important; }
+
+/* "Nothing here yet" text that says what to do next, instead of a blank area. */
+.empty-state{
+    margin:14px 0 0; padding:14px 16px;
+    border:1px dashed #c3ccd8; border-radius:10px; background:#fff;
+    color:#475569; font-size:13px; line-height:1.6;
+    font-family:'Times New Roman',Times,serif;
+}
+.empty-state b{ color:#1f2937; }
+:root[data-theme="dark"] .empty-state{ background:rgba(20,28,48,.5); border-color:rgba(255,255,255,.14); color:#c7d2fe; }
+:root[data-theme="dark"] .empty-state b{ color:#e5e9f2; }   /* dark ink was unreadable on the dark panel */
+
+.reports-row{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:10px;
+
+    border:1px solid #e2e8f0;
+
+    border-radius:8px;
+
+    margin-bottom:8px;
+
+}
+
+.reports-info{ flex:1; display:flex; flex-direction:column; min-width:0; }
+
+.reports-info b{ color:#0F4C81; font-size:14px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+.reports-date{ color:#94a3b8; font-size:11px; }
+
+.reports-open,
+.reports-del{
+
+    border:1px solid #cbd5e1;
+
+    background:#f8fafc;
+
+    border-radius:6px;
+
+    padding:5px 10px;
+
+    font-size:12px;
+
+    cursor:pointer;
+
+    flex-shrink:0;
+
+}
+
+.reports-open{ color:#0F4C81; }
+
+.reports-open:hover{ background:#eef2ff; }
+
+.reports-del{ color:#b91c1c; }
+
+.reports-del:hover{ background:#fee2e2; }
+
+.page + .page{
+
+    margin-top:24px;
+
+}
+
+/* Applied to each .page by script.js immediately before it is rendered.
+   These selectors are anchored on .page itself, never on an #report ancestor:
+   html2canvas clones the page into a detached container, where any ancestor
+   rule silently stops matching.
+
+   They restore the full A4 desktop layout regardless of the browser window
+   size, so exporting from a small or minimised window still yields the same
+   PDF. The doubled class raises specificity above the responsive block. */
+.page.print-layout.print-layout{
+
+    width:210mm;
+
+    height:297mm;
+
+    min-height:297mm;
+
+    margin:0;
+
+    box-shadow:none;
+
+    border-radius:0;
+
+    outline:none;
+
+}
+
+.page.print-layout .header-card{
+
+    grid-template-columns:100px 1fr 185px;
+
+}
+
+.page.print-layout .grid2,
+.page.print-layout .photo-grid,
+.page.print-layout .result-grid{
+
+    grid-template-columns:1fr 1fr;
+
+}
+
+/* Applied by script.js before rendering. These have to sit on the elements
+   themselves, not on an #report ancestor, because html2canvas clones each
+   .page into a detached container where that ancestor no longer exists. */
+.no-placeholder:empty:before{
+
+    content:none !important;
+
+}
+
+.upload-area.hide-hint span{
+
+    display:none !important;
+
+}
+
+/* The "page is very full" note is a screen hint - never in the PDF capture. */
+.page.print-layout .page-warning{ display:none !important; }
+
+/* Shown by script.js when a page's content no longer fits. */
+.page.overflow{
+
+    outline:3px solid var(--danger);
+
+}
+
+.page-warning{
+
+    position:absolute;
+
+    left:0;
+
+    right:0;
+
+    bottom:0;
+
+    background:var(--danger);
+
+    color:#fff;
+
+    font-size:12px;
+
+    font-weight:600;
+
+    text-align:center;
+
+    padding:6px;
+
+}
+
+/*==================================================
+
+Header
+
+===================================================*/
+
+.header-card{
+
+    display:grid;
+
+    grid-template-columns:100px 1fr 185px;
+
+    gap:0;
+
+    position:relative;
+
+    align-items:stretch;
+
+    border:none;
+
+    border-bottom:1px solid var(--line);
+
+    border-radius:0;
+
+    overflow:hidden;
+
+}
+
+.logo-box{
+
+    background:#fff;
+
+    overflow:hidden;
+
+    height:100%;
+
+    min-height:70px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border-right:1px solid var(--line);
+
+    position:relative;
+
+}
+
+.logo-box img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+.uploadLogoBtn{
+
+    position:absolute;
+
+    bottom:4px;
+
+    font-size:10px;
+
+    padding:3px 7px;
+
+    border:none;
+
+    background:var(--primary);
+
+    color:#fff;
+
+    border-radius:5px;
+
+    cursor:pointer;
+
+}
+
+/* The title is positioned over the WHOLE header (not just the middle grid
+   cell), so it sits at the true page centre no matter how wide the logo box
+   and the right-hand info box are. pointer-events:none lets the logo buttons
+   underneath still be clicked. */
+.title-box{
+
+    position:absolute;
+
+    top:0;
+
+    left:0;
+
+    right:0;
+
+    bottom:0;
+
+    /* Keep the title clear of BOTH side boxes while it stays centred on the
+       page. The info box is 185px, so reserve 190px on each side (the logo
+       side too, for symmetry). A fixed max-width is not enough: after the page
+       margin went to 20mm the header is ~640px wide, and a 360px title centred
+       in it ran from ~140px to ~500px - straight over the info box, which
+       starts at ~455px ("TEST" crossed its border). */
+    padding:0 190px;
+
+    text-align:center;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    pointer-events:none;
+
+}
+
+.title-box h1{
+
+    color:#000;
+
+    font-size:20px;
+
+    letter-spacing:1px;
+
+    /* The clearance comes from .title-box's side padding; the title wraps
+       inside that. Balanced wrapping gives two even lines
+       ("PRODUCT VALIDATION" / "TEST REPORT") instead of a long first line. */
+    max-width:100%;
+
+    text-wrap:balance;
+
+    margin:0 auto;
+
+}
+
+.report-info{
+
+    background:#fff;
+
+    border-left:1px solid var(--line);
+
+    display:flex;
+
+    flex-direction:column;
+
+    /* Title is absolutely positioned and out of grid flow, so pin the info
+       box to the 3rd column explicitly (otherwise it would slide into the
+       empty middle column). */
+    grid-column:3;
+
+}
+
+.report-info div{
+
+    flex:1;
+
+    display:flex;
+
+    /* A value too long to sit beside its label drops onto its own full-width
+       line under the label (~169px instead of ~93px), so it stays on ONE line
+       rather than being split mid-date ("Rev 03 / 12-09-" | "2026"). Short
+       values still sit beside the label. No CSS stops Chrome breaking after a
+       hyphen - text-wrap:pretty/balance made it worse ("12-" | "09-2026") - so
+       the fix is to give long values the room. column-gap (not a margin on the
+       value) spaces label and value, so a dropped value is not indented. */
+    flex-wrap:wrap;
+
+    column-gap:8px;
+
+    row-gap:0;
+
+    align-content:center;
+
+    justify-content:flex-start;
+
+    align-items:center;
+
+    border-bottom:1px solid var(--line);
+
+    padding:3px 8px;
+
+    font-size:12px;
+
+}
+
+.report-info label{
+
+    font-weight:700;
+
+    color:#111;
+
+    /* The label must never wrap. As a shrinkable flex item it gave way to a
+       long value and split "Doc.Rev.No :" into "Doc.Rev.No" with the ":"
+       alone on a second line. The value wraps instead. */
+    white-space:nowrap;
+
+    flex-shrink:0;
+
+}
+
+/* Values sit in <span> so they are not caught by ".report-info div". */
+.report-info span{
+
+    /* spacing comes from the row's column-gap */
+    margin-left:0;
+
+    padding:1px 3px;
+
+    outline:none;
+
+}
+
+.report-info div:last-child{
+
+    border-bottom:none;
+
+}
+
+/* Page 2 repeats the header, read-only. */
+#companyLogo2{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+/*==================================================
+
+Cards
+
+===================================================*/
+
+.section-card{
+
+    border:none;
+
+    border-bottom:1px solid var(--line);   /* dividing line between sections */
+
+    border-radius:0;
+
+    overflow:hidden;
+
+    margin-top:0;
+
+    background:#fff;
+
+    /* A controlled document has no drop shadows (html2canvas prints them too). */
+    box-shadow:none;
+
+    transition:.25s;
+
+}
+
+.section-card:hover{
+
+    box-shadow:0 6px 16px rgba(0,0,0,.07);
+
+}
+
+/* Heading always on the left; buttons pushed to the right. */
+/* Controlled-document heading: black on white with a single rule under it -
+   the same heading the 8D report uses, so both documents read as one system.
+   (It used to be a blue gradient bar; colour is now only on table header rows.) */
+.section-title{
+
+    background:#fff;
+
+    color:#000;
+
+    /* A rule ABOVE the heading as well as below it, so every section is closed
+       off and the heading never floats against the block above. The card before
+       it drops its own bottom border (markBarRules -> .bar-below), so this stays
+       ONE line, not two. */
+    border-top:1px solid var(--line);
+
+    border-bottom:1px solid var(--line);
+
+    padding:6px 12px;
+
+    font-weight:700;
+
+    display:flex;
+
+    justify-content:flex-start;
+
+    align-items:center;
+
+    text-align:left;
+
+    font-size:12.5px;
+
+}
+
+.section-title > span{
+
+    display:flex;
+
+    align-items:center;
+
+}
+
+/* A card (or the header) closes with a 1px rule at its bottom. When the next
+   visible block opens with a blue section bar, that rule sat directly on top of
+   the bar, and in the PDF it printed as a black line, a hairline white gap, then
+   the bar - a double line. The bar is already the separator, so the rule is
+   dropped there. markBarRules() (script.js) sets .bar-below: a class ON the
+   element survives html2canvas's clone, whereas a :has() sibling rule measured
+   right on screen but never reached the PDF.
+   The border is REMOVED (style none), not made transparent: html2canvas ignores
+   the alpha and printed a "transparent" border as a solid black line - rendered
+   and measured: transparent -> black 3px band, none -> nothing. The block is
+   1px shorter, which is harmless. */
+.section-card.bar-below,
+.header-card.bar-below{
+
+    border-bottom-style:none !important;
+
+}
+
+.section-title .auto-btn{
+
+    margin-left:auto;
+
+}
+
+/*==================================================
+
+Grid
+
+===================================================*/
+
+.grid2{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:7px 14px;
+
+    padding:8px;
+
+}
+
+.grid2 label{
+
+    display:block;
+
+    margin-bottom:2px;
+
+    font-weight:700;
+
+    font-size:11.5px;
+
+    /* dark so the bold reads clearly (was a light grey) */
+    color:#111;
+
+}
+
+.field{
+
+    min-height:22px;
+
+    border:none;
+
+    border-radius:0;
+
+    background:#fafafa;
+
+    padding:3px 8px;
+
+    font-size:12px;
+
+    outline:none;
+
+}
+
+.field:focus{
+
+    border-color:var(--secondary);
+
+}
+
+/*==================================================
+
+Date fields (DD/MM/YYYY)
+
+===================================================*/
+
+.date-field{
+
+    font-variant-numeric:tabular-nums;
+
+    letter-spacing:.5px;
+
+    outline:none;
+
+}
+
+.date-field:empty:before{
+
+    content:attr(data-placeholder);
+
+    color:#aaa;
+
+    font-weight:400;
+
+}
+
+/* Wraps a date field so the calendar button can sit inside its right edge. */
+.date-wrap{
+
+    position:relative;
+
+    display:block;
+
+}
+
+.report-info .date-wrap{
+
+    display:inline-block;
+
+    /* spacing comes from the row's column-gap */
+    margin-left:0;
+
+}
+
+/* the picker wrapper already carries the gap; don't double it on the value */
+.report-info .date-wrap .date-field{
+
+    margin-left:0;
+
+    padding-left:0;
+
+}
+
+.date-wrap .date-field{
+
+    padding-right:24px;
+
+}
+
+/* The native input exists only to raise the browser's calendar. */
+.date-picker{
+
+    position:absolute;
+
+    right:2px;
+
+    bottom:0;
+
+    width:1px;
+
+    height:1px;
+
+    opacity:0;
+
+    border:none;
+
+    pointer-events:none;
+
+}
+
+.date-picker-btn{
+
+    position:absolute;
+
+    right:2px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    border:none;
+
+    background:none;
+
+    cursor:pointer;
+
+    font-size:13px;
+
+    line-height:1;
+
+    padding:2px;
+
+    opacity:.65;
+
+}
+
+.date-picker-btn:hover{
+
+    opacity:1;
+
+}
+
+.date-field.invalid{
+
+    border:1px solid var(--danger);
+
+    background:#fff5f5;
+
+    color:var(--danger);
+
+    border-radius:6px;
+
+}
+
+/*==================================================
+
+Editors
+
+===================================================*/
+
+.editor{
+
+    padding:8px 12px;
+
+    font-size:12px;
+
+    line-height:1.5;
+
+    outline:none;
+
+    background:#fff;
+
+}
+
+.editor:empty:before{
+
+    content:attr(data-placeholder);
+
+    color:#aaa;
+
+}
+
+.objective-box,
+#objective{
+
+    min-height:34px;
+
+    /* First-line starting indent: the width of 5 spaces, as asked. */
+    text-indent:var(--indent5, 1.25em);
+
+}
+
+.equipment-box{
+
+    min-height:28px;
+
+    text-indent:var(--indent5, 1.25em);
+
+}
+
+/* Corrected observation = short points. The box indents its first line
+   (text-indent), which would push every bullet's text sideways - not for lists. */
+.observation-box ul.obs-points{ margin:0; padding-left:var(--indent5, 1.25em); text-indent:0; list-style:disc inside; }
+.observation-box ul.obs-points li{ text-indent:0; margin:2px 0; }
+
+/* Lists typed with the toolbar in ANY report box. Each point STARTS at the same
+   5-space indent as a paragraph's first line, and a line that wraps returns to the start of
+   the box (marker inside, no hanging indent) - as asked for. */
+#report .editor ul, #report .editor ol{ margin:4px 0; padding-left:var(--indent5, 1.25em); text-indent:0; }
+#report .editor ul{ list-style:disc inside; }
+#report .editor ol{ list-style:decimal inside; }
+#report .editor ul ul{ list-style:circle inside; padding-left:calc(var(--indent5, 1.25em) * 2); }
+#report .editor ol ol{ list-style:lower-alpha inside; padding-left:calc(var(--indent5, 1.25em) * 2); }
+#report .editor li{ text-indent:0; margin:2px 0; }
+/* A centred / right-aligned paragraph must not keep the first-line indent. */
+#report .editor [style*="text-align"], #rcaReport [style*="text-align"]{ text-indent:0; }
+
+.observation-box{
+
+    min-height:70px;
+
+    text-indent:var(--indent5, 1.25em);
+
+}
+
+.resulttext-box{
+
+    text-indent:var(--indent5, 1.25em);
+
+}
+
+.recommendation-box{
+
+    min-height:46px;
+
+    text-indent:var(--indent5, 1.25em);
+
+}
+
+.conclusion-box{
+
+    min-height:42px;
+
+    background:#f8fbff;
+
+    font-weight:600;
+
+    text-indent:var(--indent5, 1.25em);
+
+}
+
+/*==================================================
+
+Procedure - numbered sentence steps
+
+===================================================*/
+
+/* Same padding and line spacing as every other text box (8px, 1.5). It was
+   5px/6px with 1.3 line spacing, so the Procedure text sat noticeably tighter
+   under its bar than Objective or Equipment (measured 5px vs 10px). */
+.procedure-box{
+
+    font-size:12px;
+
+    line-height:1.5;
+
+    padding:8px 12px;
+
+    /* Typed procedure text starts like every other section. */
+    text-indent:var(--indent5, 1.25em);
+
+}
+
+.procedure-steps{
+
+    margin:0;
+
+    /* The numbers start at the same 5-space indent as every section's first line, and a
+       step that wraps starts again at the left (marker inside the line). */
+    padding-left:var(--indent5, 1.25em);
+
+    list-style:decimal inside;
+
+    text-indent:0;
+
+}
+
+.procedure-steps li{
+
+    margin-bottom:1px;
+
+    text-indent:0;
+
+}
+
+.procedure-steps li::marker{
+
+    font-weight:700;
+
+    color:var(--primary);
+
+}
+
+.step-time{
+
+    font-weight:700;
+
+    color:var(--primary);
+
+    font-variant-numeric:tabular-nums;
+
+}
+
+.proc-note{
+
+    margin-top:3px;
+
+    padding-top:3px;
+
+    border-top:1px solid var(--border);
+
+    font-size:10px;
+
+    color:#555;
+
+}
+
+.proc-note b{
+
+    color:#0F4C81;
+
+}
+
+/*==================================================
+
+Auto Button
+
+===================================================*/
+
+.auto-btn{
+
+    border:1px solid #c3ccd8;
+
+    background:#fff;
+
+    color:#1f2937;
+
+    padding:5px 11px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    font-size:12px;
+
+    transition:.25s;
+
+}
+
+.auto-btn:hover{
+
+    background:#f1f5f9;
+
+    border-color:#94a3b8;
+
+}
+
+/*==================================================
+
+Photo Upload
+
+===================================================*/
+
+.photo-grid{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:12px;
+
+    padding:8px 10px;
+
+}
+
+/* Photo sections let their annotations (arrows / labels) spill OUTSIDE the
+   photo box into the surrounding margin, so this card must not clip them. */
+.section-card.photo-section{
+
+    overflow:visible;
+
+}
+
+/* The added photos on page 2 belong to "Test Photographs" (page 1), so don't
+   repeat that heading bar above them. */
+#extraPhotoCard > .section-title{
+
+    display:none;
+
+}
+
+.photo-box{
+
+    position:relative;
+
+}
+
+/* The "stage" spans the caption + image + caption area (everything except the
+   tool buttons, which sit below it). The drawing canvas and the label layer
+   both cover the stage, so circles, arrows and labels can be placed on the
+   image OR outside it in the caption margins - and because the tools live below
+   the stage, hiding them for the PDF never shifts the annotations. */
+.photo-stage{
+
+    position:relative;
+
+}
+
+/* Free-text label layer: covers the whole stage (not just the image) so labels
+   can be dragged onto the photo OR outside it. Overflow is visible so a label
+   at the edge is never clipped. */
+.label-layer{
+
+    position:absolute;
+
+    left:0;
+
+    top:0;
+
+    right:0;
+
+    bottom:0;
+
+    pointer-events:none;
+
+    overflow:visible;
+
+    z-index:5;
+
+}
+
+.photo-label{
+
+    position:absolute;
+
+    pointer-events:auto;
+
+    font-family:'Times New Roman',Times,serif;
+
+    font-weight:normal;
+
+    font-size:15px;
+
+    color:#000;
+
+    white-space:nowrap;
+
+    cursor:move;
+
+    user-select:none;
+
+    padding:0 1px;
+
+    /* thin white halo so black text stays readable over a dark photo */
+    text-shadow:0 0 2px #fff, 0 0 2px #fff, 0 0 2px #fff;
+
+}
+
+.photo-box h4{
+
+    text-align:center;
+
+    margin-bottom:6px;
+
+    font-size:13px;
+
+    font-weight:700;
+
+    color:#0F4C81;
+
+}
+
+/* Editable topic above each photograph and figure caption below it. */
+.photo-caption{
+
+    text-align:center;
+
+    font-size:11px;
+
+    outline:none;
+
+    min-height:15px;
+
+    padding:1px 2px;
+
+}
+
+.caption-top{
+
+    margin-bottom:4px;
+
+    font-weight:700;
+
+    color:#111;
+
+}
+
+.caption-bottom{
+
+    margin-top:4px;
+
+    font-style:italic;
+
+}
+
+
+/* "Fig 1" is written by the app (renumberFigures) and is NOT editable, so the
+   numbering can never drift from the order of the photos on the page. */
+.fig-no{
+
+    font-style:normal;
+
+    font-weight:700;
+
+    color:#111;
+
+}
+
+.fig-text{
+
+    outline:none;
+
+}
+
+.fig-text:empty:before{
+
+    content:attr(data-placeholder);
+
+    color:#aaa;
+
+    font-style:normal;
+
+}
+
+.photo-caption:empty:before{
+
+    content:attr(data-placeholder);
+
+    color:#aaa;
+
+    font-weight:400;
+
+    font-style:normal;
+
+}
+
+.upload-area{
+
+    height:180px;
+
+    border:1px solid var(--line);
+
+    border-radius:0;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    flex-direction:column;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    overflow:hidden;
+
+    background:#fafcff;
+
+}
+
+.upload-area:hover{
+
+    border-color:#2563EB;
+
+    background:#f3f8ff;
+
+}
+
+.upload-area span{
+
+    color:#777;
+
+    font-size:14px;
+
+}
+
+.upload-area img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    display:none;
+
+}
+
+/*==================================================
+
+Result
+
+===================================================*/
+
+.result-grid{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:16px;
+
+    padding:14px;
+
+}
+
+.result-card{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:10px;
+
+    height:40px;
+
+    border-radius:0;
+
+    font-size:17px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.result-card input{
+
+    transform:scale(1.2);
+
+}
+
+.pass{
+
+    border:2px solid #16A34A;
+
+    color:#16A34A;
+
+}
+
+.fail{
+
+    border:2px solid #DC2626;
+
+    color:#DC2626;
+
+}
+
+.pass:hover{
+
+    background:#ecfff1;
+
+}
+
+.fail:hover{
+
+    background:#fff1f1;
+
+}
+
+/*==================================================
+
+Approval Table
+
+===================================================*/
+
+/* One line per edge, as for .data-table (html2canvas ignores border-collapse
+   and doubled every shared cell border). The table spans the full width and is
+   attached to the page frame, so its outer left and right edges are the frame
+   line itself: cells draw only a right edge between columns and a bottom edge. */
+.approval-table{
+
+    width:100%;
+
+    border-collapse:separate;
+
+    border-spacing:0;
+
+}
+
+.approval-table th{
+
+    /* A line between the headings, like the row below (the last column's edge
+       would sit on the page frame, so it is dropped further down). */
+    border-right:1px solid var(--line);
+
+    border-bottom:1px solid var(--line);
+
+    background:#F2F2F2;
+
+    color:#000;
+
+    padding:9px;
+
+    font-size:13px;
+
+}
+
+.approval-table td{
+
+    border:0;
+
+    border-right:1px solid var(--line);
+
+    border-bottom:1px solid var(--line);
+
+    height:52px;
+
+    padding:8px;
+
+    font-size:12px;
+
+    vertical-align:top;
+
+    outline:none;
+
+}
+
+/* A faint "Name / Signature / Date" hint inside each empty approval cell. */
+/* The last column's right edge would sit on the frame line and double it. */
+.approval-table td:last-child,
+.approval-table th:last-child{
+
+    border-right:0;
+
+}
+
+/* The signature table no longer sits on the bottom margin (the closing sections
+   follow the content directly), so it closes itself with its own bottom line. */
+.approval-table tr:last-child > td{
+
+    border-bottom:1px solid var(--line);
+
+}
+
+.approval-table td:empty::before{
+
+    content:"Name / Sign / Date";
+
+    color:#b0b0b0;
+
+    font-size:10.5px;
+
+    font-style:italic;
+
+}
+
+/*==================================================
+
+Scrollbar
+
+===================================================*/
+
+::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#c3d2e3;
+
+    border-radius:20px;
+
+}
+
+/*==================================================
+
+Print
+
+===================================================*/
+
+@page{
+
+    size:A4 portrait;
+
+    margin:0;
+
+}
+
+@media print{
+
+    body{
+
+        background:white;
+
+        padding:0;
+
+    }
+
+    .toolbar,
+    .uploadLogoBtn,
+    .pdfprev,
+    .auto-btn,
+    .page-warning{
+
+        display:none !important;
+
+    }
+
+    .page,
+    .page + .page{
+
+        box-shadow:none;
+
+        border-radius:0;
+
+        margin:0;
+
+        outline:none;
+
+        page-break-after:always;
+
+    }
+
+    .page:last-child{
+
+        page-break-after:auto;
+
+    }
+
+    .section-card{
+
+        box-shadow:none;
+
+        page-break-inside:avoid;
+
+    }
+
+    .upload-area{
+
+        border:1px solid #ccc;
+
+        background:white;
+
+    }
+
+    .date-field.invalid{
+
+        border:none;
+
+        background:none;
+
+        color:inherit;
+
+    }
+
+}
+
+/*==================================================
+
+Responsive (screen only - the PDF is always A4)
+
+===================================================*/
+
+/* Responsive collapse removed: the report keeps the fixed A4 layout on
+   every screen/system (scroll horizontally on small screens instead). */
+
+
+/*==================================================
+
+AI Assistant (screen only - never exported)
+
+===================================================*/
+
+.ai-toggle{
+
+    position:fixed;
+
+    right:18px;
+
+    bottom:18px;
+
+    z-index:1000;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+
+    border:none;
+
+    border-radius:24px;
+
+    padding:11px 18px;
+
+    background:#10a37f;          /* OpenAI green */
+
+    color:#fff;
+
+    font-family:'Times New Roman',Times,serif;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    box-shadow:0 6px 18px rgba(0,0,0,.22);
+
+}
+
+.ai-toggle:hover{
+
+    background:#0e8e6e;
+
+}
+
+.ai-panel{
+
+    position:fixed;
+
+    top:0;
+
+    right:0;
+
+    z-index:1001;
+
+    width:360px;
+
+    max-width:92vw;
+
+    height:100vh;
+
+    background:#ffffff;
+
+    border-left:1px solid #d9e2ec;
+
+    box-shadow:-8px 0 24px rgba(0,0,0,.14);
+
+    display:flex;
+
+    flex-direction:column;
+
+    font-family:'Times New Roman',Times,serif;
+
+    transform:translateX(100%);
+
+    transition:transform .25s ease;
+
+}
+
+.ai-panel.open{
+
+    transform:translateX(0);
+
+}
+
+.ai-header{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:12px 14px;
+
+    background:linear-gradient(90deg,#0F4C81,#2563EB);
+
+    color:#fff;
+
+}
+
+.ai-title{
+
+    font-weight:700;
+
+    font-size:15px;
+
+    flex:1;
+
+}
+
+.ai-icon-btn{
+
+    border:none;
+
+    background:rgba(255,255,255,.15);
+
+    color:#fff;
+
+    width:28px;
+
+    height:28px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    font-size:14px;
+
+}
+
+.ai-icon-btn:hover{
+
+    background:rgba(255,255,255,.30);
+
+}
+
+.ai-settings{
+
+    padding:12px 14px;
+
+    border-bottom:1px solid #eee;
+
+    background:#f8fbff;
+
+    font-size:13px;
+
+}
+
+.ai-settings label{
+
+    display:block;
+
+    font-weight:600;
+
+    margin:6px 0 3px;
+
+    color:#333;
+
+}
+
+.ai-settings input{
+
+    width:100%;
+
+    padding:7px 9px;
+
+    border:1px solid #cbd5e1;
+
+    border-radius:6px;
+
+    font-size:13px;
+
+}
+
+.ai-save{
+
+    margin-top:9px;
+
+    border:none;
+
+    background:#10a37f;
+
+    color:#fff;
+
+    padding:7px 14px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+}
+
+.ai-note{
+
+    margin-top:8px;
+
+    font-size:11px;
+
+    line-height:1.4;
+
+    color:#666;
+
+}
+
+/* The inline chat wraps the message list and the input row. It has to be a
+   flex column that fills the panel, so the messages scroll and the input row
+   stays pinned at the bottom instead of being pushed off-screen by a long
+   answer. min-height:0 lets the message list actually shrink and scroll. */
+#aiInline{
+
+    flex:1;
+
+    min-height:0;
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.ai-messages{
+
+    flex:1;
+
+    min-height:0;
+
+    overflow-y:auto;
+
+    padding:14px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+    background:#f4f6f9;
+
+}
+
+.ai-msg{
+
+    max-width:88%;
+
+    padding:9px 12px;
+
+    border-radius:12px;
+
+    font-size:13px;
+
+    line-height:1.5;
+
+    white-space:pre-wrap;
+
+    word-wrap:break-word;
+
+}
+
+.ai-msg.user{
+
+    align-self:flex-end;
+
+    background:#2563EB;
+
+    color:#fff;
+
+    border-bottom-right-radius:3px;
+
+}
+
+.ai-msg.bot{
+
+    align-self:flex-start;
+
+    background:#fff;
+
+    border:1px solid #e2e8f0;
+
+    color:#1f2937;
+
+    border-bottom-left-radius:3px;
+
+}
+
+/* Free-AI account (Puter) controls in the AI settings panel. */
+.puter-row{ margin-top:6px; }
+.puter-row hr{ border:none; border-top:1px solid #e2e8f0; margin:10px 0; }
+.puter-row label{ font-weight:700; font-size:12.5px; color:#0F4C81; }
+.puter-btns{ display:flex; gap:8px; flex-wrap:wrap; margin-top:6px; }
+.puter-btns .ai-save{ margin:0; }
+.puter-btns .puter-out{ background:#64748b; }
+:root[data-theme="dark"] .puter-row hr{ border-top-color:rgba(255,255,255,.12); }
+:root[data-theme="dark"] .puter-row label{ color:#c7d2fe; }
+
+/* AI-generated image shown in a chat reply. */
+.ai-genimg-wrap{ margin-top:8px; min-height:40px; }
+.ai-genimg{ display:block; max-width:100%; width:320px; border-radius:12px; border:1px solid #e2e8f0; box-shadow:0 6px 18px rgba(15,23,42,.14); }
+.ai-genimg-loading{ display:flex; align-items:center; gap:8px; font-size:12.5px; color:#64748b; padding:10px 0; }
+.ai-genimg-dl{ display:inline-block; margin-top:6px; font-size:12px; font-weight:600; color:#0F4C81; text-decoration:none; }
+.ai-genimg-dl:hover{ text-decoration:underline; }
+:root[data-theme="dark"] .ai-genimg{ border-color:rgba(255,255,255,.14); }
+:root[data-theme="dark"] .ai-genimg-dl{ color:#c7d2fe; }
+
+/* ---- ChatGPT-style rendered markdown inside a bot reply ---- */
+.ai-content{ font-size:13.5px; line-height:1.5; }
+.ai-content > *:first-child{ margin-top:0; }
+.ai-content > *:last-child{ margin-bottom:0; }
+.ai-content p{ margin:6px 0; }
+.ai-content .ai-h{ margin:12px 0 6px; font-size:14px; font-weight:700; color:#0F4C81; line-height:1.3; }
+.ai-content h5.ai-h,.ai-content h6.ai-h{ font-size:13px; color:#334155; }
+.ai-content ul,.ai-content ol{ margin:6px 0; padding-left:20px; }
+.ai-content li{ margin:3px 0; }
+.ai-content b{ color:#0f172a; }
+.ai-content code{
+    font-family:'Times New Roman',Times,serif; font-size:12.5px;
+    background:#f1f5f9; color:#be123c; padding:1px 5px; border-radius:5px;
+}
+.ai-content .ai-pre{
+    background:#0f172a; color:#e2e8f0; padding:10px 12px; border-radius:8px;
+    overflow-x:auto; margin:8px 0; font-size:12.5px;
+}
+.ai-content .ai-pre code{ background:transparent; color:inherit; padding:0; }
+.ai-content .ai-quote{
+    margin:8px 0; padding:4px 12px; border-left:3px solid #94a3b8;
+    background:#f8fafc; color:#475569; border-radius:0 6px 6px 0;
+}
+.ai-content hr{ border:none; border-top:1px solid #e2e8f0; margin:10px 0; }
+.ai-content .ai-table{
+    border-collapse:collapse; width:100%; margin:8px 0; font-size:12.5px;
+    display:block; overflow-x:auto;
+}
+.ai-content .ai-table th,.ai-content .ai-table td{
+    border:1px solid #d7dee8; padding:6px 9px; text-align:left; vertical-align:top;
+}
+.ai-content .ai-table th{ background:#eef2ff; color:#0F4C81; font-weight:700; }
+.ai-content .ai-table tr:nth-child(even) td{ background:#f8fafc; }
+/* dark theme */
+:root[data-theme="dark"] .ai-content .ai-h{ color:#c7d2fe; }
+:root[data-theme="dark"] .ai-content b{ color:#f1f5f9; }
+:root[data-theme="dark"] .ai-content code{ background:#1e293b; color:#fca5a5; }
+:root[data-theme="dark"] .ai-content .ai-quote{ background:#1e293b; color:#cbd5e1; border-left-color:#475569; }
+:root[data-theme="dark"] .ai-content .ai-table th{ background:#1e293b; color:#c7d2fe; }
+:root[data-theme="dark"] .ai-content .ai-table th,
+:root[data-theme="dark"] .ai-content .ai-table td{ border-color:#334155; }
+:root[data-theme="dark"] .ai-content .ai-table tr:nth-child(even) td{ background:rgba(30,41,59,.5); }
+
+/* "Insert into <field>" picker + Copy shown under each assistant reply. */
+.ai-insert-bar{
+
+    display:flex;
+
+    gap:6px;
+
+    align-items:center;
+
+    margin-top:7px;
+
+}
+
+.ai-insert-sel,
+.ai-insert-copy{
+
+    font-size:11px;
+
+    padding:2px 6px;
+
+    border:1px solid #cbd5e1;
+
+    border-radius:6px;
+
+    background:#f8fafc;
+
+    color:#0F4C81;
+
+    cursor:pointer;
+
+}
+
+.ai-insert-copy:hover,
+.ai-insert-sel:hover{
+
+    background:#eef2ff;
+
+}
+
+/* Brief green flash on the field an answer was inserted into. */
+.ai-filled{
+
+    outline:2px solid #22c55e;
+
+    outline-offset:2px;
+
+    background:#f0fdf4 !important;
+
+    transition:background .2s;
+
+}
+
+.ai-msg.error{
+
+    align-self:flex-start;
+
+    background:#fff5f5;
+
+    border:1px solid #fca5a5;
+
+    color:#b91c1c;
+
+}
+
+.ai-msg.info{
+
+    align-self:center;
+
+    background:transparent;
+
+    color:#64748b;
+
+    font-size:12px;
+
+    text-align:center;
+
+}
+
+.ai-typing{
+
+    align-self:flex-start;
+
+    color:#64748b;
+
+    font-size:13px;
+
+    font-style:italic;
+
+}
+
+.ai-input-row{
+
+    display:flex;
+
+    gap:8px;
+
+    padding:10px;
+
+    border-top:1px solid #e2e8f0;
+
+    background:#fff;
+
+    align-items:flex-end;
+
+}
+
+/* Attach a photo / file */
+.ai-attach-btn{
+
+    border:none;
+
+    background:#eef2ff;
+
+    color:#0F4C81;
+
+    font-size:18px;
+
+    width:40px;
+
+    height:40px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    flex-shrink:0;
+
+}
+
+.ai-attach-btn:hover{
+
+    background:#e0e7ff;
+
+}
+
+.ai-attach-bar{
+
+    padding:8px 10px 0;
+
+}
+
+.ai-att-pending{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:6px;
+
+    background:#f1f5f9;
+
+    border:1px solid #cbd5e1;
+
+    border-radius:8px;
+
+    padding:4px 6px;
+
+    max-width:100%;
+
+    font-size:12px;
+
+    color:#334155;
+
+}
+
+.ai-att-name{
+
+    max-width:180px;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    white-space:nowrap;
+
+}
+
+.ai-att-remove{
+
+    border:none;
+
+    background:transparent;
+
+    color:#b91c1c;
+
+    font-size:16px;
+
+    line-height:1;
+
+    padding:0 2px;
+
+    cursor:pointer;
+
+}
+
+.ai-att-thumb{
+
+    max-width:46px;
+
+    max-height:46px;
+
+    border-radius:6px;
+
+    object-fit:cover;
+
+    display:block;
+
+}
+
+.ai-att-chip{
+
+    margin-top:6px;
+
+}
+
+.ai-att-chip .ai-att-thumb{
+
+    max-width:130px;
+
+    max-height:130px;
+
+}
+
+.ai-input-row textarea{
+
+    flex:1;
+
+    resize:none;
+
+    max-height:120px;
+
+    padding:9px 11px;
+
+    border:1px solid #cbd5e1;
+
+    border-radius:8px;
+
+    font-family:inherit;
+
+    font-size:13px;
+
+    line-height:1.4;
+
+    outline:none;
+
+}
+
+.ai-input-row textarea:focus{
+
+    border-color:#2563EB;
+
+}
+
+/* Tall enough for the two-line placeholder ("Type your doubt (English or
+   Tanglish) and press Enter..."). At rows="1" the box was 36px inside but the
+   placeholder needs 54px, so its second line was cut off. min-height also
+   wins over any inline height the auto-grow script sets. */
+.ai-input-row textarea{
+
+    min-height:56px;
+
+}
+
+.ai-send{
+
+    border:none;
+
+    background:#10a37f;
+
+    color:#fff;
+
+    width:42px;
+
+    border-radius:8px;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+}
+
+.ai-send:hover{
+
+    background:#0e8e6e;
+
+}
+
+.ai-send:disabled{
+
+    opacity:.5;
+
+    cursor:not-allowed;
+
+}
+
+@media print{
+
+    .ai-toggle,
+    .ai-panel{
+
+        display:none !important;
+
+    }
+
+}
+
+
+/*==================================================
+
+AI Assistant - free ChatGPT launcher
+
+===================================================*/
+
+.ai-launch{
+
+    padding:16px 14px;
+
+    border-bottom:1px solid #e2e8f0;
+
+    background:#f8fbff;
+
+}
+
+.ai-launch-text{
+
+    font-size:13px;
+
+    line-height:1.5;
+
+    color:#1f2937;
+
+    margin-bottom:10px;
+
+}
+
+.ai-quick{
+
+    width:100%;
+
+    resize:none;
+
+    padding:9px 11px;
+
+    border:1px solid #cbd5e1;
+
+    border-radius:8px;
+
+    font-family:inherit;
+
+    font-size:13px;
+
+    line-height:1.4;
+
+    outline:none;
+
+    margin-bottom:10px;
+
+}
+
+.ai-quick:focus{
+
+    border-color:#10a37f;
+
+}
+
+.ai-openchat-btn{
+
+    width:100%;
+
+    border:none;
+
+    background:#10a37f;
+
+    color:#fff;
+
+    padding:11px;
+
+    border-radius:8px;
+
+    font-family:'Times New Roman',Times,serif;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+}
+
+.ai-openchat-btn:hover{
+
+    background:#0e8e6e;
+
+}
+
+
+/*==================================================
+
+Test Result data table (Excel-like)
+
+===================================================*/
+
+/* The data tables are attached to the page border like every other block (the
+   approval table already was). Only the heading, tool buttons and note tools
+   keep a small inset; the table itself spans edge to edge. */
+.result-table-wrap{
+
+    /* 10px under the table - the same gap every text section leaves under its
+       last line before the next bar (it was 14px). */
+    padding:0 0 10px;
+
+}
+
+.result-table-wrap #resultTables > * > :not(table):not(.editor){
+
+    margin-left:14px;
+
+    margin-right:14px;
+
+}
+
+/* Attached to the frame, so the frame IS the table's outer left and right
+   line: the table draws no left edge, and the cells on its right edge
+   (marked .edge-right by markBarRules(), which handles merged cells) draw no
+   right edge - otherwise each would print on top of the frame as a double. */
+.result-table-wrap .data-table{
+
+    border-left:0;
+
+}
+
+.result-table-wrap .data-table .edge-right{
+
+    border-right:0;
+
+}
+
+/* Empty text boxes in the result area are hidden for the PDF only (set by
+   hideScreenOnly), so a blank sentence or heading leaves no gap. */
+.pdf-empty-hidden{
+
+    display:none !important;
+
+}
+
+/* In the PDF a text box that HAS text is exactly as tall as its text, so every
+   section has the same space above and below its words. The minimum heights
+   (Observation 70px, Recommendation 46px, ...) are typing room on screen; in
+   the PDF they left one line of text followed by a big blank (measured 46px
+   under Observation, 22px under Recommendation, 10px elsewhere). Empty boxes
+   keep their minimum height as writing space. Set by hideScreenOnly. */
+.pdf-has-text{
+
+    min-height:0 !important;
+
+}
+
+.table-tools{
+
+    display:flex;
+
+    gap:6px;
+
+    margin-bottom:8px;
+
+    flex-wrap:wrap;
+
+}
+
+.table-tools button{
+
+    border:1px solid #cbd5e1;
+
+    background:#f1f5f9;
+
+    color:#0F4C81;
+
+    font-family:'Times New Roman',Times,serif;
+
+    font-size:12px;
+
+    font-weight:600;
+
+    padding:4px 10px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+}
+
+.table-tools button:hover{
+
+    background:#e2e8f0;
+
+}
+
+/* Every line is drawn exactly once: the table draws its top and left edge, each
+   cell its right and bottom edge. html2canvas does not implement
+   border-collapse - it draws every cell's own four borders, so where two cells
+   met the PDF got two lines side by side (measured: doubled rows, 5-6px column
+   dividers). Same technique the RCA report's PDF tables already use. */
+.data-table{
+
+    width:100%;
+
+    border-collapse:separate;
+
+    border-spacing:0;
+
+    border-left:1px solid var(--line);
+
+    font-size:12px;
+
+}
+
+/* The top line is drawn by the first-row cells, not the table. When the table
+   drew it, the line and the blue header fill came from different elements and
+   rasterised on different pixel rows, leaving a hairline white gap between the
+   line and the blue - line, gap, bar again. From the same cell, they meet. */
+.data-table tr:first-child > th,
+.data-table tr:first-child > td,
+/* The signature table has no heading of its own, so its first row draws the
+   ONE line that separates it from the section above (markBarRules removes it
+   again if a heading ever sits directly above - see .line-above below). */
+.approval-table tr:first-child > th,
+.approval-table tr:first-child > td{
+
+    border-top:1px solid var(--line);
+
+}
+
+/* Directly under a section heading (marked by markBarRules): the heading's rule
+   IS the table's top line - drawing both printed them as a double line. */
+.data-table.line-above tr:first-child > th,
+.data-table.line-above tr:first-child > td,
+.approval-table.line-above tr:first-child > th,
+.approval-table.line-above tr:first-child > td{
+
+    border-top:0 !important;
+
+}
+
+.data-table th,
+.data-table td{
+
+    border:0;
+
+    border-right:1px solid var(--line);
+
+    border-bottom:1px solid var(--line);
+
+    padding:4px 8px;
+
+    text-align:center;
+
+    vertical-align:middle;
+
+    min-width:40px;
+
+    outline:none;
+
+}
+
+.data-table th{
+
+    background:#F2F2F2;
+
+    color:#000;
+
+    font-weight:700;
+
+}
+
+.data-table td:empty{
+
+    min-height:20px;
+
+}
+
+.data-table tr:nth-child(even) td{
+
+    background:#f8fbff;
+
+}
+
+
+/*==================================================
+
+Test Result: sentence box + Pass/Fail conclusion buttons
+
+===================================================*/
+
+.resulttext-box{
+
+    min-height:34px;
+
+}
+
+/* Space between the Pass and Fail buttons in the Conclusion header. */
+.section-title .auto-btn + .auto-btn{
+
+    margin-left:6px;
+
+}
+
+.auto-pass{
+
+    background:#fff;
+
+    color:#15803d;
+
+    border-color:#86c79b;
+
+}
+
+.auto-pass:hover{
+
+    background:#f0fdf4;
+
+}
+
+.auto-fail{
+
+    background:#fff;
+
+    color:#b91c1c;
+
+    border-color:#e6a2a2;
+
+}
+
+.auto-fail:hover{
+
+    background:#fef2f2;
+
+}
+
+
+/*==================================================
+
+Multiple result tables
+
+===================================================*/
+
+.result-table-block + .result-table-block{
+
+    margin-top:14px;
+
+}
+
+.tbl-remove{
+
+    color:#b91c1c !important;
+
+    border-color:#fca5a5 !important;
+
+}
+
+.tbl-remove:hover{
+
+    background:#fee2e2 !important;
+
+}
+
+.table-add-row{
+
+    margin-top:10px;
+
+}
+
+/* Screen-only button rows sit 14px in from the page frame, like the result
+   table's other controls - their dashed button edge used to land right on the
+   frame line ("+ Add text" under the result table, and the "+ Add Observation /
+   Approval section" rows that sit directly on the page). */
+.result-table-wrap > .table-add-row,
+.page-fit > .table-add-row,
+/* ...and the "Remove signature table" row inside the signatures card. */
+#approvalCard > .table-add-row{
+
+    padding-left:14px;
+
+    padding-right:14px;
+
+}
+
+/* Equal columns: the heading cells now carry a separator line of their own, and
+   with automatic widths that extra pixel moved the heading separators off the
+   ones in the row below - printing as two lines side by side. */
+.approval-table{ table-layout:fixed; }
+
+.table-add-btn{
+
+    border:1px dashed #94a3b8;
+
+    background:#fff;
+
+    color:#0F4C81;
+
+    font-family:'Times New Roman',Times,serif;
+
+    font-size:12px;
+
+    font-weight:600;
+
+    padding:6px 14px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+}
+
+.table-add-btn:hover{
+
+    background:#f1f5f9;
+
+}
+
+
+/*==================================================
+
+Table heading + optional Approval
+
+===================================================*/
+
+.table-heading{
+
+    font-weight:700;
+
+    font-size:12.5px;
+
+    color:#0F4C81;
+
+    padding:2px 2px 6px;
+
+    outline:none;
+
+}
+
+.table-heading:empty:before{
+
+    content:attr(data-placeholder);
+
+    color:#aaa;
+
+    font-weight:400;
+
+}
+
+.approval-remove{
+
+    background:#fee2e2;
+
+    color:#b91c1c;
+
+}
+
+.approval-remove:hover{
+
+    background:#fecaca;
+
+}
+
+
+/*==================================================
+
+Movable text blocks in Test Result
+
+===================================================*/
+
+#resultTables > div + div{
+
+    margin-top:12px;
+
+}
+
+.result-note{
+
+    min-height:28px;
+
+}
+
+
+/*==================================================
+
+Photo annotation (circles / arrows)
+
+===================================================*/
+
+.upload-area{
+
+    position:relative;
+
+}
+
+.photo-annot{
+
+    position:absolute;
+
+    /* Extends well past the stage on every side so circles and arrows can be
+       drawn OUTSIDE the photo box. A <canvas> is a replaced element, so it
+       ignores "right"/"bottom" when width/height are auto - we must give an
+       explicit size (calc) for the box to actually grow symmetrically. */
+    top:-110px;
+
+    left:-110px;
+
+    width:calc(100% + 220px);
+
+    height:calc(100% + 220px);
+
+    pointer-events:none;   /* only captures the mouse while a tool is active */
+
+    z-index:2;
+
+}
+
+.photo-toolbar{
+
+    display:flex;
+
+    gap:5px;
+
+    flex-wrap:wrap;
+
+    margin-bottom:6px;
+
+    /* The drawing canvas deliberately extends 110px past the stage on every side
+       (so circles can be drawn outside the photo) and is lifted to z-index 50
+       while a tool is on - which laid it straight over these buttons, so Undo,
+       Clear, Circle etc. stopped responding to clicks once you started drawing.
+       The toolbar sits above it: the buttons always win, and only the narrow
+       strip they occupy is not drawable. */
+    position:relative;
+
+    z-index:60;
+
+}
+
+/* The tools read as two groups - Picture (framing) and Marks (annotation) -
+   instead of one long jumbled row. */
+.photo-toolbar{ flex-direction:column; align-items:flex-start; gap:4px; }
+.photo-toolbar .pt-row{ display:flex; flex-wrap:wrap; align-items:center; gap:5px; }
+.photo-toolbar .tb-label{ min-width:46px; }
+
+.photo-toolbar .zoom-pct{
+    font-size:10.5px; font-weight:400; color:#64748b; text-align:center;
+    font-family:'Times New Roman',Times,serif;
+}
+.photo-toolbar .zoom-pct b{ font-weight:700; color:#334155; }
+.photo-toolbar .straighten{ display:flex; align-items:center; gap:4px; font-size:10.5px; color:#64748b; }
+.photo-toolbar .keep-inside{ display:flex; align-items:center; gap:4px; font-size:10.5px; color:#64748b; cursor:pointer; }
+.photo-toolbar .keep-inside input{ cursor:pointer; }
+/* The photo toolbar keeps its light background in dark mode, so these labels
+   must stay DARK text - the pale dark-theme colours were unreadable on it. */
+:root[data-theme="dark"] .photo-toolbar .keep-inside{ color:#334155; }
+:root[data-theme="dark"] .photo-toolbar .straighten{ color:#334155; }
+:root[data-theme="dark"] .photo-toolbar .zoom-pct{ color:#475569; }
+:root[data-theme="dark"] .photo-toolbar .zoom-pct b{ color:#1f2937; }
+:root[data-theme="dark"] .photo-toolbar .tb-label{ color:#475569; }
+.photo-toolbar .straighten input[type="range"]{ width:88px; }
+/* (An older dark-theme rule painted "Zoom" near-white here. The toolbar keeps a
+   light background in dark mode, so it was unreadable - the dark colours above
+   are the ones that apply.) */
+
+/* The rectangle you drag with Crop. Removed as soon as the crop is applied. */
+.crop-rect{
+    position:absolute; z-index:40; pointer-events:none;
+    border:1px dashed var(--primary); background:rgba(15,76,129,.14);
+}
+
+.photo-toolbar button{
+
+    border:1px solid #cbd5e1;
+
+    background:#f1f5f9;
+
+    color:#0F4C81;
+
+    font-family:'Times New Roman',Times,serif;
+
+    font-size:11px;
+
+    font-weight:600;
+
+    padding:3px 8px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+}
+
+.photo-toolbar button:hover{
+
+    background:#e2e8f0;
+
+}
+
+.photo-toolbar button.tool-active{
+
+    background:#0F4C81;
+
+    color:#fff;
+
+    border-color:#0F4C81;
+
+}
+
+
+/*==================================================
+
+Logo adjust button
+
+===================================================*/
+
+.logoAdjustBtn{
+
+    position:absolute;
+
+    top:4px;
+
+    right:4px;
+
+    font-size:10px;
+
+    padding:2px 6px;
+
+    border:none;
+
+    background:var(--primary);
+
+    color:#fff;
+
+    border-radius:5px;
+
+    cursor:pointer;
+
+    z-index:3;
+
+}
+
+.logoAdjustBtn.tool-active{
+
+    background:#16A34A;
+
+}
+
+/*==================================================
+
+PDF preview window (test report + RCA report)
+
+===================================================*/
+
+.pdfprev{
+    position:fixed; inset:0; z-index:2000;
+    background:rgba(15,23,42,.55);
+    display:flex; align-items:center; justify-content:center;
+    padding:2vh 2vw;
+    font-family:'Times New Roman',Times,serif;
+}
+.pdfprev-box{
+    background:#fff; width:min(1000px,100%); height:100%;
+    border-radius:14px; overflow:hidden;
+    display:flex; flex-direction:column;
+    box-shadow:0 24px 60px rgba(0,0,0,.35);
+}
+.pdfprev-head{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:10px 14px; color:#fff;
+    background:linear-gradient(90deg,#0F4C81,#2563EB);
+}
+.pdfprev-title{
+    font-weight:700; font-size:15px; min-width:0;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.pdfprev-actions{ display:flex; gap:8px; flex-shrink:0; }
+.pdfprev-save{
+    border:none; border-radius:8px; padding:8px 14px; cursor:pointer;
+    font-family:'Times New Roman',Times,serif; font-size:13.5px; font-weight:700;
+    color:#fff; background:#047857;
+}
+.pdfprev-save:disabled{ opacity:.55; cursor:progress; }
+.pdfprev-x{
+    border:none; border-radius:8px; width:34px; cursor:pointer;
+    font-size:16px; color:#fff; background:rgba(255,255,255,.18);
+}
+.pdfprev-body{ position:relative; flex:1; min-height:0; background:#525659; }
+.pdfprev-frame{ display:block; width:100%; height:100%; border:0; background:#525659; }
+.pdfprev-msg{
+    position:absolute; inset:0; padding:20px;
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    color:#fff; font-size:15px; text-align:center;
+}
+.pdfprev-msg[hidden], .pdfprev-frame[hidden]{ display:none; }
+.pdfprev-msg{ z-index:1; }
+/* The pages of the real PDF, drawn as white A4 sheets on grey - how a PDF
+   viewer shows the downloaded file. */
+.pdfprev-pages{
+    position:absolute; inset:0; overflow:auto;
+    padding:18px 24px 8px; background:#525659;
+}
+.pdfprev-pages[hidden]{ display:none; }
+.pdfprev-page{
+    display:block; margin:0 auto 18px;
+    max-width:100%; height:auto;
+    background:#fff; box-shadow:0 2px 12px rgba(0,0,0,.5);
+}
+.pdfprev-count{ font-weight:400; opacity:.9; }
+.pdfprev-msg .spin{
+    width:22px; height:22px; flex-shrink:0;
+    border:3px solid rgba(255,255,255,.3); border-top-color:#fff;
+    border-radius:50%; animation:btnspin .8s linear infinite;
+}
+.pdfprev-msg.err{ color:#fecaca; }
+.pdfprev-msg a{ color:#bfdbfe; }
+.pdfprev-foot{ background:#fff; font-size:13px; }
+.pdfprev-foot:empty{ display:none; }
+.pdfprev-foot.err{ padding:8px 14px; color:#b91c1c; }
+/* PDF / Word switch in the RCA preview */
+.pdfprev-tabs{
+    display:flex; gap:3px; flex-shrink:0; padding:3px;
+    border-radius:9px; background:rgba(255,255,255,.16);
+}
+.pdfprev-tab{
+    border:none; border-radius:7px; padding:6px 13px; cursor:pointer;
+    font-family:'Times New Roman',Times,serif; font-size:13.5px; font-weight:700;
+    color:#fff; background:transparent;
+}
+.pdfprev-tab:hover{ background:rgba(255,255,255,.14); }
+.pdfprev-tab.on{ background:#fff; color:#0F4C81; }
+.pdfprev-tab:focus-visible, .pdfprev-save:focus-visible, .pdfprev-x:focus-visible{
+    outline:2px solid #fff; outline-offset:1px;
+}
+.pdfprev-docx{ display:block; }
+@media (max-width:640px){
+    .pdfprev-head{ flex-wrap:wrap; }
+    .pdfprev-title{ flex-basis:100%; }
+}
+
+/*==================================================
+
+Inline product / test detail fields (label : value on one line)
+
+===================================================*/
+
+.grid2 > div{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+}
+
+.grid2 label{
+
+    display:inline-block;
+
+    margin:0;
+
+    flex-shrink:0;
+
+    white-space:nowrap;
+
+}
+
+.grid2 label::after{
+
+    content:" :";
+
+}
+
+.grid2 .field,
+.grid2 .date-wrap{
+
+    flex:0 1 auto;
+
+    padding-left:0;
+
+}
+
+/*==================================================
+
+Borderless look: content starts ~5 points from the left
+
+===================================================*/
+
+/* Values sit on a light fill-in rule (classic form look) that extends to the
+   cell edge - cleaner and more professional than a grey box. */
+.grid2 .field{
+
+    background:transparent;
+
+    flex:1 1 auto;
+
+    min-width:60px;
+
+    /* Same colour as every other rule in the report. It used to be #c9c9c9,
+       which printed as 10 washed-out grey underlines among 58 black ones. */
+    border-bottom:1px solid var(--line);
+
+    padding-bottom:1px;
+
+}
+
+.grid2 .field:focus{
+
+    border-bottom-color:var(--secondary);
+
+}
+
+/* (5-point text spacing removed) */
+
+/*==================================================
+
+No dangling divider line under the last section on a page
+
+===================================================*/
+
+.page-fit > .section-card:last-child{
+
+    border-bottom:none;
+
+}
+
+#approvalCard{
+
+    border-bottom:none;
+
+}
+
+/*==================================================
+
+Force Times New Roman for the entire report
+
+===================================================*/
+
+#report, #report * {
+
+    font-family:'Times New Roman', Times, serif !important;
+
+}
+
+/* ==========================================================
+   TRENDING UI LAYER  (app shell only - never the #report)
+   A modern, softer, more colourful skin for the sidebar, home,
+   Product & Test Cases page, toolbar, modals and AI panel.
+   The printed report keeps its formal look above.
+========================================================== */
+
+:root{
+    --ui-accent:#4f46e5;      /* indigo */
+    --ui-accent2:#2563eb;     /* blue   */
+    --ui-accent3:#06b6d4;     /* cyan   */
+    --ui-ink:#0f172a;
+    --ui-muted:#64748b;
+    --ui-surface:#ffffff;
+    --ui-ring:rgba(79,70,229,.16);
+    --ui-shadow:0 10px 30px rgba(15,23,42,.10);
+    --ui-shadow-sm:0 2px 10px rgba(15,23,42,.06);
+    --ui-font:'Times New Roman',Times,serif;
+}
+
+/* Soft, layered background for the whole workspace. */
+body{
+    background:
+        radial-gradient(900px 500px at 12% -8%, rgba(79,70,229,.10), transparent 60%),
+        radial-gradient(900px 500px at 108% 0%, rgba(6,182,212,.10), transparent 55%),
+        linear-gradient(180deg,#f7f9fc 0%, #eef2f8 100%) !important;
+    background-attachment:fixed;
+}
+
+/* ---------- Sidebar ---------- */
+#sidebar{
+    background:linear-gradient(180deg,#0b2140 0%, #0e2c53 55%, #123a63 100%);
+    box-shadow:6px 0 24px rgba(2,12,27,.18);
+    border-right:1px solid rgba(255,255,255,.06);
+}
+.side-brand{
+    display:flex; align-items:center; gap:9px;
+    letter-spacing:.2px;
+    padding-bottom:14px;
+    margin-bottom:14px;
+    border-bottom:1px solid rgba(255,255,255,.10);
+}
+.side-link{
+    position:relative;
+    display:flex; align-items:center; gap:10px;
+    color:#c3d0e4;
+    transition:background .18s, color .18s, transform .18s;
+}
+.side-link:hover{ background:rgba(255,255,255,.08); color:#fff; transform:translateX(2px); }
+.side-link.active{
+    background:linear-gradient(90deg, rgba(79,70,229,.95), rgba(37,99,235,.92));
+    color:#fff; font-weight:600;
+    box-shadow:0 6px 16px rgba(37,99,235,.35);
+}
+.side-link.active::before{
+    content:""; position:absolute; left:-12px; top:8px; bottom:8px;
+    width:4px; border-radius:0 4px 4px 0; background:#67e8f9;
+}
+
+/* ---------- Home / hero ---------- */
+.home-hero{ padding:56px 20px 6px; }
+.home-hero h1{
+    font-size:42px; font-weight:800; letter-spacing:-.5px;
+    background:linear-gradient(90deg,#4f46e5,#2563eb 45%,#06b6d4);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:transparent;
+}
+.home-sub{ font-size:15.5px; }
+
+.home-card{
+    background:rgba(255,255,255,.85);
+    backdrop-filter:blur(6px);
+    border:1px solid rgba(226,232,240,.9);
+    border-radius:18px;
+    padding:24px;
+    box-shadow:var(--ui-shadow-sm);
+    overflow:hidden;
+}
+.home-card::after{
+    content:""; position:absolute; inset:0; border-radius:18px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.6); pointer-events:none;
+}
+.home-card{ position:relative; }
+.home-card:hover{
+    box-shadow:0 18px 40px rgba(37,99,235,.18);
+    border-color:transparent; transform:translateY(-4px);
+}
+.home-ico{
+    font-size:24px;
+    width:52px; height:52px; display:flex; align-items:center; justify-content:center;
+    border-radius:14px; margin-bottom:6px;
+    background:linear-gradient(135deg, rgba(79,70,229,.14), rgba(6,182,212,.14));
+    box-shadow:inset 0 0 0 1px rgba(79,70,229,.12);
+}
+.home-card b{ font-size:16.5px; }
+
+/* ---------- Product & Test Cases page ---------- */
+.cases-page h1{
+    background:linear-gradient(90deg,#4f46e5,#2563eb);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:transparent;
+    font-weight:800; font-size:30px;
+}
+.cases-form input{
+    border:1px solid #d5deea; border-radius:12px; padding:12px 14px;
+    background:#fff; box-shadow:var(--ui-shadow-sm);
+    transition:border-color .16s, box-shadow .16s;
+}
+.cases-form input:focus{
+    outline:none; border-color:var(--ui-accent);
+    box-shadow:0 0 0 4px var(--ui-ring);
+}
+/* "List test cases" is the primary action of this page; the rest are outlined. */
+#tcList{
+    background:var(--primary);
+    color:#fff; border:1px solid var(--primary); border-radius:8px;
+    padding:12px 18px; font-weight:600; font-size:14px; cursor:pointer;
+    transition:background .15s, border-color .15s;
+}
+#tcList:hover{ background:#0c3f6c; border-color:#0c3f6c; }
+#tcFetch{
+    background:#fff !important;
+    color:#1f2937 !important; border:1px solid #c3ccd8; border-radius:8px;
+    padding:12px 18px; font-weight:600; font-size:14px; cursor:pointer;
+    transition:background .15s, border-color .15s;
+}
+#tcList{ font-family:var(--ui-font); }
+#tcList:hover, #tcFetch:hover{ transform:translateY(-2px); filter:brightness(1.05); }
+#tcList:active, #tcFetch:active{ transform:translateY(0); }
+
+.tc-case{
+    border:1px solid #dbe3ee; background:#fff; border-radius:999px;
+    box-shadow:var(--ui-shadow-sm); transition:all .15s;
+}
+.tc-case:hover{ background:#eef2ff; border-color:var(--ui-accent); transform:translateY(-1px); }
+.tc-case.active{ background:linear-gradient(135deg,#4f46e5,#2563eb); border-color:transparent; }
+
+#tcAllBtn{
+    border:1px solid rgba(79,70,229,.35);
+    background:linear-gradient(135deg, rgba(79,70,229,.10), rgba(6,182,212,.10));
+    color:#3730a3; border-radius:12px; font-weight:600;
+}
+#tcAllBtn:hover{ background:rgba(79,70,229,.16); }
+
+.cases-tip{ border-radius:12px; box-shadow:var(--ui-shadow-sm); }
+.cases-result-wrap, .tc-all-item{ box-shadow:var(--ui-shadow-sm); }
+.tc-all-bar{ background:linear-gradient(90deg,#0b2140,#123a63); }
+
+/* ---------- Report toolbar (buttons above the pages) ---------- */
+.toolbar{
+    background:rgba(255,255,255,.72);
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(226,232,240,.8);
+    border-radius:16px;
+    padding:10px 14px;
+    width:fit-content;
+    margin:0 auto 20px;
+    box-shadow:var(--ui-shadow);
+    gap:10px;
+    /* Never wider than the page area: in a narrow window the buttons wrap onto a
+       second row instead of pushing the whole app sideways. */
+    max-width:100%;
+    flex-wrap:wrap;
+    box-sizing:border-box;
+}
+.toolbar button{
+    border-radius:8px; padding:10px 18px; font-family:var(--ui-font);
+    transition:background .15s, border-color .15s;
+}
+/* One button system: outlined by default, the screen's primary action filled.
+   (This block used to give every toolbar button its own gradient.) */
+#saveDraft, #previewPDF, #loadDraft, #myReports, #addPage, #newReport{
+    background:#fff; color:#1f2937; border:1px solid #c3ccd8;
+}
+#downloadPDF{ background:var(--primary); color:#fff; border:1px solid var(--primary); }
+#newReport{ color:#8a1414; }
+
+/* ---------- AI floating button + panel ---------- */
+.ai-toggle{
+    border-radius:999px !important;
+    background:linear-gradient(135deg,#4f46e5,#06b6d4) !important;
+    box-shadow:0 12px 28px rgba(37,99,235,.40) !important;
+    transition:transform .16s, box-shadow .16s;
+}
+.ai-toggle:hover{ transform:translateY(-3px) scale(1.03); }
+.ai-panel{ border-radius:18px 0 0 18px; box-shadow:-14px 0 40px rgba(2,12,27,.22); }
+
+/* ---------- Nice thin scrollbars for the chrome ---------- */
+#sidebar::-webkit-scrollbar, #main::-webkit-scrollbar, .ai-messages::-webkit-scrollbar{ width:9px; height:9px; }
+#sidebar::-webkit-scrollbar-thumb{ background:rgba(255,255,255,.18); border-radius:8px; }
+#main::-webkit-scrollbar-thumb, .ai-messages::-webkit-scrollbar-thumb{ background:rgba(100,116,139,.35); border-radius:8px; }
+
+/* Respect users who prefer less motion. */
+@media (prefers-reduced-motion: reduce){
+    .side-link, .home-card, .toolbar button, #tcList, #tcFetch, .tc-case, .ai-toggle{ transition:none !important; }
+    .home-card:hover, .ai-toggle:hover{ transform:none !important; }
+}
+
+/* ==========================================================
+   3D BUTTONS  (tactile, glossy, with a coloured lip + press)
+   Applied to the app-shell buttons only (never report buttons),
+   so the exported PDF stays clean.
+========================================================== */
+
+/* The tactile 3D treatment is kept for the AI send button only. The document
+   tools use the flat outlined / filled system above, so nothing competes with
+   the one primary action on each screen. */
+.ai-send{
+    position:relative;
+    border:none;
+    color:#fff;
+    font-weight:700;
+    letter-spacing:.2px;
+    /* top gloss + hard 3D lip + soft ambient shadow */
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.45),
+        inset 0 -2px 0 rgba(0,0,0,.18),
+        0 5px 0 rgba(0,0,0,.20),
+        0 9px 18px rgba(15,23,42,.22) !important;
+    transition:transform .09s ease, box-shadow .09s ease, filter .15s ease;
+}
+.ai-send:hover{
+    transform:translateY(-1px);
+    filter:brightness(1.06);
+}
+/* Press the button DOWN onto its lip. */
+.ai-send:active{
+    transform:translateY(4px);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.35),
+        inset 0 -1px 0 rgba(0,0,0,.18),
+        0 1px 0 rgba(0,0,0,.20),
+        0 3px 8px rgba(15,23,42,.20) !important;
+}
+
+/* Give the lighter/outline buttons a solid colour so the 3D reads well. */
+#tcAllBtn{
+    background:linear-gradient(135deg,#6366f1,#4f46e5) !important;
+    color:#fff !important;
+}
+#tcRefresh{ background:linear-gradient(135deg,#0ea5e9,#0284c7) !important; color:#fff !important; }
+#tcDownload{ background:linear-gradient(135deg,#059669,#10b981) !important; color:#fff !important; }
+.reports-save{ background:linear-gradient(135deg,#4f46e5,#2563eb) !important; }
+
+/* Chunky 3D pill for the floating Ask-AI button. */
+.ai-toggle{
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.5),
+        inset 0 -3px 0 rgba(0,0,0,.20),
+        0 8px 0 rgba(30,64,175,.35),
+        0 16px 30px rgba(37,99,235,.42) !important;
+}
+.ai-toggle:active{
+    transform:translateY(5px) scale(.99);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.4),
+        0 3px 0 rgba(30,64,175,.35),
+        0 6px 14px rgba(37,99,235,.4) !important;
+}
+
+/* 3D pill chips for the test-case list. */
+.tc-case{
+    box-shadow:0 3px 0 rgba(79,70,229,.18), 0 5px 12px rgba(15,23,42,.08) !important;
+}
+.tc-case:active{ transform:translateY(2px); box-shadow:0 1px 0 rgba(79,70,229,.18) !important; }
+.tc-case.active{ color:#fff !important; box-shadow:0 3px 0 rgba(30,64,175,.4), 0 6px 14px rgba(37,99,235,.3) !important; }
+
+/* ==========================================================
+   GLASSMORPHISM SKIN  (frosted glass over an aurora background)
+   App shell only - the printed #report stays formal.
+========================================================== */
+
+/* 1) Richer aurora so colour glows THROUGH the frosted panels. */
+body{
+    background:
+        radial-gradient(760px 520px at 8% -6%,  rgba(99,102,241,.34), transparent 60%),
+        radial-gradient(720px 520px at 102% 4%, rgba(6,182,212,.30),  transparent 58%),
+        radial-gradient(680px 620px at 82% 108%, rgba(236,72,153,.22), transparent 60%),
+        radial-gradient(700px 560px at 20% 112%, rgba(16,185,129,.20), transparent 60%),
+        linear-gradient(180deg,#eef2fb 0%, #e7edf7 100%) !important;
+    background-attachment:fixed !important;
+}
+
+/* 2) Sidebar = dark frosted glass (aurora blurs through it). */
+#sidebar{
+    background:linear-gradient(180deg, rgba(12,26,52,.72), rgba(15,42,74,.66)) !important;
+    -webkit-backdrop-filter:blur(20px) saturate(140%);
+    backdrop-filter:blur(20px) saturate(140%);
+    border-right:1px solid rgba(255,255,255,.14) !important;
+    box-shadow:6px 0 30px rgba(2,12,27,.22) !important;
+}
+
+/* 3) Frosted-glass surfaces. */
+.home-card,
+.toolbar,
+.cases-tip,
+.cases-result-wrap,
+.tc-all-item,
+.reports-box,
+.ai-panel{
+    background:rgba(255,255,255,.55) !important;
+    -webkit-backdrop-filter:blur(18px) saturate(150%);
+    backdrop-filter:blur(18px) saturate(150%);
+    border:1px solid rgba(255,255,255,.55) !important;
+    box-shadow:
+        0 10px 34px rgba(31,45,80,.16),
+        inset 0 1px 0 rgba(255,255,255,.65) !important;
+}
+.home-card{ border-radius:20px !important; }
+.reports-box{ border-radius:20px !important; }
+
+/* Card sheen: a soft light streak across the top of each glass card. */
+.home-card::before{
+    content:""; position:absolute; top:0; left:0; right:0; height:42%;
+    border-radius:20px 20px 60% 60%;
+    background:linear-gradient(180deg, rgba(255,255,255,.45), rgba(255,255,255,0));
+    pointer-events:none;
+}
+.home-card:hover{
+    box-shadow:0 22px 50px rgba(79,70,229,.24), inset 0 1px 0 rgba(255,255,255,.7) !important;
+    border-color:rgba(255,255,255,.8) !important;
+}
+
+/* 4) Frosted input fields. */
+.cases-form input{
+    background:rgba(255,255,255,.6) !important;
+    -webkit-backdrop-filter:blur(8px);
+    backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,.7) !important;
+    box-shadow:inset 0 1px 2px rgba(255,255,255,.7), 0 4px 14px rgba(31,45,80,.08) !important;
+}
+.cases-form input:focus{
+    border-color:rgba(99,102,241,.75) !important;
+    box-shadow:0 0 0 4px rgba(99,102,241,.18), inset 0 1px 2px rgba(255,255,255,.6) !important;
+}
+.cases-form input::placeholder{ color:#7b8494; }
+
+/* 5) Glassy chips. */
+.tc-case{
+    background:rgba(255,255,255,.62) !important;
+    -webkit-backdrop-filter:blur(8px);
+    backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,.7) !important;
+}
+.tc-case.active{
+    background:linear-gradient(135deg, rgba(99,102,241,.92), rgba(37,99,235,.9)) !important;
+    border-color:rgba(255,255,255,.5) !important;
+}
+
+/* 6) The gradient sheen is for the AI send button only. The document tools use
+   the one button system: outlined by default, one filled primary per screen.
+   (This block used to paint every toolbar / test-case button its own gradient,
+   which is what made them all compete for attention.) */
+.ai-send{
+    background-image:linear-gradient(180deg, rgba(255,255,255,.28), rgba(255,255,255,0) 46%),
+                     var(--btn-grad, linear-gradient(135deg,#4f46e5,#2563eb)) !important;
+    border:1px solid rgba(255,255,255,.35) !important;
+}
+
+/* 7) AI panel + messages as frosted glass. */
+.ai-panel{ border-left:1px solid rgba(255,255,255,.4) !important; }
+.ai-messages{ background:transparent !important; }
+.reports-modal{ background:rgba(15,23,42,.35) !important; -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px); }
+
+/* Older browsers with no backdrop-filter: fall back to a solid light panel. */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+    .home-card,.toolbar,.cases-result-wrap,.tc-all-item,.reports-box,.ai-panel{ background:rgba(255,255,255,.92) !important; }
+    #sidebar{ background:linear-gradient(180deg,#0b2140,#123a63) !important; }
+}
+
+/* ==========================================================
+   GLASS: chat bubbles + saved-report rows
+========================================================== */
+.ai-msg.bot{
+    background:rgba(255,255,255,.6) !important;
+    -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,.6) !important;
+    box-shadow:0 6px 18px rgba(31,45,80,.12);
+}
+.ai-msg.user{
+    background:linear-gradient(135deg, rgba(99,102,241,.95), rgba(37,99,235,.92)) !important;
+    box-shadow:0 6px 16px rgba(37,99,235,.30);
+}
+.reports-row{
+    background:rgba(255,255,255,.55) !important;
+    -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,.55) !important;
+    border-radius:12px !important;
+    box-shadow:0 4px 14px rgba(31,45,80,.10);
+    transition:transform .15s, box-shadow .15s;
+}
+.reports-row:hover{ transform:translateY(-1px); box-shadow:0 10px 24px rgba(31,45,80,.16); }
+
+/* ==========================================================
+   ANIMATED AURORA  (slowly drifting colour blobs behind the glass)
+========================================================== */
+body{
+    background:linear-gradient(180deg,#eef2fb 0%, #e7edf7 100%) !important;
+}
+body::before{
+    content:""; position:fixed; inset:-18%; z-index:-1; pointer-events:none;
+    background:
+        radial-gradient(600px 520px at 20% 18%, rgba(99,102,241,.40), transparent 60%),
+        radial-gradient(600px 520px at 82% 22%, rgba(6,182,212,.34),  transparent 60%),
+        radial-gradient(620px 560px at 76% 86%, rgba(236,72,153,.26), transparent 60%),
+        radial-gradient(600px 560px at 22% 82%, rgba(16,185,129,.24), transparent 60%);
+    animation:auroraDrift 36s ease-in-out infinite alternate;
+    will-change:transform;
+}
+@keyframes auroraDrift{
+    0%   { transform:translate3d(-2%,-1%,0) scale(1.05) rotate(0deg); }
+    50%  { transform:translate3d(2%, 2%,0)  scale(1.13) rotate(4deg); }
+    100% { transform:translate3d(1%,-2%,0)  scale(1.07) rotate(-3deg); }
+}
+@media (prefers-reduced-motion: reduce){
+    body::before{ animation:none; }
+}
+
+/* ==========================================================
+   DARK GLASS THEME  (toggle) - chrome only; report stays light
+========================================================== */
+:root[data-theme="dark"] body{
+    background:linear-gradient(180deg,#0a0f1e 0%, #0c1326 100%) !important;
+    color:#e5e9f2;
+}
+:root[data-theme="dark"] body::before{
+    background:
+        radial-gradient(620px 540px at 18% 16%, rgba(99,102,241,.42), transparent 60%),
+        radial-gradient(600px 540px at 84% 20%, rgba(6,182,212,.34),  transparent 60%),
+        radial-gradient(640px 580px at 78% 88%, rgba(168,85,247,.30), transparent 60%),
+        radial-gradient(600px 560px at 20% 84%, rgba(16,185,129,.22), transparent 60%);
+}
+:root[data-theme="dark"] #sidebar{
+    background:linear-gradient(180deg, rgba(9,14,28,.72), rgba(12,20,40,.66)) !important;
+    border-right:1px solid rgba(255,255,255,.10) !important;
+}
+/* Frosted DARK glass surfaces. */
+:root[data-theme="dark"] .home-card,
+:root[data-theme="dark"] .toolbar,
+:root[data-theme="dark"] .cases-tip,
+:root[data-theme="dark"] .cases-result-wrap,
+:root[data-theme="dark"] .tc-all-item,
+:root[data-theme="dark"] .reports-box,
+:root[data-theme="dark"] .ai-panel,
+:root[data-theme="dark"] .ai-msg.bot,
+:root[data-theme="dark"] .reports-row{
+    background:rgba(20,28,48,.55) !important;
+    border:1px solid rgba(255,255,255,.12) !important;
+    box-shadow:0 10px 34px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.10) !important;
+    color:#e5e9f2 !important;
+}
+:root[data-theme="dark"] .home-card b{ color:#c7d2fe !important; }
+:root[data-theme="dark"] .home-card small,
+:root[data-theme="dark"] .home-sub,
+:root[data-theme="dark"] .cases-intro,
+:root[data-theme="dark"] .cases-note{ color:#9aa6bd !important; }
+:root[data-theme="dark"] .cases-tip{ color:#e5e9f2 !important; }
+:root[data-theme="dark"] .ai-msg.bot{ color:#e5e9f2 !important; }
+:root[data-theme="dark"] .cases-form input{
+    background:rgba(15,22,40,.6) !important;
+    border:1px solid rgba(255,255,255,.14) !important;
+    color:#e5e9f2 !important;
+}
+:root[data-theme="dark"] .cases-form input::placeholder{ color:#8b97ae; }
+:root[data-theme="dark"] .tc-case{
+    background:rgba(20,28,48,.6) !important;
+    border:1px solid rgba(255,255,255,.14) !important;
+    color:#dfe6f3 !important;
+}
+:root[data-theme="dark"] .home-card::before{ opacity:.35; }
+
+/* ==========================================================
+   THEME TOGGLE button (created by JS, sits bottom-left)
+========================================================== */
+.theme-toggle{
+    position:fixed; left:18px; bottom:18px; z-index:1200;
+    display:flex; align-items:center; gap:8px;
+    padding:10px 14px; border:none; border-radius:999px; cursor:pointer;
+    font-family:var(--ui-font); font-size:13px; font-weight:700; color:#0f172a;
+    background:rgba(255,255,255,.6);
+    -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+    border:1px solid rgba(255,255,255,.6);
+    box-shadow:0 8px 22px rgba(31,45,80,.18);
+    transition:transform .15s, box-shadow .15s;
+}
+.theme-toggle:hover{ transform:translateY(-2px); }
+:root[data-theme="dark"] .theme-toggle{
+    background:rgba(20,28,48,.6); color:#e5e9f2; border-color:rgba(255,255,255,.14);
+}
+/* ============================================================
+   DARK MODE - KEEP DOCUMENT TEXT READABLE
+   ------------------------------------------------------------
+   The report pages (PVT report, RCA/8D report, the test-case
+   table) are PRINTED DOCUMENTS: their paper stays white in dark
+   mode, exactly as it exports to Word and PDF.
+
+   The dark theme was originally written for a dark report, so it
+   set light text (#e5e9f2 / #c7d2fe) on those elements. Once the
+   paper became white, that left light text on a white page -
+   contrast around 1.2:1, i.e. invisible while typing.
+
+   These rules put the text back to document black on every white
+   surface. They are last in the file so they win on order.
+   ============================================================ */
+
+/* -- the PVT report page -- */
+:root[data-theme="dark"] .page,
+:root[data-theme="dark"] .page .field,
+:root[data-theme="dark"] .page .editor,
+:root[data-theme="dark"] .page td,
+:root[data-theme="dark"] .page th,
+:root[data-theme="dark"] .page li,
+:root[data-theme="dark"] .page span,
+:root[data-theme="dark"] .page div,
+:root[data-theme="dark"] .page p,
+:root[data-theme="dark"] .editor{
+    color:#111;
+}
+:root[data-theme="dark"] .editor:empty:before{ color:#9aa3b2; }
+
+/* The test report's section bar is a BLUE gradient carrying white text by
+   design. The blanket ".page div / .page span -> #111" rule above is (0,3,1)
+   and beats the plain ".section-title{color:#fff}" (0,1,0), so in dark mode it
+   painted near-black text onto that dark blue bar - about 2.9:1, unreadable.
+   Restore white here at (0,4,1) so the bar wins. Same treatment the RCA
+   report's .rca-8d-h bar already gets below. */
+/* The bar is white now, so the heading takes the document's ink colour. White
+   text here painted white-on-white. */
+:root[data-theme="dark"] .page .section-title,
+:root[data-theme="dark"] .page .section-title span,
+:root[data-theme="dark"] .page .section-title div,
+:root[data-theme="dark"] .page .section-title b,
+:root[data-theme="dark"] .page .section-title i{
+    color:#000;
+}
+
+/* -- the RCA / 8D report -- */
+:root[data-theme="dark"] .rca-doc,
+:root[data-theme="dark"] .rca-doc-8d,
+:root[data-theme="dark"] .rca-doc-8d .rca-body,
+:root[data-theme="dark"] .rca-8d-title,
+:root[data-theme="dark"] .rca-8d-subh,
+:root[data-theme="dark"] .rca-8d-lbl,
+:root[data-theme="dark"] .rca-why-lbl,
+:root[data-theme="dark"] .rc-sl,
+:root[data-theme="dark"] .rca-8d-tbl th,
+:root[data-theme="dark"] .rca-8d-tbl td,
+:root[data-theme="dark"] .rca-8d-topbox th,
+:root[data-theme="dark"] .rca-8d-topbox td,
+:root[data-theme="dark"] .rca-8d-table th,
+:root[data-theme="dark"] .rca-8d-table td,
+:root[data-theme="dark"] .rca-rev th,
+:root[data-theme="dark"] .rca-rev td,
+:root[data-theme="dark"] .rca-8d-area,
+:root[data-theme="dark"] .rca-doc-8d li,
+:root[data-theme="dark"] .rca-doc-8d p,
+:root[data-theme="dark"] .rca-distrib-lbl,
+:root[data-theme="dark"] .rca-extra-lbl{
+    color:#111;
+}
+/* The label cells keep their light fill, so black reads on them. The numbered
+   section bar (.rca-8d-h) is deliberately a BLUE gradient with white text - it
+   is left alone, it already has strong contrast. */
+:root[data-theme="dark"] .rca-8d-subh,
+:root[data-theme="dark"] .rca-8d-lbl,
+:root[data-theme="dark"] .rca-why-lbl,
+:root[data-theme="dark"] .rca-8d-tbl th,
+:root[data-theme="dark"] .rca-8d-topbox th{
+    background:#eef2f7;
+}
+/* ".rca-sec h3" is (0,3,1) and was beating a plain ".rca-8d-h" (0,3,0), leaving
+   pale indigo text on the white page. Qualifying with .rca-doc-8d makes this
+   (0,4,0) so the intended blue bar + white text wins. */
+:root[data-theme="dark"] .rca-doc-8d .rca-8d-h,
+:root[data-theme="dark"] .rca-sec .rca-8d-h{
+    background:linear-gradient(135deg,#2563eb,#4f46e5);
+    color:#fff;
+}
+/* Header rows that are a solid blue bar with white text by design. The blanket
+   "document text is black" rule above had turned these black on blue. */
+:root[data-theme="dark"] .rca-isnot tr:first-child th,
+:root[data-theme="dark"] .rca-6m-table tr:first-child th,
+:root[data-theme="dark"] .page .data-table th,
+:root[data-theme="dark"] .page .approval-table th,
+:root[data-theme="dark"] .data-table th,
+:root[data-theme="dark"] .approval-table th{
+    background:#0F4C81; color:#fff;
+}
+/* "+ Add row" sits on the white page too */
+:root[data-theme="dark"] .rca-addrow{
+    background:#e8ecfb; color:#26306b; border-color:#b9c2ee;
+}
+/* the fishbone is drawn on white, so its labels must be dark */
+:root[data-theme="dark"] .rca-fish text,
+:root[data-theme="dark"] .fish-svg text{ fill:#111; }
+
+/* -- the all-test-cases table (white body) -- */
+:root[data-theme="dark"] .tc-all-table,
+:root[data-theme="dark"] .tc-all-table td,
+:root[data-theme="dark"] .tc-all-table li{
+    color:#111;
+}
+/* its heading row is a dark navy bar by design - keep the white text on it */
+:root[data-theme="dark"] .tc-all-table thead th{
+    background:linear-gradient(90deg,#0b2140,#123a63);
+    color:#fff;
+}
+/* Same fix in dark mode: ":root[data-theme=dark] .tc-all-table .c-std" (0,4,0)
+   beats the header rule above (0,3,2) and greys out the "Standard" heading. */
+:root[data-theme="dark"] .tc-all-table thead th.c-no,
+:root[data-theme="dark"] .tc-all-table thead th.c-std{ color:#fff; }
+
+/* -- stragglers found by the contrast audit -- */
+:root[data-theme="dark"] .rt-pct{ color:#e5e9f2; }      /* was dark grey on dark */
+:root[data-theme="dark"] .rca-redraw-fish{              /* white text on white page */
+    background:#2563eb; color:#fff; border-color:#1d4ed8;
+}
+:root[data-theme="dark"] .home-card .ico{ color:inherit; }
+
+/* ============================================================
+   ONE CONSISTENT LINE THROUGHOUT THE RCA / 8D REPORT
+   ------------------------------------------------------------
+   These tables use border-collapse:collapse, so a border on the
+   TABLE *plus* a border on the CELLS draws the outer edge twice.
+   The two rules also used different greys (#e2e8f0 vs #e6ebf2),
+   and the PDF override recoloured only the CELLS to black - so
+   the Rec. No / Rev. No box showed a doubled, mismatched line
+   both on screen and in the exported PDF.
+
+   Rule from here on: the CELLS draw every line, the table draws
+   none, and it is one colour at one width everywhere - on screen,
+   in dark mode (the paper stays white) and in the PDF.
+   ============================================================ */
+.rca-doc-8d .rca-8d-topbox,
+.rca-doc-8d .rca-8d-tbl,
+.rca-doc-8d .rca-8d-table,
+.rca-doc-8d .rca-rev,
+.rca-doc-8d .rca-summary,
+.rca-doc-8d .rca-head-table,
+.rca-doc-8d .rca-isnot,
+.rca-doc-8d .rca-6m-table{
+    border:0 !important;
+    border-collapse:collapse !important;
+}
+.rca-doc-8d .rca-8d-topbox th,  .rca-doc-8d .rca-8d-topbox td,
+.rca-doc-8d .rca-8d-tbl th,     .rca-doc-8d .rca-8d-tbl td,
+.rca-doc-8d .rca-8d-table th,   .rca-doc-8d .rca-8d-table td,
+.rca-doc-8d .rca-rev th,        .rca-doc-8d .rca-rev td,
+.rca-doc-8d .rca-summary th,    .rca-doc-8d .rca-summary td,
+.rca-doc-8d .rca-head-table th, .rca-doc-8d .rca-head-table td,
+.rca-doc-8d .rca-isnot th,      .rca-doc-8d .rca-isnot td,
+.rca-doc-8d .rca-6m-table th,   .rca-doc-8d .rca-6m-table td,
+.rca-doc-8d .rca-8d-area{
+    border:1px solid #b7c2d0 !important;
+}
+/* dark mode keeps the same document lines - the paper is still white */
+:root[data-theme="dark"] .rca-doc-8d .rca-8d-topbox th,
+:root[data-theme="dark"] .rca-doc-8d .rca-8d-topbox td,
+:root[data-theme="dark"] .rca-doc-8d .rca-8d-tbl th,
+:root[data-theme="dark"] .rca-doc-8d .rca-8d-tbl td,
+:root[data-theme="dark"] .rca-doc-8d .rca-8d-table th,
+:root[data-theme="dark"] .rca-doc-8d .rca-8d-table td,
+:root[data-theme="dark"] .rca-doc-8d .rca-rev th,
+:root[data-theme="dark"] .rca-doc-8d .rca-rev td,
+:root[data-theme="dark"] .rca-doc-8d .rca-8d-area{
+    border-color:#b7c2d0 !important;
+}
+
+/* ---- the exported PDF / print copy: identical, in black ---- */
+.rca-pdf .rca-8d-topbox,
+.rca-pdf .rca-8d-tbl,
+.rca-pdf .rca-8d-table,
+.rca-pdf .rca-rev,
+.rca-pdf .rca-summary,
+.rca-pdf .rca-head-table,
+.rca-pdf .rca-isnot,
+.rca-pdf .rca-6m-table{
+    border:0 !important;
+}
+.rca-pdf .rca-8d-topbox th,  .rca-pdf .rca-8d-topbox td,
+.rca-pdf .rca-8d-tbl th,     .rca-pdf .rca-8d-tbl td,
+.rca-pdf .rca-8d-table th,   .rca-pdf .rca-8d-table td,
+.rca-pdf .rca-rev th,        .rca-pdf .rca-rev td,
+.rca-pdf .rca-summary th,    .rca-pdf .rca-summary td,
+.rca-pdf .rca-head-table th, .rca-pdf .rca-head-table td,
+.rca-pdf .rca-isnot th,      .rca-pdf .rca-isnot td,
+.rca-pdf .rca-6m-table th,   .rca-pdf .rca-6m-table td,
+.rca-pdf .rca-8d-area,
+.rca-pdf .rca-8d-head,
+.rca-pdf .rca-8d-h,
+.rca-pdf .rca-8d-subh{
+    border:1px solid #000 !important;
+}
+
+/* Rows whose procedure the AI is still writing, so the table visibly fills in
+   instead of the page sitting on one big spinner. */
+.tc-all-writing{
+    display:inline-flex; align-items:center; gap:7px; margin-left:12px;
+    font-size:12px; font-weight:600; color:#3730a3;
+    background:#eef2ff; border:1px solid #c7d2fe; border-radius:999px; padding:3px 11px;
+}
+.tc-all-writing .spin{
+    width:12px; height:12px; border:2px solid #c7d2fe; border-top-color:#4f46e5;
+    border-radius:50%; animation:btnspin .8s linear infinite; display:inline-block;
+}
+.tc-row-writing td{ background:#f8fafc; }
+.tc-pending{
+    display:inline-flex; align-items:center; gap:6px;
+    color:#64748b; font-style:italic; font-size:12px;
+}
+.tc-pending .spin{
+    width:11px; height:11px; border:2px solid #cbd5e1; border-top-color:#64748b;
+    border-radius:50%; animation:btnspin .8s linear infinite; display:inline-block;
+}
+:root[data-theme="dark"] .tc-all-writing{
+    background:rgba(79,70,229,.18); border-color:rgba(129,140,248,.35); color:#c7d2fe;
+}
+:root[data-theme="dark"] .tc-row-writing td{ background:#f3f5f9; }
+
+/* ============================================================
+   PDF: MERGE THE SHARED LINES, EVEN SPACING BETWEEN SECTIONS
+   ------------------------------------------------------------
+   The remaining "double line" was not two borders on one box -
+   it was a section header drawing its BOTTOM border, then a 5px
+   gap (margin-bottom), then the table below drawing its own TOP
+   border. Two parallel 1px lines a few pixels apart read as one
+   thick/doubled rule.
+
+   Fix: drop the gap and pull the following box up by exactly the
+   1px border, so the header's bottom line and the table's top
+   line land on each other and print as a single line. Section-to
+   -section spacing is then set in one place so it is even.
+   ============================================================ */
+.rca-pdf .rca-8d-h,
+.rca-pdf .rca-8d-subh{ margin-bottom:0 !important; }
+
+.rca-pdf .rca-8d-h + *,
+.rca-pdf .rca-8d-subh + *{ margin-top:-1px !important; }
+
+/* boxes stacked inside one section share their line as well */
+.rca-pdf .rca-8d-tbl  + .rca-8d-tbl,
+.rca-pdf .rca-8d-tbl  + .rca-8d-area,
+.rca-pdf .rca-8d-tbl  + .rca-8d-subh,
+.rca-pdf .rca-8d-area + .rca-8d-tbl,
+.rca-pdf .rca-8d-area + .rca-8d-area,
+.rca-pdf .rca-8d-area + .rca-8d-subh,
+.rca-pdf .rca-8d-topbox + .rca-8d-tbl{ margin-top:-1px !important; }
+
+/* one even gap between numbered sections, nothing else */
+.rca-pdf .rca-sec{ margin:0 0 9px !important; padding:0 !important; }
+.rca-pdf .rca-sec > .rca-8d-h{ margin-top:0 !important; }
+.rca-pdf .rca-sec:first-child{ margin-top:0 !important; }
+
+/* consistent text rhythm inside every box */
+.rca-pdf .rca-8d-tbl th,
+.rca-pdf .rca-8d-tbl td,
+.rca-pdf .rca-8d-topbox th,
+.rca-pdf .rca-8d-topbox td{ padding:4px 7px !important; line-height:1.4 !important; }
+.rca-pdf .rca-8d-area,
+.rca-pdf .rca-8d-cell,
+.rca-pdf .rca-body{ line-height:1.45 !important; }
+.rca-pdf .rca-body p{ margin:0 0 4px !important; }
+.rca-pdf .rca-body ul,
+.rca-pdf .rca-body ol{ margin:0 0 4px !important; padding-left:16px !important; }
+.rca-pdf .rca-body li{ margin:0 0 2px !important; }
+
+/* ============================================================
+   PDF: WHERE TWO BOXES MEET, DRAW ONE LINE
+   ------------------------------------------------------------
+   Correction to the block above. Giving the sections an even 9px
+   gap was itself the cause of the remaining doubles: every
+   section is a bordered box, so section 1's BOTTOM line, a gap,
+   then section 2's TOP line reads as two rules a hair apart.
+
+   The rule is now simple and applies to EVERY pair of stacked
+   boxes - sections, headers, tables, text areas, the fishbone:
+   they butt together and overlap by exactly the 1px border, so
+   the shared edge prints as a single line. That also matches the
+   look of the Word export, where the boxes touch.
+   ============================================================ */
+.rca-pdf .rca-sec{ margin:0 !important; padding:0 !important; }
+
+/* section to section */
+.rca-pdf .rca-sec + .rca-sec{ margin-top:-1px !important; }
+
+/* every two stacked blocks INSIDE a section */
+.rca-pdf .rca-sec > * + *{ margin-top:-1px !important; }
+
+/* top-level blocks of the document as well */
+.rca-pdf > * + *{ margin-top:-1px !important; }
+
+/* the header bars keep no bottom gap of their own */
+.rca-pdf .rca-8d-h{ margin:0 !important; }
+.rca-pdf .rca-8d-subh{ margin:0 !important; }
+
+/* nothing may re-introduce a gap under a table or text box */
+.rca-pdf .rca-8d-tbl,
+.rca-pdf .rca-8d-area,
+.rca-pdf .rca-8d-topbox,
+.rca-pdf .rca-fish,
+.rca-pdf .rca-body{ margin-bottom:0 !important; }
+
+/* the title block and the closing footer line stay separated */
+.rca-pdf .rca-8d-head{ margin:0 0 8px !important; }
+.rca-pdf .rca-doc-foot{ margin-top:10px !important; }
+
+/* The last two gaps found by measuring EVERY pair of stacked boxes:
+   - the title block sat 8px above the first section, so its bottom line and
+     section 1's top line printed as two rules -> merge them like the rest;
+   - the closing footer drew its own top rule 10px under the last table, which
+     is the same doubled look -> keep the gap but drop that extra line, the
+     table's own bottom edge already closes the document. */
+.rca-pdf .rca-8d-head{ margin:0 !important; }
+.rca-pdf .rca-doc-foot{ border-top:0 !important; margin-top:10px !important; padding-top:0 !important; }
+
+/* The pixel scan of the rendered report found exactly one remaining double: the
+   title block's bottom rule sitting 1px above section 1's top rule. Overlap it
+   like every other pair so they print as one line. */
+.rca-pdf .rca-8d-head{ margin:0 0 -1px !important; }
+
+/* Equal text rhythm everywhere in the PDF. The table cells were 10.5px/14.7 but
+   the editable content inside them (.rca-8d-cell, .rca-body) was 11px/15.4, so
+   the line spacing visibly changed from box to box. One size, one line-height. */
+.rca-pdf .rca-8d-tbl,
+.rca-pdf .rca-8d-tbl th,
+.rca-pdf .rca-8d-tbl td,
+.rca-pdf .rca-8d-topbox th,
+.rca-pdf .rca-8d-topbox td,
+.rca-pdf .rca-8d-cell,
+.rca-pdf .rca-8d-area,
+.rca-pdf .rca-body,
+.rca-pdf .rca-body p,
+.rca-pdf .rca-body li{
+    font-size:10.5px !important;
+    line-height:1.4 !important;
+}
+
+/* ============================================================================
+   PDF EXPORT - PROFESSIONAL A4 RCA REPORT
+   ============================================================================
+   Applies ONLY to the exported PDF (the .rca-pdf class is added to the report
+   just before rasterising and removed afterwards). The on-screen design is
+   untouched.
+
+   WHY THE FIXED WIDTH: html2pdf renders the report at its CSS pixel width and
+   then scales that canvas to fill the page. Locking the report to 642 px, with
+   a 170 mm content area (A4 210 mm minus 20 mm margins), makes the scale come
+   out at exactly 0.75 pt per CSS pixel. That gives an exact px -> pt mapping:
+
+        pt = px x 0.75          px = pt x 4/3
+        1 px border = 0.75 pt   (the top of the 0.5-0.75 pt range asked for)
+
+   Before this, body text was 10.5 px over 186 mm at ~978 px wide = about
+   5.7 pt on paper, which is why the printed report looked so tight.
+
+   NO BOXES AROUND HEADINGS OR PARAGRAPHS. That is the design asked for, and it
+   also removes the double-line problem at its source: two bordered boxes can no
+   longer meet, because only TABLES carry borders now. Sections are separated by
+   whitespace, numbering and bold type instead.
+   ============================================================================ */
+
+.rca-pdf.rca-doc-8d{
+    width:612px !important;          /* -> 162 mm, so 1px = 0.75pt exactly */
+    max-width:612px !important;
+    margin:0 !important;
+    padding:0 !important;
+    background:#fff !important;
+    color:#000 !important;
+    font-family:'Times New Roman',Times,serif !important;
+    font-size:14px !important;                 /* 10.5 pt body */
+    line-height:1.25 !important;               /* within the 1.15-1.3 range */
+    box-shadow:none !important;
+    border:0 !important;
+}
+
+/* ---- 1. document control / title block -------------------------------- */
+.rca-pdf .rca-8d-head{
+    display:flex !important; align-items:center !important; gap:12px !important;
+    border:0 !important; border-bottom:1px solid #000 !important;
+    background:none !important; box-shadow:none !important;
+    border-radius:0 !important;
+    margin:0 0 14px !important; padding:0 0 10px !important;
+}
+.rca-pdf .rca-8d-logo{ flex:0 0 auto !important; }
+.rca-pdf .rca-doc-logo8d{
+    height:38px !important; max-width:120px !important;
+    object-fit:contain !important; border:0 !important;
+}
+.rca-pdf .rca-8d-title{
+    flex:1 !important; text-align:center !important;
+    font-size:29px !important;                 /* ~22 pt, bold */
+    font-weight:700 !important; letter-spacing:.3px !important;
+    text-decoration:none !important; color:#000 !important;
+}
+/* the Rec./Rev./Issued block: a clean control table, thin single lines */
+.rca-pdf .rca-8d-topbox{
+    flex:0 0 auto !important;
+    border:0 !important; border-collapse:collapse !important;
+    border-radius:0 !important; overflow:visible !important;
+    font-size:12px !important;                 /* 9 pt */
+}
+.rca-pdf .rca-8d-topbox th,
+.rca-pdf .rca-8d-topbox td{
+    border:1px solid #000 !important;
+    padding:3px 7px !important; line-height:1.25 !important;
+    text-align:left !important; white-space:nowrap !important;
+}
+.rca-pdf .rca-8d-topbox th{ background:#f2f2f2 !important; font-weight:700 !important; }
+
+/* ---- 2. sections: whitespace + bold numbered headings, NO boxes ------- */
+.rca-pdf .rca-sec{
+    border:0 !important; background:none !important; box-shadow:none !important;
+    margin:0 0 4px !important; padding:0 !important;
+}
+.rca-pdf .rca-sec + .rca-sec{ margin-top:0 !important; }
+
+.rca-pdf .rca-8d-h,
+.rca-pdf.rca-doc-8d .rca-8d-h,
+.rca-pdf .rca-sec .rca-8d-h{
+    /* a plain bold numbered heading with a hairline under it - no box, no fill */
+    background:none !important;
+    color:#000 !important;
+    border:0 !important;
+    border-bottom:1px solid #000 !important;
+    border-radius:0 !important;
+    box-shadow:none !important;
+    font-size:20px !important;                 /* 15 pt, bold */
+    font-weight:700 !important;
+    padding:0 0 3px !important;
+    margin:20px 0 9px !important;              /* ~15 pt before, ~7 pt after */
+    text-align:left !important;
+}
+.rca-pdf .rca-sec:first-child .rca-8d-h{ margin-top:0 !important; }
+
+.rca-pdf .rca-8d-subh{
+    background:none !important;
+    color:#000 !important;
+    border:0 !important;
+    border-radius:0 !important;
+    font-size:16px !important;                 /* 12 pt, bold */
+    font-weight:700 !important;
+    padding:0 !important;
+    margin:14px 0 6px !important;
+}
+
+/* ---- 3. body text: no box, just type --------------------------------- */
+.rca-pdf .rca-8d-area,
+.rca-pdf .rca-body,
+.rca-pdf .rca-8d-cell{
+    border:0 !important; background:none !important; box-shadow:none !important;
+    border-radius:0 !important; min-height:0 !important;
+    font-size:14px !important; line-height:1.25 !important;
+    color:#000 !important; text-align:left !important;
+}
+.rca-pdf .rca-body p{ margin:0 0 8px !important; }        /* ~6 pt after */
+.rca-pdf .rca-body ul,
+.rca-pdf .rca-body ol{ margin:0 0 8px !important; padding-left:20px !important; }
+.rca-pdf .rca-body li{ margin:0 0 3px !important; line-height:1.25 !important; }
+.rca-pdf .rca-sec > .rca-8d-area,
+.rca-pdf .rca-sec > .rca-body{ margin:0 0 4px !important; padding:0 !important; }
+
+/* ---- 4. tables: the ONLY thing with borders -------------------------- */
+.rca-pdf .rca-8d-tbl,
+.rca-pdf .rca-8d-table,
+.rca-pdf .rca-rev,
+.rca-pdf .rca-summary,
+.rca-pdf .rca-head-table,
+.rca-pdf .rca-isnot,
+.rca-pdf .rca-6m-table{
+    width:100% !important;
+    border:0 !important;
+    border-collapse:collapse !important;
+    border-radius:0 !important;
+    box-shadow:none !important;
+    background:#fff !important;
+    margin:0 0 4px !important;
+    font-size:12.7px !important;               /* 9.5 pt table text */
+    table-layout:fixed !important;
+}
+.rca-pdf .rca-8d-tbl th,   .rca-pdf .rca-8d-tbl td,
+.rca-pdf .rca-8d-table th, .rca-pdf .rca-8d-table td,
+.rca-pdf .rca-rev th,      .rca-pdf .rca-rev td,
+.rca-pdf .rca-summary th,  .rca-pdf .rca-summary td,
+.rca-pdf .rca-head-table th, .rca-pdf .rca-head-table td,
+.rca-pdf .rca-isnot th,    .rca-pdf .rca-isnot td,
+.rca-pdf .rca-6m-table th, .rca-pdf .rca-6m-table td{
+    border:1px solid #000 !important;          /* 0.75 pt, single, consistent */
+    padding:5px 7px !important;
+    line-height:1.25 !important;
+    vertical-align:top !important;
+    font-size:12.7px !important;
+    color:#000 !important;
+    background:#fff !important;
+    overflow-wrap:break-word !important;
+    word-break:normal !important;
+}
+/* subtle header shading only - prints fine in greyscale */
+.rca-pdf .rca-8d-tbl th,
+.rca-pdf .rca-8d-table th,
+.rca-pdf .rca-rev th,
+.rca-pdf .rca-summary th,
+.rca-pdf .rca-head-table th,
+.rca-pdf .rca-isnot tr:first-child th,
+.rca-pdf .rca-6m-table tr:first-child th,
+.rca-pdf .rca-8d-lbl,
+.rca-pdf .rca-why-lbl,
+.rca-pdf .rc-sl{
+    background:#f2f2f2 !important;
+    color:#000 !important;
+    font-weight:700 !important;
+    text-align:left !important;
+    vertical-align:middle !important;
+}
+.rca-pdf .rca-8d-tbl thead th{ text-align:center !important; }
+.rca-pdf .rca-8d-tbl td.rc-sl,
+.rca-pdf .rca-8d-tbl th.rc-sl{ text-align:center !important; }
+/* repeat the header row when a table runs onto the next page */
+.rca-pdf thead{ display:table-header-group !important; }
+.rca-pdf tfoot{ display:table-footer-group !important; }
+
+/* ---- 5. fishbone / images -------------------------------------------- */
+.rca-pdf .rca-fish{
+    border:0 !important; background:none !important; box-shadow:none !important;
+    border-radius:0 !important;
+    margin:6px 0 10px !important; padding:0 !important;
+    text-align:center !important;
+}
+.rca-pdf .rca-fish svg,
+.rca-pdf .rca-fish img{
+    max-width:100% !important; height:auto !important; display:block !important;
+    margin:0 auto !important; border:0 !important;
+}
+.rca-pdf .rca-fish-cap,
+.rca-pdf figcaption{
+    font-size:12.7px !important;               /* 9.5 pt caption */
+    color:#000 !important; text-align:center !important;
+    margin:5px 0 0 !important; font-style:normal !important;
+}
+.rca-pdf .rca-evi{
+    display:flex !important; flex-wrap:wrap !important;
+    gap:14px !important; justify-content:center !important;
+    margin:6px 0 10px !important; border:0 !important; background:none !important;
+}
+.rca-pdf .rca-evi figure{
+    width:180px !important; margin:0 !important; text-align:center !important;
+}
+.rca-pdf .rca-evi img{
+    width:100% !important; height:auto !important;     /* keep aspect ratio */
+    object-fit:contain !important;
+    border:1px solid #000 !important;                  /* thin single line */
+    display:block !important;
+}
+
+/* ---- 6. team line + closing footer ----------------------------------- */
+.rca-pdf .rca-8d-team{
+    font-size:12.7px !important; line-height:1.25 !important;
+    margin:8px 0 0 !important; border:0 !important; background:none !important;
+    padding:0 !important;
+}
+.rca-pdf .rca-doc-foot{
+    border:0 !important; border-top:1px solid #000 !important;
+    margin:14px 0 0 !important; padding:6px 0 0 !important;
+    font-size:11.3px !important;               /* 8.5 pt */
+    color:#000 !important; text-align:center !important;
+}
+
+/* ---- 7. on-screen only controls never print ------------------------- */
+.rca-pdf .rca-addrow,
+.rca-pdf .rca-delrow,
+.rca-pdf .rca-fe,
+.rca-pdf .rca-x,
+.rca-pdf button{ display:none !important; }
+
+/* Two corrections found by measuring the printed point sizes:
+   - the title came out at 21.8 pt, just under the 22-26 pt band -> 32px = 24 pt;
+   - standalone body paragraphs were being pulled down to the 9.5 pt TABLE size,
+     because ".rca-8d-tbl td" is written later at equal specificity. Table text
+     stays 9.5 pt (correct); a body paragraph outside a table gets 10.5 pt. */
+.rca-pdf .rca-8d-title{ font-size:32px !important; }        /* 24 pt */
+
+.rca-pdf.rca-doc-8d div.rca-body,
+.rca-pdf.rca-doc-8d .rca-sec > .rca-body,
+.rca-pdf.rca-doc-8d .rca-sec > .rca-8d-area{
+    font-size:14px !important;                              /* 10.5 pt */
+    line-height:1.25 !important;
+}
+.rca-pdf.rca-doc-8d div.rca-body p,
+.rca-pdf.rca-doc-8d div.rca-body li{
+    font-size:14px !important; line-height:1.25 !important;
+}
+
+/* ============================================================================
+   PDF TABLES: ONE LINE PER EDGE, DRAWN ONCE
+   ----------------------------------------------------------------------------
+   A pixel scan of the real exported PDF showed 27 rules at 6 px where a single
+   1 px border should be 3 px (canvas scale 3). So two borders were landing on
+   the same edge: html2canvas does not implement border-collapse, it paints each
+   cell's own borders, so every shared edge inside a table got painted twice and
+   printed at double thickness.
+
+   Fix: never let two borders meet. The TABLE draws the top and left edges; each
+   CELL draws only its right and bottom edge. Every internal and outer line is
+   then painted exactly once, whatever the rasteriser does with collapsing.
+   ============================================================================ */
+.rca-pdf .rca-8d-tbl,
+.rca-pdf .rca-8d-table,
+.rca-pdf .rca-rev,
+.rca-pdf .rca-summary,
+.rca-pdf .rca-head-table,
+.rca-pdf .rca-isnot,
+.rca-pdf .rca-6m-table,
+.rca-pdf .rca-8d-topbox{
+    border-collapse:separate !important;
+    border-spacing:0 !important;
+    border-top:1px solid #000 !important;
+    border-left:1px solid #000 !important;
+    border-right:0 !important;
+    border-bottom:0 !important;
+}
+.rca-pdf .rca-8d-tbl th,     .rca-pdf .rca-8d-tbl td,
+.rca-pdf .rca-8d-table th,   .rca-pdf .rca-8d-table td,
+.rca-pdf .rca-rev th,        .rca-pdf .rca-rev td,
+.rca-pdf .rca-summary th,    .rca-pdf .rca-summary td,
+.rca-pdf .rca-head-table th, .rca-pdf .rca-head-table td,
+.rca-pdf .rca-isnot th,      .rca-pdf .rca-isnot td,
+.rca-pdf .rca-6m-table th,   .rca-pdf .rca-6m-table td,
+.rca-pdf .rca-8d-topbox th,  .rca-pdf .rca-8d-topbox td{
+    border-top:0 !important;
+    border-left:0 !important;
+    border-right:1px solid #000 !important;
+    border-bottom:1px solid #000 !important;
+}
+
+/* ============================================================================
+   PDF COLUMN WIDTHS
+   ----------------------------------------------------------------------------
+   table-layout:fixed with no widths gives every column an equal share, so the
+   one long free-text column ("Action description", "Standardization") was
+   squeezed into ~20% and wrapped into ~20 lines. That made a single row taller
+   than a whole A4 page, which is why it could not be moved to the next page and
+   got sliced open at the boundary - and it looked bad besides.
+
+   Give the text column the space and keep the date/status columns to what a
+   date actually needs.
+   ============================================================================ */
+
+/* Permanent Action: label | Action description | Plan | Actual | Status */
+.rca-pdf .rca-pa-tbl th:nth-child(1), .rca-pdf .rca-pa-tbl td:nth-child(1){ width:13% !important; }
+.rca-pdf .rca-pa-tbl th:nth-child(2), .rca-pdf .rca-pa-tbl td:nth-child(2){ width:47% !important; }
+.rca-pdf .rca-pa-tbl th:nth-child(3), .rca-pdf .rca-pa-tbl td:nth-child(3){ width:13% !important; }
+.rca-pdf .rca-pa-tbl th:nth-child(4), .rca-pdf .rca-pa-tbl td:nth-child(4){ width:13% !important; }
+.rca-pdf .rca-pa-tbl th:nth-child(5), .rca-pdf .rca-pa-tbl td:nth-child(5){ width:14% !important; }
+
+/* Standardization: Standardization | Horizontal deployment | Plan | Actual */
+.rca-pdf .rca-std-tbl th:nth-child(1), .rca-pdf .rca-std-tbl td:nth-child(1){ width:36% !important; }
+.rca-pdf .rca-std-tbl th:nth-child(2), .rca-pdf .rca-std-tbl td:nth-child(2){ width:30% !important; }
+.rca-pdf .rca-std-tbl th:nth-child(3), .rca-pdf .rca-std-tbl td:nth-child(3){ width:17% !important; }
+.rca-pdf .rca-std-tbl th:nth-child(4), .rca-pdf .rca-std-tbl td:nth-child(4){ width:17% !important; }
+
+/* Root cause: SL No | Cause | Spec | Investigation | Analysis */
+.rca-pdf .rca-rc-tbl th:nth-child(1), .rca-pdf .rca-rc-tbl td:nth-child(1){ width:9% !important; }
+.rca-pdf .rca-rc-tbl th:nth-child(2), .rca-pdf .rca-rc-tbl td:nth-child(2){ width:31% !important; }
+.rca-pdf .rca-rc-tbl th:nth-child(3), .rca-pdf .rca-rc-tbl td:nth-child(3){ width:20% !important; }
+.rca-pdf .rca-rc-tbl th:nth-child(4), .rca-pdf .rca-rc-tbl td:nth-child(4){ width:20% !important; }
+.rca-pdf .rca-rc-tbl th:nth-child(5), .rca-pdf .rca-rc-tbl td:nth-child(5){ width:20% !important; }
+
+/* 5-Why: Why-n | statement */
+.rca-pdf .rca-why-tbl th:nth-child(1), .rca-pdf .rca-why-tbl td:nth-child(1){ width:16% !important; }
+.rca-pdf .rca-why-tbl th:nth-child(2), .rca-pdf .rca-why-tbl td:nth-child(2){ width:84% !important; }
+
+/* Effectiveness monitoring: Sl | Invoice | Qty | Status | Reason | Verified By */
+.rca-pdf .rca-eff-tbl th:nth-child(1), .rca-pdf .rca-eff-tbl td:nth-child(1){ width:8%  !important; }
+.rca-pdf .rca-eff-tbl th:nth-child(2), .rca-pdf .rca-eff-tbl td:nth-child(2){ width:22% !important; }
+.rca-pdf .rca-eff-tbl th:nth-child(3), .rca-pdf .rca-eff-tbl td:nth-child(3){ width:11% !important; }
+.rca-pdf .rca-eff-tbl th:nth-child(4), .rca-pdf .rca-eff-tbl td:nth-child(4){ width:16% !important; }
+.rca-pdf .rca-eff-tbl th:nth-child(5), .rca-pdf .rca-eff-tbl td:nth-child(5){ width:23% !important; }
+.rca-pdf .rca-eff-tbl th:nth-child(6), .rca-pdf .rca-eff-tbl td:nth-child(6){ width:20% !important; }
+
+/* Reference / Problem / Interim / Approval: label | value | label | value */
+.rca-pdf .rca-8d-tbl.rca-appr-tbl th:nth-child(odd),
+.rca-pdf .rca-8d-tbl.rca-appr-tbl td:nth-child(odd){ width:24% !important; }
+.rca-pdf .rca-8d-tbl.rca-appr-tbl th:nth-child(even),
+.rca-pdf .rca-8d-tbl.rca-appr-tbl td:nth-child(even){ width:26% !important; }
+
+/* two-column label/value tables (Problem Description, Interim Action) */
+.rca-pdf .rca-8d-tbl tr > .rca-8d-lbl:first-child{ width:24% !important; }
+
+/* html2pdf's pagebreak reads the COMPUTED break-inside (its bundle checks
+   i.breakInside || i.pageBreakInside), which is a different path from the
+   avoid:[selectors] list - that list had no effect here. Blocks can be pushed
+   to the next page; table rows cannot. */
+.rca-pdf .rca-sec > *,
+.rca-pdf .rca-8d-head,
+.rca-pdf .rca-fish,
+.rca-pdf .rca-evi figure{
+    break-inside:avoid !important;
+    page-break-inside:avoid !important;
+}
+/* The rightmost cell's border was being clipped: with border-collapse:separate
+   and table-layout:fixed, percentage column widths refer to the table width and
+   the 1px borders are then ADDED on top, so the row overflowed and the closing
+   right-hand line fell outside the table box - the tables looked open-ended on
+   the right, which also read as no right margin. border-box makes each border
+   part of its column's width, so the grid closes exactly on the table edge. */
+.rca-pdf .rca-8d-tbl,      .rca-pdf .rca-8d-table,
+.rca-pdf .rca-rev,         .rca-pdf .rca-summary,
+.rca-pdf .rca-head-table,  .rca-pdf .rca-isnot,
+.rca-pdf .rca-6m-table,    .rca-pdf .rca-8d-topbox,
+.rca-pdf .rca-8d-tbl th,     .rca-pdf .rca-8d-tbl td,
+.rca-pdf .rca-8d-table th,   .rca-pdf .rca-8d-table td,
+.rca-pdf .rca-rev th,        .rca-pdf .rca-rev td,
+.rca-pdf .rca-summary th,    .rca-pdf .rca-summary td,
+.rca-pdf .rca-head-table th, .rca-pdf .rca-head-table td,
+.rca-pdf .rca-isnot th,      .rca-pdf .rca-isnot td,
+.rca-pdf .rca-6m-table th,   .rca-pdf .rca-6m-table td,
+.rca-pdf .rca-8d-topbox th,  .rca-pdf .rca-8d-topbox td{
+    box-sizing:border-box !important;
+}
+/* The explicit nth-child column widths above overflowed the table: cells summed
+   to 671px inside a 642px table, so the last column's right border landed
+   outside the table box and was clipped - the tables printed with no closing
+   line on the right, which is what looked like a missing right border/margin.
+   table-layout:auto sizes the columns from their content and always adds up to
+   exactly 100%, so the grid closes on the edge; it also gives the long free-text
+   column the room it needs without hard-coding percentages. */
+.rca-pdf .rca-8d-tbl,
+.rca-pdf .rca-8d-table,
+.rca-pdf .rca-rev,
+.rca-pdf .rca-summary,
+.rca-pdf .rca-head-table,
+.rca-pdf .rca-isnot,
+.rca-pdf .rca-6m-table{
+    table-layout:auto !important;
+    width:100% !important;
+}
+.rca-pdf .rca-8d-tbl th,   .rca-pdf .rca-8d-tbl td,
+.rca-pdf .rca-8d-table th, .rca-pdf .rca-8d-table td,
+.rca-pdf .rca-rev th,      .rca-pdf .rca-rev td,
+.rca-pdf .rca-summary th,  .rca-pdf .rca-summary td,
+.rca-pdf .rca-isnot th,    .rca-pdf .rca-isnot td,
+.rca-pdf .rca-6m-table th, .rca-pdf .rca-6m-table td{
+    width:auto !important;
+}
+/* keep the label column from stealing space, as a proportion not a fixed px */
+.rca-pdf .rca-8d-lbl,
+.rca-pdf .rca-why-lbl{ width:22% !important; }
+.rca-pdf .rc-sl{ width:8% !important; }
+/* NO OUTLINE ON THE REPORT BLOCK ITSELF.
+   It used to carry the frame, but the PDF is one tall picture cut into pages,
+   so that outline was cut too: page 1 lost its bottom line, the next pages their
+   top line, and the last page's frame stopped half way down. The frame is now
+   drawn on every page by the PDF export (on the 20 mm margin), and this block
+   sits 4 mm inside it at 612 px = the 162 mm content width. */
+.rca-pdf.rca-doc-8d{
+    box-sizing:border-box !important;
+    width:612px !important;
+    max-width:612px !important;
+    border:0 !important;
+    padding:0 !important;
+}
+/* The test report toolbar keeps all its buttons on ONE row on common laptop
+   widths (1280-1400px, next to the sidebar): slightly tighter padding and gaps.
+   Below that it may wrap (see .toolbar max-width), instead of pushing the app
+   sideways. */
+@media (max-width:1400px){
+    #view-pvt .toolbar{ gap:7px; padding:8px 10px; }
+    #view-pvt .toolbar button{ padding:9px 12px; }
+}
+
+/* ==========================================================
+   DOCUMENT SUMMARY & 8D EVALUATION page (v391)
+   Two clear steps (add content -> choose the result), one primary
+   action, and a result panel with the document type badge.
+========================================================== */
+.sum-page{ max-width:980px; }
+.sum-head h1{
+    margin:0; font-size:30px; font-weight:800;
+    background:linear-gradient(90deg,#4f46e5,#2563eb);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:transparent;
+}
+#sup8dCard.sup8d-card{
+    margin-top:18px; padding:0; border:1px solid #e2e8f0; border-radius:16px;
+    background:#fff; box-shadow:0 10px 30px rgba(15,23,42,.07); overflow:hidden;
+}
+.sum-step{ padding:20px 24px; border-bottom:1px solid #eef2f7; }
+.sum-step-head{ display:flex; align-items:flex-start; gap:12px; margin-bottom:14px; }
+.sum-step-head b{ display:block; font-size:16px; color:#0f172a; }
+.sum-step-head small{ display:block; font-size:13px; color:#64748b; margin-top:2px; }
+.sum-step-no{
+    flex:0 0 28px; height:28px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    background:#eef2ff; color:#4338ca; font-weight:700; font-size:14px;
+}
+
+/* drop zone */
+.sum-drop{
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+    padding:18px 20px; border:2px dashed #c7d2fe; border-radius:12px;
+    background:#f8faff; transition:border-color .15s, background .15s;
+}
+.sum-drop:hover{ border-color:#818cf8; background:#f5f7ff; }
+.sum-drop-ico{
+    flex:0 0 44px; height:44px; border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    background:#e0e7ff; color:#4338ca; font-size:22px; font-weight:700;
+}
+.sum-drop-text{ flex:1 1 260px; min-width:0; }
+.sum-drop-text b{ display:block; font-size:15px; color:#1e293b; }
+.sum-drop-text small{ display:block; margin-top:3px; font-size:12.5px; color:#64748b; line-height:1.5; }
+
+/* buttons */
+.sum-btn{
+    padding:9px 16px; border:1px solid #cbd5e1; border-radius:9px; background:#fff; color:#1e293b;
+    font-family:var(--ui-font); font-size:14px; font-weight:600; cursor:pointer;
+    transition:background .15s, border-color .15s;
+}
+.sum-btn:hover{ background:#f1f5f9; border-color:#94a3b8; }
+.sum-btn:disabled, .sum-primary:disabled{ opacity:.55; cursor:not-allowed; }
+.sum-clear{ color:#b91c1c; }
+.sum-primary{
+    padding:11px 22px; border:1px solid #1d4ed8; border-radius:10px;
+    background:linear-gradient(90deg,#4f46e5,#2563eb); color:#fff;
+    font-family:var(--ui-font); font-size:15px; font-weight:700; cursor:pointer;
+    box-shadow:0 6px 16px rgba(37,99,235,.25); transition:filter .15s, transform .15s;
+}
+.sum-primary:hover:not(:disabled){ filter:brightness(1.07); transform:translateY(-1px); }
+#sup8dCard .sup8d-actions{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:16px; }
+#sup8dCard .sup8d-actions button{ box-shadow:none; }
+#sup8dCard .sup8d-actions .sum-primary{ box-shadow:0 6px 16px rgba(37,99,235,.25); }
+#sup8dCard .cases-status{ margin-top:10px; line-height:1.5; }
+
+/* added files */
+#sup8dCard .sup8d-thumbs{ display:flex; flex-wrap:wrap; gap:10px; margin-top:12px; }
+#sup8dCard .sup8d-thumbs:empty{ display:none; }
+#sup8dCard .sup8d-thumbs .sup8d-thumb{
+    position:relative; width:64px; height:64px; border:1px solid #dbe3ee; border-radius:10px; overflow:hidden; background:#fff;
+}
+#sup8dCard .sup8d-thumbs .sup8d-doc{
+    width:auto; height:auto; min-width:0; max-width:300px;
+    display:flex; align-items:center; gap:10px; padding:8px 34px 8px 8px;
+}
+#sup8dCard .sup8d-doc .sup8d-doc-ic{
+    flex:0 0 auto; min-width:40px; height:40px; padding:0 4px; border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    background:#eef2ff; color:#4338ca; font-size:11px; font-weight:800; letter-spacing:.3px;
+}
+#sup8dCard .sup8d-doc .sup8d-doc-ic[data-tag="PDF"]{ background:#fee2e2; color:#b91c1c; }
+#sup8dCard .sup8d-doc .sup8d-doc-ic[data-tag^="DOC"], #sup8dCard .sup8d-doc .sup8d-doc-ic[data-tag="ODT"], #sup8dCard .sup8d-doc .sup8d-doc-ic[data-tag="RTF"]{ background:#dbeafe; color:#1d4ed8; }
+#sup8dCard .sup8d-doc .sup8d-doc-ic[data-tag^="XLS"], #sup8dCard .sup8d-doc .sup8d-doc-ic[data-tag="CSV"], #sup8dCard .sup8d-doc .sup8d-doc-ic[data-tag="ODS"]{ background:#dcfce7; color:#15803d; }
+#sup8dCard .sup8d-doc .sup8d-doc-ic[data-tag^="PPT"], #sup8dCard .sup8d-doc .sup8d-doc-ic[data-tag="ODP"]{ background:#ffedd5; color:#c2410c; }
+#sup8dCard .sup8d-doc-meta{ display:flex; flex-direction:column; min-width:0; }
+#sup8dCard .sup8d-doc .sup8d-doc-nm{ font-size:13px; color:#1e293b; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; word-break:normal; }
+#sup8dCard .sup8d-doc-meta small{ font-size:11.5px; color:#64748b; }
+#sup8dCard .sup8d-thumbs .sup8d-thumb button{
+    position:absolute; top:4px; right:4px; width:22px; height:22px; border:none; border-radius:50%;
+    background:rgba(15,23,42,.65); color:#fff; cursor:pointer; font-size:12px; line-height:22px; padding:0;
+}
+#sup8dCard .sup8d-thumbs .sup8d-doc button{ top:50%; transform:translateY(-50%); background:#e2e8f0; color:#334155; }
+#sup8dCard .sup8d-thumbs .sup8d-doc button:hover{ background:#fecaca; color:#991b1b; }
+
+/* paste box */
+.sum-label{ display:block; margin:16px 0 6px; font-size:13px; font-weight:700; color:#334155; }
+#sup8dCard .sup8d-text{
+    margin-top:0; padding:11px 13px; border:1px solid #d5deea; border-radius:10px; font-size:14px; line-height:1.5;
+    background:#fff; transition:border-color .15s, box-shadow .15s;
+}
+#sup8dCard .sup8d-text:focus{ outline:none; border-color:#6366f1; box-shadow:0 0 0 4px rgba(99,102,241,.14); }
+
+/* result type choice */
+.sum-modes{ display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:10px; }
+.sum-mode{
+    position:relative; display:flex; gap:10px; align-items:flex-start; cursor:pointer;
+    padding:12px 14px; border:1px solid #dbe3ee; border-radius:12px; background:#fff;
+    transition:border-color .15s, box-shadow .15s, background .15s;
+}
+.sum-mode:hover{ border-color:#a5b4fc; }
+.sum-mode input{ margin:3px 0 0; accent-color:#4f46e5; flex:0 0 auto; }
+.sum-mode b{ display:block; font-size:14px; color:#0f172a; }
+.sum-mode small{ display:block; font-size:12.5px; color:#64748b; margin-top:2px; line-height:1.4; }
+.sum-mode.on{ border-color:#6366f1; background:#f5f7ff; box-shadow:0 0 0 3px rgba(99,102,241,.12); }
+
+/* result */
+.sum-out{ padding:20px 24px; background:#fbfcfe; }
+.sum-out-head{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+.sum-out-head > b{ font-size:16px; color:#0f172a; }
+.sum-out-head .sum-btn{ margin-left:auto; padding:7px 14px; font-size:13px; }
+.sum-kind{
+    display:inline-flex; align-items:center; padding:3px 10px; border-radius:999px;
+    background:#e0e7ff; color:#3730a3; font-size:12.5px; font-weight:700;
+}
+.sum-kind[hidden]{ display:none; }
+#sup8dCard .empty-state{ margin:0; text-align:center; padding:26px 16px; }
+#sup8dCard .sup8d-result{
+    margin-top:0; padding:16px 20px; border:1px solid #e2e8f0; border-radius:12px; background:#fff;
+    font-size:14.5px; line-height:1.65; color:#1e293b;
+}
+#sup8dCard .sup8d-result ul{ list-style:none; margin:0; padding:0; }
+#sup8dCard .sup8d-result li{ position:relative; margin:0; padding:8px 0 8px 22px; border-bottom:1px solid #f1f5f9; }
+#sup8dCard .sup8d-result li:last-child{ border-bottom:0; }
+#sup8dCard .sup8d-result li::before{
+    content:""; position:absolute; left:4px; top:17px; width:7px; height:7px; border-radius:50%; background:#6366f1;
+}
+#sup8dCard .sup8d-result li b, #sup8dCard .sup8d-result li strong{ color:#1e3a8a; }
+.sum-privacy{ margin:0; padding:12px 24px; font-size:12px; color:#64748b; border-top:1px solid #eef2f7; line-height:1.5; }
+
+/* dark theme */
+:root[data-theme="dark"] #sup8dCard.sup8d-card{ background:#131a26; border-color:#263041; box-shadow:none; }
+:root[data-theme="dark"] .sum-step{ border-bottom-color:#232c3b; }
+:root[data-theme="dark"] .sum-step-head b, :root[data-theme="dark"] .sum-out-head > b, :root[data-theme="dark"] .sum-mode b{ color:#e5e9f2; }
+:root[data-theme="dark"] .sum-step-head small, :root[data-theme="dark"] .sum-mode small,
+:root[data-theme="dark"] .sum-drop-text small, :root[data-theme="dark"] .sum-privacy,
+:root[data-theme="dark"] #sup8dCard .sup8d-doc-meta small{ color:#9aa6b8; }
+:root[data-theme="dark"] .sum-step-no, :root[data-theme="dark"] .sum-drop-ico{ background:rgba(99,102,241,.22); color:#c7d2fe; }
+:root[data-theme="dark"] .sum-drop{ background:rgba(99,102,241,.06); border-color:#3b4668; }
+:root[data-theme="dark"] .sum-drop-text b, :root[data-theme="dark"] .sum-label{ color:#dbe3f0; }
+:root[data-theme="dark"] .sum-btn{ background:#1b2433; border-color:#334155; color:#e5e9f2; }
+:root[data-theme="dark"] .sum-btn:hover{ background:#232e40; }
+:root[data-theme="dark"] .sum-clear{ color:#fca5a5; }
+:root[data-theme="dark"] .sum-mode{ background:#161e2b; border-color:#2a3444; }
+:root[data-theme="dark"] .sum-mode.on{ background:rgba(99,102,241,.14); border-color:#6366f1; }
+:root[data-theme="dark"] .sum-out{ background:#0f151f; }
+:root[data-theme="dark"] .sum-privacy{ border-top-color:#232c3b; }
+:root[data-theme="dark"] .sum-kind{ background:rgba(99,102,241,.25); color:#e0e7ff; }
+:root[data-theme="dark"] #sup8dCard .sup8d-result{ background:#131a26; border-color:#263041; color:#e5e9f2; }
+:root[data-theme="dark"] #sup8dCard .sup8d-result li{ border-bottom-color:#1e2735; }
+:root[data-theme="dark"] #sup8dCard .sup8d-result li b, :root[data-theme="dark"] #sup8dCard .sup8d-result li strong{ color:#c7d2fe; }
+:root[data-theme="dark"] #sup8dCard .sup8d-thumbs .sup8d-thumb{ background:#161e2b; border-color:#2a3444; }
+:root[data-theme="dark"] #sup8dCard .sup8d-doc .sup8d-doc-nm{ color:#e5e9f2; }
+:root[data-theme="dark"] #sup8dCard .sup8d-text{ background:#0f151f; border-color:#2a3444; color:#e5e9f2; }
+
+@media (max-width:640px){
+    .sum-step, .sum-out{ padding:16px; }
+    .sum-privacy{ padding:12px 16px; }
+    .sum-drop{ padding:14px; }
+    #sup8dCard .sup8d-thumbs .sup8d-doc{ max-width:100%; }
+}
+/* The old ".sup8d-actions button" rule painted the main action white. */
+#sup8dCard .sup8d-actions .sum-primary{
+    background:linear-gradient(90deg,#4f46e5,#2563eb); color:#fff; border:1px solid #1d4ed8;
+    padding:11px 22px; border-radius:10px; font-size:15px; font-weight:700;
+}
+#sup8dCard .sup8d-actions .sum-primary:hover:not(:disabled){ background:linear-gradient(90deg,#4338ca,#1d4ed8); }
+#sup8dCard .sup8d-actions .sum-btn{ background:#fff; padding:10px 16px; border-radius:10px; font-size:14px; }
+:root[data-theme="dark"] #sup8dCard .sup8d-actions .sum-btn{ background:#1b2433; border-color:#334155; }:root[data-theme="dark"] #sup8dCard .sup8d-doc .sup8d-doc-ic{ background:rgba(99,102,241,.22); color:#c7d2fe; }
+:root[data-theme="dark"] #sup8dCard .sup8d-thumbs .sup8d-doc button{ background:#2a3444; color:#cbd5e1; }
+:root[data-theme="dark"] #sup8dCard .cases-status.ok{ color:#4ade80; }/* Solid (not translucent) dark backgrounds, so contrast is the same on every surface. */
+:root[data-theme="dark"] .sum-step-no, :root[data-theme="dark"] .sum-drop-ico{ background:#2b3366; color:#e0e7ff; }
+:root[data-theme="dark"] .sum-drop{ background:#161d2e; border-color:#3b4668; }
+:root[data-theme="dark"] .sum-mode.on{ background:#1b2242; border-color:#6366f1; }
+:root[data-theme="dark"] .sum-kind{ background:#2b3366; color:#e0e7ff; }
+:root[data-theme="dark"] #sup8dCard .sup8d-doc .sup8d-doc-ic{ background:#2b3366; color:#e0e7ff; }
+/* On the hosted (Netlify) site the "Powered by Netlify" badge sits in the
+   bottom-right corner, on top of the Ask AI button - lift the button above it. */
+html.is-hosted .ai-toggle{ bottom:84px !important; }
+/* ...and when the chat panel is open, keep its message box and Send button
+   above the badge (it covered the Send button). */
+html.is-hosted .ai-panel .ai-input-row{ padding-bottom:62px; }
