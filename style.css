@@ -1790,29 +1790,23 @@ Header
 
 }
 
-/* The title is positioned over the WHOLE header (not just the middle grid
-   cell), so it sits at the true page centre no matter how wide the logo box
-   and the right-hand info box are. pointer-events:none lets the logo buttons
-   underneath still be clicked. */
+/* The title fills the middle cell of the header - from the right edge of the
+   logo box (100px) to the left edge of the info box (185px) - so it is centred
+   between them and can never run over either, exactly like the printed report.
+   pointer-events:none lets the logo buttons underneath still be clicked. */
 .title-box{
 
     position:absolute;
 
     top:0;
 
-    left:0;
+    left:100px;
 
-    right:0;
+    right:185px;
 
     bottom:0;
 
-    /* Keep the title clear of BOTH side boxes while it stays centred on the
-       page. The info box is 185px, so reserve 190px on each side (the logo
-       side too, for symmetry). A fixed max-width is not enough: after the page
-       margin went to 20mm the header is ~640px wide, and a 360px title centred
-       in it ran from ~140px to ~500px - straight over the info box, which
-       starts at ~455px ("TEST" crossed its border). */
-    padding:0 190px;
+    padding:0 6px;
 
     text-align:center;
 
@@ -1830,16 +1824,16 @@ Header
 
     color:#000;
 
-    font-size:20px;
+    /* ONE line, as asked. The middle cell is ~355px wide on an A4 page and the
+       title measures ~270px at this size, so it always fits; nowrap keeps it
+       from breaking into two lines when a longer logo or info box squeezes it. */
+    font-size:16px;
 
-    letter-spacing:1px;
+    letter-spacing:.5px;
 
-    /* The clearance comes from .title-box's side padding; the title wraps
-       inside that. Balanced wrapping gives two even lines
-       ("PRODUCT VALIDATION" / "TEST REPORT") instead of a long first line. */
+    white-space:nowrap;
+
     max-width:100%;
-
-    text-wrap:balance;
 
     margin:0 auto;
 
@@ -2006,11 +2000,31 @@ Cards
 
 }
 
+/* inline-block, NOT flex: html2canvas does not draw a ::after inside a flex
+   box, so the heading colons below were on screen but missing from every
+   exported PDF (the "Product :" labels print theirs because they are
+   inline-block). The parent .section-title is a flex row that already centres
+   this vertically, so nothing moves. */
 .section-title > span{
 
-    display:flex;
+    display:inline-block;
 
-    align-items:center;
+}
+
+/* Every section heading ends in a colon - "Test Result :", "Test procedure :" -
+   the way the printed report writes them. Added by the stylesheet, like the
+   colon after "Product :" in the information block, so the heading text itself
+   stays clean for the export and for anything that reads it back.
+
+   NO `#report` in front of it: html2canvas clones each .page into a detached
+   container where that ancestor no longer exists, so an #report-prefixed rule
+   is on screen but missing from the PDF - which is exactly what happened.
+   `.section-title` is only ever used inside this report. */
+.section-title > span:first-child::after{
+
+    content:" :";
+
+    white-space:pre;
 
 }
 
@@ -2265,6 +2279,16 @@ Editors
 
 }
 
+/* Product specifications - the numbered list of what the part IS (connector
+   type, wire size, operating temperature ...), as in the printed report. */
+.prodspec-box{
+
+    min-height:28px;
+
+    text-indent:var(--indent5, 1.25em);
+
+}
+
 /* Corrected observation = short points. The box indents its first line
    (text-indent), which would push every bullet's text sideways - not for lists. */
 .observation-box ul.obs-points{ margin:0; padding-left:var(--indent5, 1.25em); text-indent:0; list-style:disc inside; }
@@ -2335,6 +2359,100 @@ Procedure - numbered sentence steps
 
     /* Typed procedure text starts like every other section. */
     text-indent:var(--indent5, 1.25em);
+
+}
+
+/* Side-by-side blocks in ANY section, the way the printed report puts Test
+   Procedure 1 / 2 / 3 across the page instead of one long list. Chosen with
+   the "Columns" button in that section's heading.
+
+   A GRID, not CSS columns: columns flow downwards, which read A,B / C,D
+   instead of the report's A,B,C across, and worse, split a procedure in half
+   when the column ended in the middle of it. Each block is wrapped in a
+   .col-block by script.js and becomes one grid cell, so it stays whole and
+   the blocks read across the page. */
+#report .editor.cols-2,
+#report .editor.cols-3{
+
+    display:grid;
+
+    column-gap:18px;
+
+    row-gap:6px;
+
+    align-items:start;
+
+}
+
+#report .editor.cols-2{
+
+    grid-template-columns:repeat(2, 1fr);
+
+}
+
+#report .editor.cols-3{
+
+    grid-template-columns:repeat(3, 1fr);
+
+}
+
+/* .proc-block is the v406 name - still styled so a report saved then looks
+   the same after it is loaded again. */
+#report .editor .col-block,
+#report .editor .proc-block{
+
+    break-inside:avoid;
+
+    page-break-inside:avoid;
+
+}
+
+/* One list and nothing else (an Auto-written procedure, a numbered equipment
+   list): there are no separate blocks to spread, so the list takes the full
+   width and its ITEMS flow into the same number of columns - each item whole.
+   Only a list at the top level, never one nested inside a block, which would
+   split that block's own steps. */
+#report .editor.cols-2 > .col-block:only-child,
+#report .editor.cols-3 > .col-block:only-child,
+#report .editor.cols-2 > .proc-block:only-child,
+#report .editor.cols-3 > .proc-block:only-child{
+
+    grid-column:1 / -1;
+
+}
+
+#report .editor.cols-2 > ol,
+#report .editor.cols-2 > ul,
+#report .editor.cols-2 > .col-block:only-child > ol,
+#report .editor.cols-2 > .col-block:only-child > ul,
+#report .editor.cols-2 > .proc-block:only-child > ol,
+#report .editor.cols-2 > .proc-block:only-child > ul{
+
+    column-count:2;
+
+    column-gap:18px;
+
+}
+
+#report .editor.cols-3 > ol,
+#report .editor.cols-3 > ul,
+#report .editor.cols-3 > .col-block:only-child > ol,
+#report .editor.cols-3 > .col-block:only-child > ul,
+#report .editor.cols-3 > .proc-block:only-child > ol,
+#report .editor.cols-3 > .proc-block:only-child > ul{
+
+    column-count:3;
+
+    column-gap:16px;
+
+}
+
+#report .editor.cols-2 li,
+#report .editor.cols-3 li{
+
+    break-inside:avoid;
+
+    page-break-inside:avoid;
 
 }
 
@@ -3830,8 +3948,9 @@ Test Result data table (Excel-like)
 .data-table tr:first-child > th,
 .data-table tr:first-child > td,
 /* The signature table has no heading of its own, so its first row draws the
-   ONE line that separates it from the section above (markBarRules removes it
-   again if a heading ever sits directly above - see .line-above below). */
+   ONE line above Prepared By / Reviewed By / Issued By. Remove the table and
+   the line goes with it - applyApprovalState keeps the block above clear, so
+   no rule is left hanging where the table used to be. */
 .approval-table tr:first-child > th,
 .approval-table tr:first-child > td{
 
@@ -4407,17 +4526,37 @@ Borderless look: content starts ~5 points from the left
 
     min-width:60px;
 
-    /* Same colour as every other rule in the report. It used to be #c9c9c9,
-       which printed as 10 washed-out grey underlines among 58 black ones. */
-    border-bottom:1px solid var(--line);
+    /* NO underline (asked for): the printed report writes the value straight
+       after "Product :" with nothing under it. A line shows only while you
+       point at or type in the box, so it is still clear where to write.
+
+       The line is kept at 1px and made WHITE rather than removed, so showing
+       it does not nudge the row by a pixel - and white, never `transparent`,
+       because html2canvas paints a transparent border BLACK in the PDF
+       (see [[html2canvas-pdf-pitfalls]]). White on the white page is
+       invisible on screen and in the export alike. */
+    border-bottom:1px solid #fff;
 
     padding-bottom:1px;
+
+}
+
+.grid2 .field:hover{
+
+    border-bottom-color:#c9d3e0;
 
 }
 
 .grid2 .field:focus{
 
     border-bottom-color:var(--secondary);
+
+}
+
+/* Belt and braces: never a line in the export, whatever the mouse was over. */
+.page.print-layout .grid2 .field{
+
+    border-bottom-color:#fff;
 
 }
 

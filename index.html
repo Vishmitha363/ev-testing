@@ -11,7 +11,7 @@
 <!-- The ?v= query is a cache buster. Bump it whenever style.css or
      script.js changes, otherwise the browser keeps serving the old file
      from disk and you see stale generated text. -->
-<link rel="stylesheet" href="style.css?v=405">
+<link rel="stylesheet" href="style.css?v=410">
 
 <!-- Vendored locally so the report works with no internet connection. -->
 <script src="vendor/html2pdf.bundle.min.js"></script>
@@ -451,15 +451,11 @@ id="reportDate"></span>
 
 </div>
 
-<!-- ========================= PRODUCT DETAILS ========================= -->
+<!-- ============ REPORT INFORMATION ============
+     One block with no heading, exactly like the printed report: the rows read
+     Product : ... / Application : ... straight under the title bar. -->
 
-<div class="section-card">
-
-<div class="section-title">
-
-<span>Product Details</span>
-
-</div>
+<div class="section-card info-card">
 
 <div class="grid2">
 
@@ -485,76 +481,10 @@ class="field"></div>
 
 <div>
 
-<label>Supplier</label>
-
-<div contenteditable="true"
-id="supplier"
-class="field"></div>
-
-</div>
-
-<div>
-
-<label>Sample Type</label>
-
-<div contenteditable="true"
-id="sampleType"
-class="field"></div>
-
-</div>
-
-<div>
-
-<label>Drawing / Part No.</label>
-
-<div contenteditable="true"
-id="drawing"
-class="field"></div>
-
-</div>
-
-<div>
-
-<label>No. of Samples</label>
-
-<div contenteditable="true"
-id="samples"
-class="field"></div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- ========================= TEST DETAILS ========================= -->
-
-<div class="section-card">
-
-<div class="section-title">
-
-<span>Test Details</span>
-
-</div>
-
-<div class="grid2">
-
-<div>
-
 <label>Test Name</label>
 
 <div contenteditable="true"
 id="testName"
-class="field"></div>
-
-</div>
-
-<div>
-
-<label>Standard</label>
-
-<div contenteditable="true"
-id="standard"
 class="field"></div>
 
 </div>
@@ -572,6 +502,16 @@ class="field date-field"></div>
 
 <div>
 
+<label>Sample Type</label>
+
+<div contenteditable="true"
+id="sampleType"
+class="field"></div>
+
+</div>
+
+<div>
+
 <label>End Date</label>
 
 <div contenteditable="true"
@@ -581,7 +521,77 @@ class="field date-field"></div>
 
 </div>
 
+<div>
+
+<label>Drawing / Part No.</label>
+
+<div contenteditable="true"
+id="drawing"
+class="field"></div>
+
 </div>
+
+<div>
+
+<label>Supplier</label>
+
+<div contenteditable="true"
+id="supplier"
+class="field"></div>
+
+</div>
+
+<div>
+
+<label>No. of Samples</label>
+
+<div contenteditable="true"
+id="samples"
+class="field"></div>
+
+</div>
+
+<div>
+
+<label>Standard</label>
+
+<div contenteditable="true"
+id="standard"
+class="field"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ============ PRODUCT DETAILS (specifications) ============
+     The numbered specification list of the part under test. -->
+
+<div class="section-card">
+
+<div class="section-title">
+
+<span>Product Details</span>
+
+<button
+type="button"
+class="auto-btn cols-btn"
+data-for="prodSpecs"
+onclick="cycleColumns(this,'prodSpecs')"
+title="Side-by-side columns, like the printed report">
+
+Columns: 1
+
+</button>
+
+</div>
+
+<div
+id="prodSpecs"
+contenteditable="true"
+class="editor prodspec-box"
+data-placeholder="The product's specifications, one per line - e.g. Connector type : 2+4 connector"></div>
 
 </div>
 
@@ -598,6 +608,17 @@ class="auto-btn"
 onclick="autoGenerateField('objective')">
 
 Auto
+
+</button>
+
+<button
+type="button"
+class="auto-btn cols-btn"
+data-for="objective"
+onclick="cycleColumns(this,'objective')"
+title="Side-by-side columns, like the printed report">
+
+Columns: 1
 
 </button>
 
@@ -618,6 +639,17 @@ class="editor"></div>
 
 <span>Test Equipment &amp; Setup</span>
 
+<button
+type="button"
+class="auto-btn cols-btn"
+data-for="equipment"
+onclick="cycleColumns(this,'equipment')"
+title="Side-by-side columns, like the printed report">
+
+Columns: 1
+
+</button>
+
 </div>
 
 <div
@@ -637,9 +669,30 @@ class="editor equipment-box"></div>
 
 <button
 class="auto-btn"
-onclick="autoGenerateField('procedure')">
+onclick="procedureManual(this)"
+title="Write it yourself - puts an empty A / a. b. c. outline in the box">
+
+Manual
+
+</button>
+
+<button
+class="auto-btn"
+onclick="autoGenerateField('procedure')"
+title="Let the AI write the procedure for this test">
 
 Auto
+
+</button>
+
+<button
+type="button"
+class="auto-btn cols-btn"
+data-for="procedure"
+onclick="cycleColumns(this,'procedure')"
+title="Side-by-side columns, like the printed report">
+
+Columns: 1
 
 </button>
 
@@ -648,7 +701,8 @@ Auto
 <div
 id="procedure"
 contenteditable="true"
-class="editor procedure-box"></div>
+class="editor procedure-box"
+data-placeholder="Press Manual to type it yourself, or Auto to have it written for you."></div>
 
 </div>
 
@@ -825,59 +879,14 @@ class="editor procedure-box"></div>
 </div>
 
 
-</div>
-
 <!-- ================================================================
- PAGE 2
+ ONE CONTINUOUS REPORT
+ There is no fixed page 2. Everything below simply follows on, and
+ reflowPages() moves whatever does not fit onto a continuation page
+ with a read-only copy of the header above. So a short report is one
+ page with no blank space, and a long one grows only as far as it
+ needs to.
 ================================================================= -->
-
-<div class="page">
-
-<!-- ============ REPEATED HEADER (mirrors page 1, read only) ============ -->
-
-<div class="header-card">
-
-<div class="logo-box">
-
-<img id="companyLogo2" src="assets/placeholder.png" alt="">
-
-</div>
-
-<div class="title-box">
-
-<h1>PRODUCT VALIDATION TEST REPORT</h1>
-
-</div>
-
-<div class="report-info">
-
-<div>
-
-<label>Doc.Rev.No :</label>
-
-<span id="revision2"></span>
-
-</div>
-
-<div>
-
-<label>Report No. :</label>
-
-<span id="reportNo2"></span>
-
-</div>
-
-<div>
-
-<label>Report Date :</label>
-
-<span id="reportDate2"></span>
-
-</div>
-
-</div>
-
-</div>
 
 <!-- ====== TEST PHOTOGRAPHS (continued) - added photos land here ====== -->
 
@@ -909,6 +918,17 @@ class="editor procedure-box"></div>
  title="Rewrites your observation - English, Tanglish or rough notes - into correct English points (uses the online AI)">
 
  Correct English
+
+ </button>
+
+ <button
+ type="button"
+ class="auto-btn cols-btn"
+ data-for="observation"
+ onclick="cycleColumns(this,'observation')"
+ title="Side-by-side columns, like the printed report">
+
+ Columns: 1
 
  </button>
 
@@ -947,14 +967,18 @@ class="editor procedure-box"></div>
 
  <span>Test Result</span>
 
- </div>
+ <button
+ type="button"
+ class="auto-btn cols-btn"
+ data-for="resultText"
+ onclick="cycleColumns(this,'resultText')"
+ title="Side-by-side columns for the written result, like the printed report">
 
- <!-- Written result in a normal sentence -->
- <div
- id="resultText"
- class="editor resulttext-box"
- contenteditable="true"
- data-placeholder="Write the test result in a sentence, e.g. After the IPX7 test, no water ingress was observed and the motor functioned normally."></div>
+ Columns: 1
+
+ </button>
+
+ </div>
 
  <!-- Editable data tables (rows/columns you type into, like Excel).
  Add as many tables as you need with "Add another table". -->
@@ -1023,6 +1047,14 @@ class="editor procedure-box"></div>
 
  </div>
 
+ <!-- The written result goes UNDER the table, the way the printed report
+ reads: the figures first, then the sentence about them. -->
+ <div
+ id="resultText"
+ class="editor resulttext-box"
+ contenteditable="true"
+ data-placeholder="Write the test result in a sentence, e.g. During the test, no abnormalities such as connector melting & no damage were observed."></div>
+
 </div>
 
 <!-- ========================= CONCLUSION ========================= -->
@@ -1050,6 +1082,17 @@ class="editor procedure-box"></div>
 
  </button>
 
+ <button
+ type="button"
+ class="auto-btn cols-btn"
+ data-for="conclusion"
+ onclick="cycleColumns(this,'conclusion')"
+ title="Side-by-side columns, like the printed report">
+
+ Columns: 1
+
+ </button>
+
  </div>
 
  <div
@@ -1069,6 +1112,17 @@ class="editor procedure-box"></div>
  <div class="section-title">
 
  <span>Recommendation (if any)</span>
+
+ <button
+ type="button"
+ class="auto-btn cols-btn"
+ data-for="recommendation"
+ onclick="cycleColumns(this,'recommendation')"
+ title="Side-by-side columns, like the printed report">
+
+ Columns: 1
+
+ </button>
 
  </div>
 
@@ -1290,7 +1344,7 @@ class="editor procedure-box"></div>
         document.head.appendChild(puterTag);
     }
 </script>
-<script src="script.js?v=405"></script>
+<script src="script.js?v=410"></script>
 
 </body>
 

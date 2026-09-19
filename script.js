@@ -20,38 +20,25 @@ const afterPlaceholder = document.getElementById("afterPlaceholder");
 // All photo slots in Test Photographs.
 const PHOTO_IDS = ["before", "after"];
 
-const companyLogo2 = document.getElementById("companyLogo2");
-
-// ---------- REPEATED PAGE 2 HEADER ----------
-// Page 2 carries a read-only copy of the page 1 header, so both PDF pages
-// are identifiable on their own.
-const HEADER_MIRRORS = [
-
-    ["revision", "revision2"],
-    ["reportNo", "reportNo2"],
-    ["reportDate", "reportDate2"]
-
-];
+// ---------- THE REPEATED HEADER ----------
+// The report has ONE header, at the top of the first page. Every page after
+// it carries a read-only copy (headerMirror), so each PDF page is
+// identifiable on its own. There used to be a hand-written second copy on a
+// fixed page 2; the report is one continuous flow now, so the copies are all
+// made the same way and there is only one set of fields to fill in.
+const HEADER_FIELDS = ["revision", "reportNo", "reportDate"];
 
 function mirrorHeader() {
 
-    HEADER_MIRRORS.forEach(([from, to]) => {
-
-        document.getElementById(to).textContent =
-            document.getElementById(from).innerText.trim();
-
-    });
-
-    companyLogo2.src = companyLogo.src;
-
-    syncHeaderMirrors();     // the headers on any added pages
+    syncHeaderMirrors();     // the copies on every page after the first
 
 }
 
 // The header fields are contenteditable, so mirror on every keystroke.
-HEADER_MIRRORS.forEach(([from]) => {
+HEADER_FIELDS.forEach((id) => {
 
-    document.getElementById(from).addEventListener("input", mirrorHeader);
+    const el = document.getElementById(id);
+    if (el) el.addEventListener("input", mirrorHeader);
 
 });
 
@@ -70,8 +57,6 @@ logoUpload.addEventListener("change", function () {
     reader.onload = function (e) {
 
         companyLogo.src = e.target.result;
-
-        companyLogo2.src = e.target.result;
 
         bindFreshDraft();
         try { localStorage.setItem("companyLogo", e.target.result); }
@@ -96,8 +81,6 @@ function applyLogoCrop() {
 
     companyLogo.style.transformOrigin = "center center";
     companyLogo.style.transform = t;
-    companyLogo2.style.transformOrigin = "center center";
-    companyLogo2.style.transform = t;
 
     if (typeof syncHeaderMirrors === "function") syncHeaderMirrors();
 
@@ -497,7 +480,6 @@ function loadSavedImages() {
 
         companyLogo.src = logo;
 
-        companyLogo2.src = logo;
 
         const lc = localStorage.getItem("logoCrop"); if (lc) { try { logoCrop = JSON.parse(lc); } catch (e) { } applyLogoCrop(); }
 
@@ -2473,6 +2455,10 @@ function saveAll() {
     // Whether Approval / Observation were removed belongs to this report too.
     const hiddenCard = (id) => { const c = document.getElementById(id); return !!c && c.style.display === "none"; };
     if (hiddenCard("approvalCard")) localStorage.setItem("approvalRemoved", "1"); else localStorage.removeItem("approvalRemoved");
+
+    // How many columns each section is laid out in belongs to this report too.
+    saveColumnChoices();
+
     if (hiddenCard("observationCard")) localStorage.setItem("observationRemoved", "1"); else localStorage.removeItem("observationRemoved");
 
 }
@@ -2625,6 +2611,8 @@ function loadDraft(announce) {
         }
 
     });
+
+    restoreColumnChoices();
 
     const savedTables = localStorage.getItem("resultTables");
 
@@ -4120,11 +4108,13 @@ function flowHeight(el){
 
 }
 
-// A read-only copy of page 2's header for the added pages. Its ids are removed,
-// so it can never be mistaken for the real fields.
+// A read-only copy of THE header (the one at the top of the report) for every
+// page after the first. Its ids are removed, so it can never be mistaken for
+// the real fields, and so are the things that only make sense on the real one:
+// typing, the Upload Logo / Adjust buttons and the file input behind them.
 function headerMirror(){
 
-    const src = document.getElementById("revision2");
+    const src = document.getElementById("revision");
     const card = src ? src.closest(".header-card") : null;
 
     if (!card) return document.createElement("div");
@@ -4132,25 +4122,27 @@ function headerMirror(){
     const h = card.cloneNode(true);
     h.classList.add("header-mirror");
     h.querySelectorAll("[id]").forEach((e) => e.removeAttribute("id"));
+    h.querySelectorAll("[contenteditable]").forEach((e) => e.removeAttribute("contenteditable"));
+    h.querySelectorAll("button, input").forEach((e) => e.remove());
     h.dataset.sig = headerSignature();          // what this copy shows
 
     return h;
 
 }
 
-// Report No., Rev, date and logo of page 2's header, as one comparable string.
+// Report No., Rev, date and logo of the real header, as one comparable string.
 function headerSignature(){
 
-    const logo = document.getElementById("companyLogo2");
+    const logo = document.getElementById("companyLogo");
 
-    return ["revision2", "reportNo2", "reportDate2"].map((id) => {
+    return ["revision", "reportNo", "reportDate"].map((id) => {
         const el = document.getElementById(id);
-        return el ? el.textContent : "";
+        return el ? el.innerText.trim() : "";
     }).concat(logo ? [logo.src.length, logo.src.slice(-80), logo.style.cssText] : []).join("|");
 
 }
 
-// Keep the added pages' headers the same as page 2's (report no., date, logo).
+// Keep every later page's header the same as the real one (report no., date, logo).
 // Each copy remembers what it shows, so a copy made at any time is compared on
 // its own - one shared "last value" could miss a change back to an old value
 // and leave an old Report No. on an added page.
@@ -4311,8 +4303,16 @@ function reflowPages(){
 
     syncHeaderMirrors();
 
+    // A page may run a little over its height: checkPageFit scales a page that
+    // does by that much, and a 4% shrink is not visible. Without the allowance
+    // a section that missed by a few pixels - the photo block misses a blank
+    // report's first page by 5px - was pushed onto a page of its own, leaving
+    // most of the page before it blank. Sections pack tightly now.
+    const SQUEEZE = 1.04;
+
     const room = (fit) => fit.parentElement.clientHeight;
-    const over = (fit) => fit.scrollHeight > room(fit) + 1;
+    const capacity = (fit) => room(fit) * SQUEEZE;
+    const over = (fit) => fit.scrollHeight > capacity(fit) + 1;
 
     // Moving the section being typed in must not lose the caret.
     const active = document.activeElement;
@@ -4350,7 +4350,7 @@ function reflowPages(){
             if (!next) return true;
             const b = flowBlocks(next).find((x) => flowHeight(x) > 0);
             if (!b) return false;                         // a continuation page with nothing to show
-            return f.scrollHeight + flowHeight(b) > room(f) - 2;
+            return f.scrollHeight + flowHeight(b) > capacity(f) - 2;
         });
 
         if (settled) return;
@@ -8018,6 +8018,242 @@ function autoGenerateField(type){
 
 }
 
+// ===========================================
+// TEST PROCEDURE - MANUAL / COLUMNS
+// Two ways to fill the section: write it yourself (Manual) or let the AI
+// write it (Auto). Manual drops in the empty A / a. b. c. outline the
+// printed report uses, so the shape is there to type into.
+// ===========================================
+
+const PROCEDURE_OUTLINE =
+    '<div><b>A. Test Procedure 1</b></div>' +
+    '<div>a.&nbsp;</div>' +
+    '<div>b.&nbsp;</div>' +
+    '<div>c.&nbsp;</div>';
+
+function procedureManual(btn) {
+
+    const box = document.getElementById("procedure");
+    if (!box) return;
+
+    // Never wipe what is already written - just put the cursor there.
+    if (!box.innerText.trim()) {
+        box.innerHTML = PROCEDURE_OUTLINE;
+        box.dispatchEvent(new Event("input", { bubbles: true }));
+        checkPageFit();
+    }
+
+    box.focus();
+
+    // Cursor at the end of the first empty line ("a."), ready to type.
+    try {
+        const line = box.querySelectorAll("div")[1] || box;
+        const r = document.createRange();
+        r.selectNodeContents(line);
+        r.collapse(false);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(r);
+    } catch (e) { /* selection is a nicety, not worth failing over */ }
+
+}
+
+// ===========================================
+// COLUMNS FOR ANY SECTION
+// Every section heading that holds written text carries a "Columns: N"
+// button. Product Details, Test Objective, Test Equipment, Test Procedure,
+// Observation, Conclusion and Recommendation all work the same way.
+// ===========================================
+
+// The boxes that offer it, in report order. New Report walks this list.
+const COLUMN_BOXES = [
+    "prodSpecs", "objective", "equipment", "procedure",
+    "observation", "resultText", "conclusion", "recommendation"
+];
+
+// A wrapper this code made. .proc-block is the v406 name, still read so a
+// report saved then comes back grouped rather than as loose lines.
+const COL_BLOCK_SEL = ".col-block, .proc-block";
+
+// 1 -> 2 -> 3 -> 1. The choice belongs to the report, so it is saved with it.
+function cycleColumns(btn, id) {
+
+    const now = columnsOf(id);
+
+    setColumns(id, now === 3 ? 1 : now + 1);
+
+    saveColumnChoices();
+
+    checkPageFit();
+
+}
+
+function columnsOf(id) {
+
+    const box = document.getElementById(id);
+    if (!box) return 1;
+
+    return box.classList.contains("cols-3") ? 3 : box.classList.contains("cols-2") ? 2 : 1;
+
+}
+
+function setColumns(id, n) {
+
+    const box = document.getElementById(id);
+    if (!box) return;
+
+    n = n === 2 || n === 3 ? n : 1;
+
+    // In columns each block must travel as ONE piece, or the grid puts
+    // "B. Test Procedure 2" in one column and its last step in the next.
+    if (n > 1) groupColumnBlocks(id); else ungroupColumnBlocks(id);
+
+    box.classList.remove("cols-2", "cols-3");
+    if (n > 1) box.classList.add("cols-" + n);
+
+    const btn = document.querySelector('.cols-btn[data-for="' + id + '"]');
+    if (btn) btn.textContent = "Columns: " + n;
+
+}
+
+// One key for the whole report: {"procedure":3,"equipment":2}. Only the boxes
+// that are not 1 are written, so a plain report stores nothing.
+function saveColumnChoices() {
+
+    const map = {};
+    COLUMN_BOXES.forEach((id) => { const n = columnsOf(id); if (n > 1) map[id] = n; });
+
+    try {
+        if (Object.keys(map).length) localStorage.setItem("reportCols", JSON.stringify(map));
+        else localStorage.removeItem("reportCols");
+    } catch (e) { /* storage full - the report on screen is unaffected */ }
+
+}
+
+function restoreColumnChoices() {
+
+    let map = {};
+
+    try { map = JSON.parse(localStorage.getItem("reportCols") || "{}") || {}; } catch (e) { map = {}; }
+
+    // v406 stored the procedure on its own; keep those drafts working.
+    const old = parseInt(localStorage.getItem("procedureCols") || "0", 10);
+    if (old > 1 && !map.procedure) map.procedure = old;
+
+    COLUMN_BOXES.forEach((id) => setColumns(id, parseInt(map[id], 10) || 1));
+
+}
+
+// A line that opens a new block: "A. Test Procedure 1", "1. Soak test", or any
+// line the user made bold - the shapes the printed report uses.
+function isColumnHeading(el) {
+
+    const t = (el.textContent || "").trim();
+    if (!t) return false;
+
+    if (/^[A-Z][.)]\s/.test(t) || /^\d+[.)]\s*(test\s+)?procedure\b/i.test(t)) return true;
+
+    // Entirely bold / a heading tag, and short enough to be a heading.
+    const b = el.querySelector("b, strong");
+    return !!b && b.textContent.trim() === t && t.length < 60;
+
+}
+
+// Wrap each block (its heading plus the lines under it) in one .col-block.
+function groupColumnBlocks(id) {
+
+    const box = document.getElementById(id);
+    if (!box) return;
+
+    ungroupColumnBlocks(id);
+
+    const kids = [...box.children];
+    if (!kids.length) return;
+
+    // Nothing that looks like a heading: split the lines into even blocks
+    // instead, so the columns still balance rather than turning every single
+    // line into its own cell.
+    const heads = kids.filter(isColumnHeading).length;
+    const per = heads ? 0 : Math.max(1, Math.ceil(kids.length / columnsOf(id)));
+
+    let block = null;
+
+    kids.forEach((kid, i) => {
+
+        const starts = heads ? isColumnHeading(kid) : (i % per === 0);
+
+        if (starts || !block) {
+            block = document.createElement("div");
+            block.className = "col-block";
+            box.insertBefore(block, kid);
+        }
+
+        block.appendChild(kid);
+
+    });
+
+}
+
+// True only when the blocks no longer match what was typed - so a click on the
+// text toolbar (which blurs the box) does not rebuild the DOM under the cursor
+// for nothing.
+function columnsNeedGrouping(id) {
+
+    const box = document.getElementById(id);
+    if (!box || !box.children.length) return false;
+
+    const kids = [...box.children];
+
+    if (kids.some((k) => !k.matches(COL_BLOCK_SEL))) return true;
+
+    // A heading that is not the first line of its block started a new block
+    // that has not been given a cell of its own yet.
+    return kids.some((b) => [...b.children].slice(1).some(isColumnHeading));
+
+}
+
+// Back to plain lines, so typing in one column behaves normally again.
+function ungroupColumnBlocks(id) {
+
+    const box = document.getElementById(id);
+    if (!box) return;
+
+    box.querySelectorAll(":scope > " + COL_BLOCK_SEL.split(", ").join(", :scope > ")).forEach((b) => {
+        while (b.firstChild) box.insertBefore(b.firstChild, b);
+        b.remove();
+    });
+
+}
+
+// Text typed while the columns are on gets its own cell as soon as the user
+// leaves the box (never while they are typing in it - that would move the
+// cursor mid-sentence).
+(function watchColumnTyping() {
+
+    COLUMN_BOXES.forEach((id) => {
+
+        const box = document.getElementById(id);
+        if (!box) return;
+
+        box.addEventListener("blur", () => {
+
+            if (columnsOf(id) < 2 || !columnsNeedGrouping(id)) return;
+
+            groupColumnBlocks(id);
+            checkPageFit();
+
+        });
+
+    });
+
+})();
+
+// Kept because the Test Procedure heading and the saved reports from v406
+// still call these by name.
+function procedureCycleColumns(btn) { cycleColumns(btn, "procedure"); }
+function procedureColumns() { return columnsOf("procedure"); }
+function setProcedureColumns(n) { setColumns("procedure", n); }
+
 
 // ===========================================
 // OFFLINE ENGLISH CORRECTION
@@ -8747,6 +8983,10 @@ function newReport(){
 
     resultTables.innerHTML = RESULT_TABLE_BLOCK;
 
+    // A new report starts with every section in one plain column again.
+    COLUMN_BOXES.forEach((id) => setColumns(id, 1));
+    try { localStorage.removeItem("reportCols"); localStorage.removeItem("procedureCols"); } catch (e) { /* ignore */ }
+
     [beforePreview, afterPreview].forEach((img) => {
 
         img.removeAttribute("src");
@@ -8776,7 +9016,6 @@ function newReport(){
 
     companyLogo.src = "assets/placeholder.png";
 
-    companyLogo2.src = "assets/placeholder.png";
 
     document.getElementById("extraPhotos").innerHTML = "";
     document.getElementById("extraPhotoCard").style.display = "none";
@@ -9376,12 +9615,12 @@ function cleanAIText(raw) {
 // models were verified working; they are tried in order and the first that
 // answers wins (individual free models get rate-limited). NOTE: this key sits
 // in this file - if you share the folder or a backup, rotate it at openrouter.ai.
-const OPENROUTER_KEY = "";   // published copy: no key in the files
+const OPENROUTER_KEY = "";
 // Built-in Google Gemini key. NOTE: this sits in plain text in this file - anyone
 // with a copy of the folder (or a backup/zip of it) has the key. Rotate it in
 // Google AI Studio if this project is ever shared or published.
 // A key entered in Ask AI -> settings always overrides this one.
-const GEMINI_KEY = "";   // published copy: no key in the files
+const GEMINI_KEY = "";
 // gemini-2.5-flash, NOT 2.0: this project has no free-tier quota on the 2.0
 // models (the API answers 429 "limit: 0"), but 2.5-flash works. Verified against
 // the live API. It also reads images, which is what the photo feature needs.
@@ -12402,9 +12641,11 @@ function applyApprovalState(removedNow) {
     const before = document.getElementById("recommendationCard") ||
         document.getElementById("conclusion").closest(".section-card");
 
-    // Only while the signature table follows it: with the table removed, that
-    // section is the last one printed and needs its own closing line back.
-    if (before) before.style.borderBottom = removed ? "" : "none";
+    // Never - not even with the table removed. Asked for: the line above
+    // Prepared By belongs to the signature table, so removing the table takes
+    // that line with it instead of leaving a rule stranded across the page.
+    // The page frame closes the foot of the report on its own.
+    if (before) before.style.borderBottom = "none";
 
 }
 
@@ -12621,10 +12862,14 @@ appStarted = true;
         "to list its applicable test cases, each with a standard procedure and " +
         "the governing standard; a test can be pushed into the report.\n" +
         "3. Product Validation Test Report - the main report: header " +
-        "(Doc.Rev.No, Report No., Report Date), Product Details, Test Details " +
-        "(Test Name, Standard, Start/End Date in DD/MM/YYYY), Test Objective " +
-        "(Auto button), Test Equipment & Setup, Test Procedure (Auto button " +
-        "writes short condition-based steps), Test Photographs (before/after " +
+        "(Doc.Rev.No, Report No., Report Date), one information block " +
+        "(Product, Application, Test Name, Start/End Date in DD/MM/YYYY, " +
+        "Sample Type, Drawing/Part No., Supplier, No. of Samples, Standard), " +
+        "Product Details (the specification list of the part), Test Objective " +
+        "(Auto button), Test Equipment & Setup, Test Procedure (Manual button " +
+        "gives an A / a. b. c. outline, Auto button writes short " +
+        "condition-based steps, Columns button lays the blocks side by side), " +
+        "Test Photographs (before/after " +
         "with editable captions), Observation (a 'Correct English' button " +
         "converts Tanglish and typos into report English), Test Result " +
         "(PASS/FAIL), Conclusion (Auto), Recommendation and the Prepared / " +
@@ -13096,6 +13341,7 @@ appStarted = true;
 
     // Report fields the assistant's answer can be dropped into.
     const INSERT_TARGETS = [
+        { id: "prodSpecs", label: "Product Details" },
         { id: "objective", label: "Test Objective" },
         { id: "equipment", label: "Test Equipment" },
         { id: "procedure", label: "Test Procedure" },
